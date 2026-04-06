@@ -6,27 +6,6 @@ const authRoutes = ["/login", "/register"];
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            request.cookies.set(name, value);
-            response = NextResponse.next({ request });
-            response.cookies.set(name, value, options);
-          });
-        },
-      },
-    }
-  );
-
-  const { data: { user } } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
   // Capture promoter referral code
@@ -41,17 +20,45 @@ export async function proxy(request: NextRequest) {
     response.cookies.set("pulsetix_ref", refParam, { maxAge: 60 * 60 * 24 * 90, path: "/" });
   }
 
-  // Redirect unauthenticated users from protected routes
-  if (!user && protectedRoutes.some((r) => pathname.startsWith(r))) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(url);
+  // Skip auth checks if Supabase isn't configured
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseKey) {
+    return response;
   }
 
-  // Redirect authenticated users away from auth pages
-  if (user && authRoutes.some((r) => pathname.startsWith(r))) {
-    return NextResponse.redirect(new URL("/events", request.url));
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value);
+            response = NextResponse.next({ request });
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    });
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    // Redirect unauthenticated users from protected routes
+    if (!user && protectedRoutes.some((r) => pathname.startsWith(r))) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(url);
+    }
+
+    // Redirect authenticated users away from auth pages
+    if (user && authRoutes.some((r) => pathname.startsWith(r))) {
+      return NextResponse.redirect(new URL("/events", request.url));
+    }
+  } catch {
+    // If Supabase auth fails, just continue without auth checks
   }
 
   return response;
