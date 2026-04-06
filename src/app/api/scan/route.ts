@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createAdminClient } from "@/lib/supabase-admin";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,15 +9,45 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ valid: false, message: "No QR code provided" }, { status: 400 });
     }
 
-    // TODO: When Supabase is connected:
-    // 1. Look up ticket by qr_code
-    // 2. Check ticket status (valid, used, cancelled)
-    // 3. If valid, mark as used and set checked_in_at
-    // 4. Return ticket + event details
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json({ valid: false, message: "Database not connected" }, { status: 503 });
+    }
+
+    const supabase = createAdminClient();
+
+    // Look up ticket
+    const { data: ticket, error } = await supabase
+      .from("tickets")
+      .select("*, events(title, venue, date, time)")
+      .eq("qr_code", qr_code)
+      .single();
+
+    if (error || !ticket) {
+      return NextResponse.json({ valid: false, message: "Ticket not found. Invalid QR code." });
+    }
+
+    if (ticket.status === "used") {
+      return NextResponse.json({
+        valid: false,
+        message: `Already checked in at ${new Date(ticket.checked_in_at).toLocaleTimeString()}`,
+      });
+    }
+
+    if (ticket.status === "cancelled" || ticket.status === "refunded") {
+      return NextResponse.json({ valid: false, message: `Ticket is ${ticket.status}` });
+    }
+
+    // Mark as used
+    await supabase
+      .from("tickets")
+      .update({ status: "used", checked_in_at: new Date().toISOString() })
+      .eq("id", ticket.id);
+
+    const event = ticket.events as { title: string; venue: string } | null;
 
     return NextResponse.json({
-      valid: false,
-      message: "Scanner not connected to database yet",
+      valid: true,
+      message: `✓ ${ticket.email} — ${ticket.quantity} ticket${ticket.quantity > 1 ? "s" : ""} for ${event?.title || "Event"}`,
     });
   } catch {
     return NextResponse.json({ valid: false, message: "Scanner error" }, { status: 500 });

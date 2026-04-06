@@ -1,14 +1,43 @@
 import { NextResponse } from "next/server";
+import { createServerSupabase } from "@/lib/supabase-server";
 
 export async function GET() {
-  // TODO: Fetch real promoter stats from Supabase
-  // Need to authenticate the request and get promoter_id
+  try {
+    const supabase = await createServerSupabase();
+    const { data: { user } } = await supabase.auth.getUser();
 
-  return NextResponse.json({
-    total_sales: 47,
-    total_earned: 705,
-    commission_rate: 0.15,
-    referral_clicks: 312,
-    recent_sales: [],
-  });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Get promoter record
+    const { data: promoter } = await supabase
+      .from("promoters")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+
+    if (!promoter) {
+      return NextResponse.json({ error: "Not a promoter" }, { status: 403 });
+    }
+
+    // Get recent sales
+    const { data: sales } = await supabase
+      .from("promoter_sales")
+      .select("*, events(title), tickets(email, quantity)")
+      .eq("promoter_id", promoter.id)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    return NextResponse.json({
+      total_sales: promoter.total_sales,
+      total_earned: Number(promoter.total_earned),
+      commission_rate: Number(promoter.commission_rate),
+      referral_code: promoter.code,
+      status: promoter.status,
+      recent_sales: sales || [],
+    });
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
 }

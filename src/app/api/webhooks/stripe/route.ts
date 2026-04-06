@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
+import { createAdminClient } from "@/lib/supabase-admin";
+import { generateQRCodeDataURL } from "@/lib/qr";
+import { sendTicketEmail } from "@/lib/email";
+import { formatDate, formatTime } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
+  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
+    return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
+  }
+
+  const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY);
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
 
@@ -8,14 +18,107 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Missing signature" }, { status: 400 });
   }
 
-  // TODO: When Stripe is configured:
-  // 1. Verify webhook signature
-  // 2. Handle checkout.session.completed event
-  // 3. Create ticket record in Supabase
-  // 4. Generate QR code
-  // 5. Send email with QR code via Resend
+  let event: Stripe.Event;
+  try {
+    event = stripeClient.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.error("Webhook signature verification failed:", err);
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+  }
 
-  console.log("Stripe webhook received:", body.slice(0, 100));
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object as Stripe.Checkout.Session;
+    const { eventId, quantity, email, refCode } = session.metadata || {};
+
+    if (!eventId || !quantity || !email) {
+      console.error("Missing metadata in checkout session");
+      return NextResponse.json({ received: true });
+    }
+
+    const supabase = createAdminClient();
+
+    // Generate unique QR code
+    const qrCode = crypto.randomUUID();
+
+    // Create ticket
+    const { data: ticket, error: ticketError } = await supabase
+      .from("tickets")
+      .insert({
+        event_id: eventId,
+        email,
+        quantity: parseInt(quantity),
+        qr_code: qrCode,
+        stripe_session_id: session.id,
+        status: "valid",
+      })
+      .select()
+      .single();
+
+    if (ticketError) {
+      console.error("Failed to create ticket:", ticketError);
+      return NextResponse.json({ error: "Ticket creation failed" }, { status: 500 });
+    }
+
+    // Handle promoter commission
+    if (refCode) {
+      const { data: promoter } = await supabase
+        .from("promoters")
+        .select("*")
+        .eq("code", refCode)
+        .eq("status", "active")
+        .single();
+
+      if (promoter) {
+        const totalAmount = (session.amount_total || 0) / 100;
+        const commission = totalAmount * Number(promoter.commission_rate);
+
+        await supabase.from("promoter_sales").insert({
+          promoter_id: promoter.id,
+          ticket_id: ticket.id,
+          event_id: eventId,
+          commission_amount: commission,
+          tier: 1,
+          status: "pending",
+        });
+
+        // Update promoter totals
+        await supabase
+          .from("promoters")
+          .update({
+            total_sales: promoter.total_sales + parseInt(quantity),
+            total_earned: Number(promoter.total_earned) + commission,
+          })
+          .eq("id", promoter.id);
+      }
+    }
+
+    // Fetch event details for email
+    const { data: eventData } = await supabase
+      .from("events")
+      .select("title, date, time, venue")
+      .eq("id", eventId)
+      .single();
+
+    // Generate QR code image and send email
+    if (eventData) {
+      try {
+        const qrDataUrl = await generateQRCodeDataURL(qrCode);
+        await sendTicketEmail({
+          to: email,
+          eventTitle: eventData.title,
+          eventDate: formatDate(eventData.date),
+          eventTime: formatTime(eventData.time),
+          venue: eventData.venue,
+          quantity: parseInt(quantity),
+          qrCode,
+          qrDataUrl,
+        });
+      } catch (emailErr) {
+        console.error("Failed to send ticket email:", emailErr);
+        // Don't fail the webhook — ticket was already created
+      }
+    }
+  }
 
   return NextResponse.json({ received: true });
 }
