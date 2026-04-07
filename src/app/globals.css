@@ -2,10 +2,10 @@
 
 @theme inline {
   --color-bg: #000000;
-  --color-bg-card: #111111;
-  --color-bg-elevated: #1a1a1a;
+  --color-bg-card: #0a0a0a;
+  --color-bg-elevated: #141414;
   --color-text: #ffffff;
-  --color-text-dim: #999999;
+  --color-text-dim: #888888;
   --color-accent: #6C63FF;
   --color-accent-2: #00E5A0;
   --color-danger: #ff3366;
@@ -23,34 +23,142 @@ body {
   overflow-x: hidden;
 }
 
-/* Gradient utilities */
+/* ========== Gradient utilities ========== */
 .gradient-text {
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+  background: linear-gradient(135deg, #7B73FF 0%, #00E5A0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+  background: linear-gradient(135deg, #6C63FF 0%, #00E5A0 100%);
 }
 
+/* ========== Glass morphism ========== */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Scrollbar hide for pill rows */
+.glass-strong {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========== Glow effects ========== */
+.glow-accent {
+  box-shadow: 0 0 30px -5px rgba(108, 99, 255, 0.4);
+}
+
+.glow-accent-sm {
+  box-shadow: 0 0 20px -5px rgba(108, 99, 255, 0.3);
+}
+
+.glow-accent-hover:hover {
+  box-shadow: 0 0 40px -5px rgba(108, 99, 255, 0.5);
+}
+
+.text-glow {
+  text-shadow: 0 0 40px rgba(108, 99, 255, 0.5);
+}
+
+/* ========== Scrollbar hide ========== */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Animations */
+/* ========== Animations ========== */
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .animate-fade-up {
-  animation: fade-up 0.5s ease both;
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease both;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* Staggered children animation */
+.stagger-children > *:nth-child(1) { animation-delay: 0s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.6s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.7s; }
+.stagger-children > *:nth-child(9) { animation-delay: 0.8s; }
+
+/* ========== Custom selection ========== */
+::selection {
+  background: rgba(108, 99, 255, 0.4);
+  color: white;
+}
+
+/* ========== Noise overlay (subtle texture) ========== */
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========== Better form inputs ========== */
+input[type="date"],
+input[type="time"],
+select {
+  color-scheme: dark;
 }
