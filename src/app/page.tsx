@@ -24,16 +24,37 @@ export default function Home() {
     <>
       {/* ============ HERO ============ */}
       <section className="relative min-h-[95vh] flex items-center justify-center px-6 overflow-hidden">
-        {/* Background */}
+        {/* Animated background — crossfading Ken Burns images */}
         <div className="absolute inset-0">
+          {/* Image 1 — always visible, slow zoom/pan */}
           <Image
             src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80"
             alt="NYC Nightlife"
             fill
-            className="object-cover scale-105"
+            className="object-cover animate-ken-burns-1"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black" />
+          {/* Image 2 — crossfades in and out */}
+          <div className="absolute inset-0 animate-crossfade">
+            <Image
+              src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1920&q=80"
+              alt="NYC Party"
+              fill
+              className="object-cover animate-ken-burns-2"
+            />
+          </div>
+          {/* Image 3 — offset crossfade */}
+          <div className="absolute inset-0 animate-crossfade" style={{ animationDelay: "8s" }}>
+            <Image
+              src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1920&q=80"
+              alt="NYC Concert"
+              fill
+              className="object-cover animate-ken-burns-1"
+              style={{ animationDelay: "3s" }}
+            />
+          </div>
+          {/* Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/50 to-black" />
           <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-accent-2/5" />
         </div>
 
