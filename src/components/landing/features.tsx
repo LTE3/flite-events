@@ -65,14 +65,17 @@ export function Features() {
   const f = features[active];
 
   return (
-    <section className="px-6 py-20 relative overflow-hidden">
+    <section className="px-6 py-32 relative overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute top-1/2 right-0 w-[600px] h-[600px] bg-accent/5 blur-[200px] rounded-full pointer-events-none" />
+
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="text-xs font-bold uppercase tracking-[3px] text-accent mb-3">Platform</p>
-          <h2 className="text-3xl sm:text-4xl font-black mb-3">
+        <div className="mb-16">
+          <p className="text-xs font-bold uppercase tracking-[4px] text-accent mb-4">Platform</p>
+          <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
             Everything You Need to <span className="gradient-text">Run Events</span>
           </h2>
-          <p className="text-text-dim max-w-lg mx-auto">One platform. Zero compromises. Built for hosts who are serious about growing.</p>
+          <p className="text-white/40 max-w-lg text-lg">One platform. Zero compromises. Built for hosts who are serious about growing.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -119,7 +122,7 @@ export function Features() {
                   <f.icon size={14} /> {f.title}
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-black mb-4">{f.headline}</h3>
+                <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-bold tracking-tight mb-4">{f.headline}</h3>
                 <p className="text-text-dim leading-relaxed mb-8">{f.desc}</p>
 
                 <div className="flex flex-wrap gap-3">
