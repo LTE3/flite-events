@@ -218,8 +218,8 @@ export function HeroSection() {
           <span className="text-xs font-bold tracking-[3px] uppercase text-white/80">NYC&apos;s Premier Nightlife Platform</span>
         </motion.div>
 
-        {/* Headline */}
-        <h1 className="text-6xl sm:text-8xl lg:text-[6.5rem] font-black leading-[0.88] mb-8 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+        {/* Headline — display font */}
+        <h1 className="font-[family-name:var(--font-display)] text-6xl sm:text-8xl lg:text-[7rem] font-bold leading-[0.88] mb-8 tracking-tight drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
           <AnimatedWord word="Don't" delay={0.5} />{" "}
           <AnimatedWord word="Just" delay={0.65} />{" "}
           <AnimatedWord word="Go" delay={0.8} />{" "}
