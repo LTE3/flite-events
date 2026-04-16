@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Ticket, ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle } from "lucide-react";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -37,10 +37,10 @@ export default function RegisterPage() {
   if (success) {
     return (
       <div className="min-h-[85vh] flex items-center justify-center px-6 relative overflow-hidden">
-        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] rounded-full bg-accent-2/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
         <div className="w-full max-w-md text-center animate-fade-up">
-          <div className="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6 glow-accent">
-            <CheckCircle size={36} className="text-black" />
+          <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle size={36} className="text-white" />
           </div>
           <h1 className="text-2xl font-black mb-3">Check Your Email</h1>
           <p className="text-text-dim mb-8">We sent a confirmation link to <span className="text-text font-medium">{email}</span></p>
@@ -57,16 +57,12 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-6 relative overflow-hidden">
-      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-accent/8 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/3 w-[300px] h-[300px] rounded-full bg-accent-2/6 blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
 
       <div className="w-full max-w-md relative animate-fade-up">
         <div className="flex justify-center mb-8">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center glow-accent-sm">
-              <Ticket size={20} className="text-black" />
-            </div>
-            <span className="text-xl font-black tracking-[2px] gradient-text">PULSETIX</span>
+          <Link href="/" className="inline-block">
+            <span className="font-[family-name:var(--font-display)] text-2xl font-800 tracking-[-0.02em]">PULSETIX</span>
           </Link>
         </div>
 
@@ -87,7 +83,7 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(108,99,255,0.1)] transition-all duration-300"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(255,77,77,0.1)] transition-all duration-300"
                 placeholder="Your name"
               />
             </div>
@@ -98,7 +94,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(108,99,255,0.1)] transition-all duration-300"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(255,77,77,0.1)] transition-all duration-300"
                 placeholder="you@email.com"
               />
             </div>
@@ -110,14 +106,14 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(108,99,255,0.1)] transition-all duration-300"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(255,77,77,0.1)] transition-all duration-300"
                 placeholder="At least 8 characters"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 gradient-bg text-black font-bold text-sm rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(108,99,255,0.4)] hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-accent text-white font-semibold text-sm rounded-xl transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
             >
               {loading ? "Creating account..." : <>Create Account <ArrowRight size={16} /></>}
             </button>

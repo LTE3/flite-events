@@ -42,7 +42,7 @@ export function StatsSection() {
                 i < stats.length - 1 ? "lg:border-r lg:border-white/[0.06]" : ""
               }`}
             >
-              <p className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 gradient-text">
+              <p className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 accent-text">
                 <AnimatedNumber value={stat.value} suffix={stat.suffix} />
               </p>
               <p className="font-[family-name:var(--font-display)] font-semibold text-white/80 text-lg tracking-tight">{stat.label}</p>

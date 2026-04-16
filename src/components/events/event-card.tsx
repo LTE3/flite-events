@@ -25,7 +25,7 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
   return (
     <Link
       href={`/events/${event.slug}`}
-      className="group block rounded-2xl overflow-hidden bg-bg-card border border-white/[0.04] transition-all duration-500 hover:-translate-y-2 hover:border-white/[0.1] hover:shadow-[0_20px_60px_-15px_rgba(108,99,255,0.15)] animate-fade-up"
+      className="group block rounded-2xl overflow-hidden bg-bg-card border border-white/[0.06] transition-all duration-500 hover:-translate-y-1 hover:border-white/[0.12] animate-fade-up"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       {/* Image container */}
@@ -104,9 +104,9 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
 
           <div className="flex items-center gap-2">
             <div className="flex -space-x-1.5">
-              <span className="w-5 h-5 rounded-full bg-gradient-to-br from-accent to-accent/60 border-2 border-bg-card" />
-              <span className="w-5 h-5 rounded-full bg-gradient-to-br from-accent-2 to-accent-2/60 border-2 border-bg-card" />
-              <span className="w-5 h-5 rounded-full bg-gradient-to-br from-orange-500 to-orange-500/60 border-2 border-bg-card" />
+              <span className="w-5 h-5 rounded-full bg-white/20 border-2 border-bg-card" />
+              <span className="w-5 h-5 rounded-full bg-white/15 border-2 border-bg-card" />
+              <span className="w-5 h-5 rounded-full bg-white/10 border-2 border-bg-card" />
             </div>
             <span className="text-xs text-text-dim font-medium">
               {event.tickets_total - event.tickets_left}+

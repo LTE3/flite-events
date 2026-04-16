@@ -36,6 +36,7 @@ export interface Event {
   created_by: string;
   created_at: string;
   updated_at: string;
+  tiers?: TicketTier[];
 }
 
 export interface Ticket {
@@ -46,10 +47,33 @@ export interface Ticket {
   quantity: number;
   qr_code: string;
   status: TicketStatus;
+  tier_id?: string;
+  tier_name?: string;
   stripe_session_id?: string;
   purchased_at: string;
   checked_in_at?: string;
   event?: Event;
+}
+
+export interface TicketTier {
+  id: string;
+  event_id: string;
+  name: string;
+  price: number;       // in cents
+  quantity: number;
+  sold: number;
+  sort_order: number;
+}
+
+export interface GuestListEntry {
+  id: string;
+  event_id: string;
+  name: string;
+  plus_ones: number;
+  note?: string;
+  checked_in: boolean;
+  checked_in_at?: string;
+  created_at: string;
 }
 
 export interface Promoter {

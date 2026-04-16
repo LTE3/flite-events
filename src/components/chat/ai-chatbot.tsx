@@ -50,23 +50,23 @@ export function AIChatbot() {
       {/* Toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 gradient-bg rounded-full flex items-center justify-center shadow-lg shadow-accent/30 hover:scale-110 transition-transform"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-accent rounded-full flex items-center justify-center shadow-lg shadow-accent/30 hover:scale-110 transition-transform"
         aria-label="Chat"
       >
-        {open ? <X size={22} className="text-black" /> : <MessageCircle size={22} className="text-black" />}
+        {open ? <X size={22} className="text-white" /> : <MessageCircle size={22} className="text-white" />}
       </button>
 
       {/* Chat window */}
       {open && (
         <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] bg-bg-card border border-white/[0.08] rounded-2xl shadow-2xl flex flex-col overflow-hidden" style={{ height: "480px" }}>
           {/* Header */}
-          <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-3 gradient-bg">
+          <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-3 bg-accent">
             <div className="w-8 h-8 rounded-full bg-black/20 flex items-center justify-center">
-              <MessageCircle size={16} className="text-black" />
+              <MessageCircle size={16} className="text-white" />
             </div>
             <div>
-              <p className="font-bold text-sm text-black">PulseTix AI</p>
-              <p className="text-xs text-black/60">Ask me anything</p>
+              <p className="font-bold text-sm text-white">PulseTix AI</p>
+              <p className="text-xs text-white/60">Ask me anything</p>
             </div>
           </div>
 
@@ -77,7 +77,7 @@ export function AIChatbot() {
                 <div
                   className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm ${
                     msg.role === "user"
-                      ? "gradient-bg text-black rounded-br-sm"
+                      ? "bg-accent text-white rounded-br-sm"
                       : "bg-bg-elevated text-text rounded-bl-sm"
                   }`}
                 >
@@ -111,9 +111,9 @@ export function AIChatbot() {
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center disabled:opacity-50 transition-opacity"
+              className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center disabled:opacity-50 transition-opacity"
             >
-              <Send size={16} className="text-black" />
+              <Send size={16} className="text-white" />
             </button>
           </form>
         </div>

@@ -1,25 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { sampleEvents } from "@/lib/sample-events";
+import type { Event } from "@/lib/types";
 
 export default function DoorSalesPage() {
+  const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState("");
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadEvents() {
+      try {
+        const res = await fetch("/api/events");
+        const json = await res.json();
+        setEvents(json.events || []);
+      } catch {
+        setEvents([]);
+      }
+    }
+    loadEvents();
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    // TODO: Create ticket directly via Supabase (no Stripe)
-    await new Promise((r) => setTimeout(r, 1000));
-    setSuccess(true);
-    setLoading(false);
+    setError("");
+
+    try {
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+
+      const qrCode = crypto.randomUUID();
+
+      const { error: insertError } = await supabase.from("tickets").insert({
+        event_id: selectedEvent,
+        email,
+        quantity,
+        qr_code: qrCode,
+        status: "valid",
+        purchased_at: new Date().toISOString(),
+      });
+
+      if (insertError) throw insertError;
+
+      // Decrement tickets_left
+      const ev = events.find((e) => e.id === selectedEvent);
+      if (ev) {
+        await supabase
+          .from("events")
+          .update({ tickets_left: ev.tickets_left - quantity })
+          .eq("id", ev.id);
+      }
+
+      setSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create ticket");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -28,17 +73,21 @@ export default function DoorSalesPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-black mb-2">Door Sales</h1>
+        <h1 className="text-3xl font-800 mb-2">Door Sales</h1>
         <p className="text-text-dim mb-8">Manually create tickets for walk-up attendees</p>
+
+        {error && (
+          <div className="mb-6 p-4 bg-danger/10 border border-danger/30 rounded-xl text-sm text-danger">{error}</div>
+        )}
 
         {success ? (
           <div className="text-center py-12 bg-bg-card border border-white/[0.06] rounded-2xl">
-            <div className="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-black font-bold">
+            <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-white font-bold">
               ✓
             </div>
             <p className="font-bold text-lg mb-2">Ticket Created!</p>
             <p className="text-text-dim text-sm mb-6">QR code sent to {email}</p>
-            <Button onClick={() => { setSuccess(false); setEmail(""); setQuantity(1); }}>
+            <Button onClick={() => { setSuccess(false); setEmail(""); setQuantity(1); setError(""); }}>
               Create Another
             </Button>
           </div>
@@ -53,7 +102,7 @@ export default function DoorSalesPage() {
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
               >
                 <option value="">Select event...</option>
-                {sampleEvents.map((ev) => (
+                {events.map((ev) => (
                   <option key={ev.id} value={ev.id}>{ev.title}</option>
                 ))}
               </select>
@@ -80,7 +129,7 @@ export default function DoorSalesPage() {
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
               />
             </div>
-            <Button type="submit" disabled={loading} className="w-full justify-center" size="lg">
+            <Button type="submit" disabled={loading || !selectedEvent} className="w-full justify-center" size="lg">
               <ShoppingBag size={16} className="mr-2" />
               {loading ? "Creating..." : "Create Door Ticket"}
             </Button>

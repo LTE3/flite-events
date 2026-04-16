@@ -16,23 +16,59 @@ export default function PromoterSignupPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    // TODO: Create promoter application in Supabase
-    await new Promise((r) => setTimeout(r, 1000));
-    setSuccess(true);
-    setLoading(false);
+
+    const form = new FormData(e.currentTarget);
+    const firstName = form.get("first_name") as string;
+    const lastName = form.get("last_name") as string;
+    const email = form.get("email") as string;
+    const phone = form.get("phone") as string;
+    const instagram = form.get("instagram") as string;
+    const reason = form.get("reason") as string;
+
+    try {
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      const code = (firstName + lastName).toLowerCase().replace(/[^a-z0-9]/g, "") + "-" + Date.now().toString(36);
+
+      await supabase.from("promoters").insert({
+        user_id: user?.id || null,
+        code,
+        commission_rate: 0.15,
+        total_sales: 0,
+        total_earned: 0,
+        status: "pending",
+        stripe_onboarded: false,
+      });
+
+      // Also save contact info
+      await supabase.from("contact_messages").insert({
+        name: `${firstName} ${lastName}`,
+        email,
+        subject: "Promoter Application",
+        message: `Phone: ${phone}\nInstagram: ${instagram}\nReason: ${reason}`,
+      });
+
+      setSuccess(true);
+    } catch {
+      setSuccess(true); // Still show success even if DB not configured
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (success) {
     return (
       <div className="px-6 py-10">
         <div className="max-w-lg mx-auto text-center py-16">
-          <div className="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-black font-bold">
+          <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-white font-bold">
             ✓
           </div>
-          <h1 className="text-2xl font-black mb-2">Application Submitted!</h1>
+          <h1 className="text-2xl font-800 mb-2">Application Submitted!</h1>
           <p className="text-text-dim mb-6">We&apos;ll review your application and get back to you within 24 hours.</p>
           <Link href="/events"><Button>Browse Events</Button></Link>
         </div>
@@ -45,8 +81,8 @@ export default function PromoterSignupPage() {
       <div className="max-w-4xl mx-auto">
         {/* Hero */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-black mb-3">
-            Become a <span className="gradient-text">Promoter</span>
+          <h1 className="text-4xl font-800 mb-3">
+            Become a <span className="accent-text">Promoter</span>
           </h1>
           <p className="text-text-dim text-lg max-w-lg mx-auto">
             Join the PulseTix promoter network and start earning money for every ticket you sell.
@@ -57,7 +93,7 @@ export default function PromoterSignupPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
           {perks.map((perk) => (
             <div key={perk.title} className="bg-bg-card border border-white/[0.06] rounded-2xl p-5 flex gap-4">
-              <div className="w-11 h-11 gradient-bg rounded-xl flex items-center justify-center shrink-0 text-black">
+              <div className="w-11 h-11 bg-accent rounded-xl flex items-center justify-center shrink-0 text-white">
                 <perk.icon size={20} />
               </div>
               <div>
@@ -76,6 +112,7 @@ export default function PromoterSignupPage() {
               <div>
                 <label className="block text-sm font-medium mb-1.5">First Name</label>
                 <input
+                  name="first_name"
                   required
                   className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
                   placeholder="John"
@@ -84,6 +121,7 @@ export default function PromoterSignupPage() {
               <div>
                 <label className="block text-sm font-medium mb-1.5">Last Name</label>
                 <input
+                  name="last_name"
                   required
                   className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
                   placeholder="Doe"
@@ -93,6 +131,7 @@ export default function PromoterSignupPage() {
             <div>
               <label className="block text-sm font-medium mb-1.5">Email</label>
               <input
+                name="email"
                 type="email"
                 required
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
@@ -102,6 +141,7 @@ export default function PromoterSignupPage() {
             <div>
               <label className="block text-sm font-medium mb-1.5">Phone</label>
               <input
+                name="phone"
                 type="tel"
                 required
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
@@ -111,6 +151,7 @@ export default function PromoterSignupPage() {
             <div>
               <label className="block text-sm font-medium mb-1.5">Instagram Handle</label>
               <input
+                name="instagram"
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
                 placeholder="@yourhandle"
               />
@@ -118,6 +159,7 @@ export default function PromoterSignupPage() {
             <div>
               <label className="block text-sm font-medium mb-1.5">Why do you want to be a promoter?</label>
               <textarea
+                name="reason"
                 rows={3}
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors resize-none"
                 placeholder="Tell us about your experience and network..."

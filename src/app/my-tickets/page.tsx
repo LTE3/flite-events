@@ -21,10 +21,44 @@ export default function MyTicketsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: Fetch from Supabase when connected
-    // For now, show demo state
-    setLoading(false);
-    setTickets([]);
+    async function fetchTickets() {
+      try {
+        const { createClient } = await import("@/lib/supabase");
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          setLoading(false);
+          return;
+        }
+        const { data } = await supabase
+          .from("tickets")
+          .select("*, event:events(title, date, time, venue)")
+          .eq("user_id", user.id)
+          .order("purchased_at", { ascending: false });
+
+        if (data) {
+          setTickets(data.map((t: Record<string, unknown>) => {
+            const event = t.event as Record<string, string> | null;
+            return {
+              id: t.id as string,
+              qr_code: t.qr_code as string,
+              status: t.status as string,
+              quantity: t.quantity as number,
+              purchased_at: t.purchased_at as string,
+              event_title: event?.title || "Unknown Event",
+              event_date: event?.date || "",
+              event_time: event?.time || "",
+              event_venue: event?.venue || "",
+            };
+          }));
+        }
+      } catch {
+        // Not logged in or Supabase not configured
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchTickets();
   }, []);
 
   if (loading) {
@@ -39,7 +73,7 @@ export default function MyTicketsPage() {
     return (
       <div className="px-6 py-10">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-black mb-6">My Tickets</h1>
+          <h1 className="text-3xl font-800 mb-6">My Tickets</h1>
           <div className="text-center py-20 bg-bg-card border border-white/[0.06] rounded-2xl">
             <QrCode size={48} className="mx-auto mb-4 text-text-dim" />
             <p className="text-lg font-semibold mb-2">No tickets yet</p>
@@ -54,7 +88,7 @@ export default function MyTicketsPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-black mb-6">My Tickets</h1>
+        <h1 className="text-3xl font-800 mb-6">My Tickets</h1>
         <div className="space-y-4">
           {tickets.map((ticket) => (
             <div key={ticket.id} className="bg-bg-card border border-white/[0.06] rounded-2xl p-6 flex flex-col sm:flex-row gap-6">
@@ -68,7 +102,7 @@ export default function MyTicketsPage() {
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="font-bold text-lg">{ticket.event_title}</h3>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                    ticket.status === "valid" ? "bg-accent-2/20 text-accent-2" :
+                    ticket.status === "valid" ? "bg-green-500/20 text-green-400" :
                     ticket.status === "used" ? "bg-text-dim/20 text-text-dim" :
                     "bg-danger/20 text-danger"
                   }`}>

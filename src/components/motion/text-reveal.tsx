@@ -62,7 +62,7 @@ export function GradientTextReveal({
   const isInView = useInView(ref, { once, margin: "-60px" });
 
   return (
-    <span ref={ref} className={`gradient-text text-glow ${className}`}>
+    <span ref={ref} className={`accent-text ${className}`}>
       {text.split("").map((char, i) => (
         <motion.span
           key={i}

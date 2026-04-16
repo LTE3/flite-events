@@ -11,35 +11,30 @@ const testimonials = [
     name: "Marcus Rivera",
     role: "Founder, Night District NYC",
     avatar: "MR",
-    gradient: "from-accent to-purple-400",
   },
   {
     quote: "The promoter system is a game changer. My team of 12 promoters each have their own links, I can see exactly who's driving sales, and payouts are automatic.",
     name: "Jasmine Cole",
     role: "Events Director, Vibe Collective",
     avatar: "JC",
-    gradient: "from-accent-2 to-emerald-400",
   },
   {
     quote: "We outgrew Eventbrite pretty quickly. The fees were killing us and we had zero control over the experience. PulseTix gave us our brand back.",
     name: "Austin Banks",
     role: "Co-Founder, Rooftop Sessions",
     avatar: "AB",
-    gradient: "from-orange-500 to-amber-400",
   },
   {
     quote: "QR code scanning at the door is seamless. No more printed lists, no more arguments at the entrance. Just scan and go. Our door team loves it.",
     name: "Daniela Santos",
     role: "Operations, BK Warehouse Events",
     avatar: "DS",
-    gradient: "from-pink-500 to-rose-400",
   },
   {
     quote: "I was skeptical about switching platforms mid-season but the migration was painless. Within a week we had everything running smoother than before.",
     name: "Kevin Okafor",
     role: "Promoter, Afrobeats NYC",
     avatar: "KO",
-    gradient: "from-cyan-500 to-blue-400",
   },
 ];
 
@@ -73,7 +68,7 @@ export function Testimonials() {
           <div className="mb-20">
             <p className="text-xs font-bold uppercase tracking-[4px] text-accent mb-4">Testimonials</p>
             <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-              Trusted by NYC&apos;s <span className="gradient-text">Top Hosts</span>
+              Trusted by NYC&apos;s <span className="accent-text">Top Hosts</span>
             </h2>
           </div>
         </ScrollReveal>
@@ -105,7 +100,7 @@ export function Testimonials() {
 
               {/* Author */}
               <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${t.gradient} flex items-center justify-center text-sm font-bold text-black`}>
+                <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-white">
                   {t.avatar}
                 </div>
                 <div>
@@ -143,7 +138,7 @@ export function Testimonials() {
             >
               {i === active && (
                 <motion.div
-                  className="absolute inset-y-0 left-0 gradient-bg rounded-full"
+                  className="absolute inset-y-0 left-0 bg-accent rounded-full"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
                   transition={{ duration: 5, ease: "linear" }}
@@ -151,7 +146,7 @@ export function Testimonials() {
                 />
               )}
               {i < active && (
-                <div className="absolute inset-0 gradient-bg rounded-full" />
+                <div className="absolute inset-0 bg-accent rounded-full" />
               )}
             </button>
           ))}

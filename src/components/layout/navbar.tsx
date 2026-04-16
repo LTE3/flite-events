@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X, Ticket } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -19,23 +19,20 @@ export function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-black/80 backdrop-blur-2xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+            ? "bg-bg/90 backdrop-blur-2xl border-b border-white/[0.06]"
             : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 glow-accent-sm">
-              <Ticket size={18} className="text-black" />
-            </div>
-            <span className="text-xl font-black tracking-[2px] gradient-text">PULSETIX</span>
+          {/* Logo — text only, bold, no icon */}
+          <Link href="/" className="group">
+            <span className="font-[family-name:var(--font-display)] text-xl font-800 tracking-[-0.02em] text-text transition-colors group-hover:text-accent">PULSETIX</span>
           </Link>
 
           {/* Nav links */}
           <div className="hidden md:flex items-center gap-1">
             <NavLink href="/events">Events</NavLink>
-            <NavLink href="/promoter-signup">For Promoters</NavLink>
+            <NavLink href="/promoter-signup">Promoters</NavLink>
             <NavLink href="#about">About</NavLink>
           </div>
 
@@ -49,9 +46,9 @@ export function Navbar() {
             </Link>
             <Link
               href="/admin/create-event"
-              className="relative px-6 py-2.5 text-sm font-bold text-black gradient-bg rounded-full overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(108,99,255,0.4)] hover:-translate-y-0.5 active:translate-y-0"
+              className="px-6 py-2.5 text-sm font-semibold text-white bg-accent rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5"
             >
-              <span className="relative z-10">Host Event</span>
+              Host Event
             </Link>
           </div>
 
@@ -68,21 +65,21 @@ export function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl transition-all duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 bg-bg/98 backdrop-blur-2xl transition-all duration-300 md:hidden ${
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{ paddingTop: "72px" }}
       >
         <div className="flex flex-col p-8 gap-2">
           <MobileLink href="/events" onClick={() => setMobileOpen(false)}>Events</MobileLink>
-          <MobileLink href="/promoter-signup" onClick={() => setMobileOpen(false)}>For Promoters</MobileLink>
+          <MobileLink href="/promoter-signup" onClick={() => setMobileOpen(false)}>Promoters</MobileLink>
           <MobileLink href="#about" onClick={() => setMobileOpen(false)}>About</MobileLink>
           <div className="h-px bg-white/[0.06] my-4" />
           <MobileLink href="/login" onClick={() => setMobileOpen(false)}>Sign In</MobileLink>
           <Link
             href="/admin/create-event"
             onClick={() => setMobileOpen(false)}
-            className="mt-2 px-6 py-3.5 text-center text-sm font-bold text-black gradient-bg rounded-full"
+            className="mt-2 px-6 py-3.5 text-center text-sm font-semibold text-white bg-accent rounded-full"
           >
             Host Event
           </Link>

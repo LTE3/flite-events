@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Upload } from "lucide-react";
+import { ArrowLeft, Upload, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+interface TierDraft {
+  name: string;
+  price: string;
+  quantity: string;
+}
 
 const categoryOptions = [
   { label: "Music", value: "music" },
@@ -18,24 +24,73 @@ const categoryOptions = [
 export default function CreateEventPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const [tiers, setTiers] = useState<TierDraft[]>([]);
+  const [useTiers, setUseTiers] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    // TODO: Save to Supabase
-    await new Promise((r) => setTimeout(r, 1000));
-    setSuccess(true);
-    setLoading(false);
+    setError("");
+
+    const form = new FormData(e.currentTarget);
+    try {
+      const res = await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: form.get("title"),
+          description: form.get("description"),
+          date: form.get("date"),
+          time: form.get("time"),
+          end_time: form.get("end_time") || null,
+          venue: form.get("venue"),
+          address: form.get("address"),
+          city: form.get("city") || "New York",
+          borough: form.get("borough") || null,
+          category: form.get("category"),
+          price: parseFloat(form.get("price") as string) || 0,
+          tickets_total: parseInt(form.get("tickets_total") as string) || 100,
+          featured: form.get("featured") === "on",
+          status: "published",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create event");
+
+      // Create tiers if any
+      if (useTiers && tiers.length > 0 && data.event?.id) {
+        for (let i = 0; i < tiers.length; i++) {
+          await fetch("/api/tiers", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              event_id: data.event.id,
+              name: tiers[i].name,
+              price: parseFloat(tiers[i].price) || 0,
+              quantity: parseInt(tiers[i].quantity) || 50,
+              sort_order: i,
+            }),
+          });
+        }
+      }
+
+      setSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create event");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (success) {
     return (
       <div className="px-6 py-10">
         <div className="max-w-2xl mx-auto text-center py-20">
-          <div className="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-black font-bold">
+          <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-white font-bold">
             ✓
           </div>
-          <h1 className="text-2xl font-black mb-2">Event Created!</h1>
+          <h1 className="text-2xl font-800 mb-2">Event Created!</h1>
           <p className="text-text-dim mb-6">Your event has been saved as a draft.</p>
           <div className="flex gap-3 justify-center">
             <Link href="/admin"><Button variant="outline">Back to Dashboard</Button></Link>
@@ -52,9 +107,14 @@ export default function CreateEventPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-black mb-8">Create Event</h1>
+        <h1 className="text-3xl font-800 mb-8">Create Event</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="bg-danger/10 border border-danger/20 text-danger rounded-xl px-4 py-3 text-sm">
+              {error}
+            </div>
+          )}
           {/* Title */}
           <div>
             <label className="block text-sm font-medium mb-1.5">Event Title</label>
@@ -187,6 +247,86 @@ export default function CreateEventPage() {
                 placeholder="200"
               />
             </div>
+          </div>
+
+          {/* Ticket Tiers */}
+          <div>
+            <label className="flex items-center gap-3 cursor-pointer mb-4">
+              <input
+                type="checkbox"
+                checked={useTiers}
+                onChange={(e) => setUseTiers(e.target.checked)}
+                className="w-5 h-5 rounded bg-bg-elevated border border-white/10 accent-accent"
+              />
+              <span className="text-sm font-medium">Use ticket tiers (GA, VIP, etc.)</span>
+            </label>
+
+            {useTiers && (
+              <div className="space-y-3 p-5 bg-bg-card border border-white/[0.06] rounded-xl">
+                {tiers.map((tier, i) => (
+                  <div key={i} className="grid grid-cols-[1fr_80px_80px_40px] gap-2 items-end">
+                    <div>
+                      {i === 0 && <label className="block text-xs font-medium mb-1 text-text-dim">Tier Name</label>}
+                      <input
+                        value={tier.name}
+                        onChange={(e) => {
+                          const next = [...tiers];
+                          next[i] = { ...next[i], name: e.target.value };
+                          setTiers(next);
+                        }}
+                        placeholder="e.g. GA, VIP"
+                        className="w-full bg-bg-elevated border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-accent transition-colors"
+                      />
+                    </div>
+                    <div>
+                      {i === 0 && <label className="block text-xs font-medium mb-1 text-text-dim">Price</label>}
+                      <input
+                        type="number"
+                        value={tier.price}
+                        onChange={(e) => {
+                          const next = [...tiers];
+                          next[i] = { ...next[i], price: e.target.value };
+                          setTiers(next);
+                        }}
+                        placeholder="$"
+                        min="0"
+                        step="0.01"
+                        className="w-full bg-bg-elevated border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-accent transition-colors"
+                      />
+                    </div>
+                    <div>
+                      {i === 0 && <label className="block text-xs font-medium mb-1 text-text-dim">Qty</label>}
+                      <input
+                        type="number"
+                        value={tier.quantity}
+                        onChange={(e) => {
+                          const next = [...tiers];
+                          next[i] = { ...next[i], quantity: e.target.value };
+                          setTiers(next);
+                        }}
+                        placeholder="100"
+                        min="1"
+                        className="w-full bg-bg-elevated border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-accent transition-colors"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setTiers(tiers.filter((_, j) => j !== i))}
+                      className="w-10 h-10 flex items-center justify-center text-text-dim hover:text-danger transition-colors"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setTiers([...tiers, { name: "", price: "", quantity: "" }])}
+                  className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors font-medium"
+                >
+                  <Plus size={16} /> Add Tier
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Image upload */}

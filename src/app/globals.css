@@ -1,16 +1,19 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #000000;
-  --color-bg-card: #0a0a0a;
-  --color-bg-elevated: #141414;
-  --color-text: #ffffff;
-  --color-text-dim: #888888;
-  --color-accent: #6C63FF;
-  --color-accent-2: #00E5A0;
+  --color-bg: #0B0A09;
+  --color-bg-card: #121110;
+  --color-bg-elevated: #1C1A18;
+  --color-bg-overlay: #252220;
+  --color-text: #EDEBE8;
+  --color-text-dim: #7A7672;
+  --color-text-muted: #46423E;
+  --color-accent: #FF4D4D;
+  --color-accent-2: #FF4D4D;
   --color-danger: #ff3366;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --font-sans: "Albert Sans", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Albert Sans", system-ui, sans-serif;
 }
 
 html {
@@ -21,38 +24,52 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
-/* Subtle noise texture on entire page */
+/* Film grain texture — subtle, not distracting */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 182px;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
-/* ========== Gradient utilities ========== */
-.gradient-text {
-  background: linear-gradient(135deg, #7B73FF 0%, #00E5A0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ========== Accent utilities ========== */
+.accent-text {
+  color: var(--color-accent);
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, #6C63FF 0%, #00E5A0 100%);
+  background: linear-gradient(135deg, #FF4D4D 0%, #FF6B4D 100%);
 }
 
-/* ========== Glass morphism ========== */
-.glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+/* ========== Surface cards ========== */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.card-elevated {
+  background: var(--color-bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+}
+
+/* Glass — use sparingly (1-2 per view max) */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-strong {
@@ -62,21 +79,17 @@ body::after {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ========== Glow effects ========== */
+/* ========== Glow — accent color only ========== */
 .glow-accent {
-  box-shadow: 0 0 30px -5px rgba(108, 99, 255, 0.4);
+  box-shadow: 0 0 30px -5px rgba(255, 77, 77, 0.4);
 }
 
 .glow-accent-sm {
-  box-shadow: 0 0 20px -5px rgba(108, 99, 255, 0.3);
+  box-shadow: 0 0 20px -5px rgba(255, 77, 77, 0.3);
 }
 
 .glow-accent-hover:hover {
-  box-shadow: 0 0 40px -5px rgba(108, 99, 255, 0.5);
-}
-
-.text-glow {
-  text-shadow: 0 0 40px rgba(108, 99, 255, 0.5);
+  box-shadow: 0 0 40px -5px rgba(255, 77, 77, 0.5);
 }
 
 /* ========== Scrollbar hide ========== */
@@ -94,37 +107,16 @@ body::after {
   to { opacity: 1; }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 @keyframes ken-burns-1 {
   0% { transform: scale(1) translate(0, 0); }
-  50% { transform: scale(1.15) translate(-2%, -1%); }
+  50% { transform: scale(1.12) translate(-1.5%, -1%); }
   100% { transform: scale(1) translate(0, 0); }
 }
 
 @keyframes ken-burns-2 {
-  0% { transform: scale(1.1) translate(-1%, 1%); }
+  0% { transform: scale(1.08) translate(-1%, 1%); }
   50% { transform: scale(1) translate(1%, -1%); }
-  100% { transform: scale(1.1) translate(-1%, 1%); }
+  100% { transform: scale(1.08) translate(-1%, 1%); }
 }
 
 @keyframes crossfade-in {
@@ -133,6 +125,11 @@ body::after {
   50% { opacity: 1; }
   65% { opacity: 0; }
   100% { opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 .animate-ken-burns-1 {
@@ -155,22 +152,9 @@ body::after {
   animation: fade-in 0.5s ease both;
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
 .animate-shimmer {
   background-size: 200% 100%;
   animation: shimmer 3s linear infinite;
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
 }
 
 /* Staggered children animation */
@@ -180,51 +164,11 @@ body::after {
 .stagger-children > *:nth-child(4) { animation-delay: 0.3s; }
 .stagger-children > *:nth-child(5) { animation-delay: 0.4s; }
 .stagger-children > *:nth-child(6) { animation-delay: 0.5s; }
-.stagger-children > *:nth-child(7) { animation-delay: 0.6s; }
-.stagger-children > *:nth-child(8) { animation-delay: 0.7s; }
-.stagger-children > *:nth-child(9) { animation-delay: 0.8s; }
-
-/* ========== Spotlight animation ========== */
-@keyframes spotlight {
-  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
-  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
-}
-
-.animate-spotlight {
-  animation: spotlight 2s ease 0.75s 1 forwards;
-}
-
-/* ========== Meteor animation ========== */
-@keyframes meteor-effect {
-  0% { transform: rotate(215deg) translateX(0); opacity: 1; }
-  70% { opacity: 1; }
-  100% { transform: rotate(215deg) translateX(-500px); opacity: 0; }
-}
-
-.animate-meteor-effect {
-  animation: meteor-effect linear infinite;
-}
-
-/* ========== Star twinkle ========== */
-@keyframes twinkle {
-  0%, 100% { opacity: 0.1; transform: scale(0.8); }
-  50% { opacity: 0.8; transform: scale(1.2); }
-}
 
 /* ========== Custom selection ========== */
 ::selection {
-  background: rgba(108, 99, 255, 0.4);
+  background: rgba(255, 77, 77, 0.35);
   color: white;
-}
-
-/* ========== Noise overlay (subtle texture) ========== */
-.noise::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
 }
 
 /* ========== Better form inputs ========== */

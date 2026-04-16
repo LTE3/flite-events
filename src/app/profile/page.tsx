@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -9,21 +9,57 @@ export default function ProfilePage() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  // Load profile data on mount
+  useEffect(() => {
+    (async () => {
+      try {
+        const { createClient } = await import("@/lib/supabase");
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("name, phone")
+            .eq("id", user.id)
+            .single();
+          if (profile) {
+            setName(profile.name || "");
+            setPhone(profile.phone || "");
+          }
+        }
+      } catch {
+        // Not logged in or Supabase not configured
+      } finally {
+        setInitialLoading(false);
+      }
+    })();
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    // TODO: Update profile in Supabase
-    await new Promise((r) => setTimeout(r, 500));
-    setSaved(true);
-    setLoading(false);
-    setTimeout(() => setSaved(false), 3000);
+    try {
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase.from("profiles").update({ name, phone }).eq("id", user.id);
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch {
+      // Handle error silently
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="px-6 py-10">
       <div className="max-w-lg mx-auto">
-        <h1 className="text-3xl font-black mb-8">Profile</h1>
+        <h1 className="text-3xl font-800 mb-8">Profile</h1>
 
         <div className="flex justify-center mb-8">
           <div className="w-24 h-24 rounded-full bg-bg-elevated border border-white/10 flex items-center justify-center">

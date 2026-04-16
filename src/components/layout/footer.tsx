@@ -1,21 +1,13 @@
 import Link from "next/link";
-import { Ticket } from "lucide-react";
-
 export function Footer() {
   return (
-    <footer className="relative border-t border-white/[0.04] overflow-hidden">
-      {/* Subtle top glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
-
+    <footer className="relative border-t border-white/[0.06] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-                <Ticket size={16} className="text-black" />
-              </div>
-              <span className="text-lg font-black tracking-[2px] gradient-text">PULSETIX</span>
+            <Link href="/" className="inline-block mb-4">
+              <span className="font-[family-name:var(--font-display)] text-lg font-800 tracking-[-0.02em]">PULSETIX</span>
             </Link>
             <p className="text-text-dim text-sm leading-relaxed mb-6">
               NYC&apos;s premier platform for exclusive nightlife experiences. Secure QR code tickets, instant delivery.

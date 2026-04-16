@@ -61,7 +61,7 @@ export function Categories() {
           <div className="mb-16">
             <p className="text-xs font-bold uppercase tracking-[4px] text-accent mb-4">Explore</p>
             <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-              Find Your <span className="gradient-text">Scene</span>
+              Find Your <span className="accent-text">Scene</span>
             </h2>
           </div>
         </ScrollReveal>

@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Albert_Sans, Bricolage_Grotesque } from "next/font/google";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { AIChatbot } from "@/components/chat/ai-chatbot";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll";
 import "./globals.css";
 
-const inter = Inter({
+const albertSans = Albert_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-const spaceGrotesk = Space_Grotesk({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}>
+    <html lang="en" className={`${albertSans.variable} ${bricolage.variable} antialiased`}>
       <body className="min-h-screen flex flex-col bg-bg text-text font-sans">
         <SmoothScrollProvider>
           <Navbar />
