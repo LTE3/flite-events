@@ -172,6 +172,33 @@ body {
 .stagger-children > *:nth-child(8) { animation-delay: 0.7s; }
 .stagger-children > *:nth-child(9) { animation-delay: 0.8s; }
 
+/* ========== Spotlight animation ========== */
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
+}
+
+/* ========== Meteor animation ========== */
+@keyframes meteor-effect {
+  0% { transform: rotate(215deg) translateX(0); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: rotate(215deg) translateX(-500px); opacity: 0; }
+}
+
+.animate-meteor-effect {
+  animation: meteor-effect linear infinite;
+}
+
+/* ========== Star twinkle ========== */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; transform: scale(0.8); }
+  50% { opacity: 0.8; transform: scale(1.2); }
+}
+
 /* ========== Custom selection ========== */
 ::selection {
   background: rgba(108, 99, 255, 0.4);
