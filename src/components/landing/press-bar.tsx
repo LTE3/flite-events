@@ -1,18 +1,34 @@
+"use client";
+
+import { motion } from "framer-motion";
+
+const publications = ["COMPLEX", "HYPEBEAST", "TIMEOUT", "THRILLIST", "EATER NY", "VICE", "THE INFATUATION", "GOTHAMIST"];
+
 export function PressBar() {
   return (
-    <section className="px-6 py-12 border-y border-white/[0.03]">
-      <div className="max-w-5xl mx-auto">
-        <p className="text-center text-xs font-semibold uppercase tracking-[3px] text-text-dim/50 mb-8">
-          Trusted by event creators across NYC
-        </p>
-        <div className="flex items-center justify-center gap-8 sm:gap-14 flex-wrap opacity-40">
-          {/* Simplified text logos — replace with real SVG logos when available */}
-          {["COMPLEX", "HYPEBEAST", "TIMEOUT", "THRILLIST", "EATER NY"].map((name) => (
-            <span key={name} className="text-sm sm:text-base font-black tracking-[3px] text-white/60 hover:text-white/80 transition-colors cursor-default">
+    <section className="py-16 border-y border-white/[0.04] overflow-hidden relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black z-10 pointer-events-none" />
+
+      <p className="text-center text-xs font-bold uppercase tracking-[4px] text-white/30 mb-10 relative z-20">
+        As Featured In
+      </p>
+
+      {/* Infinite scroll marquee */}
+      <div className="relative">
+        <motion.div
+          className="flex gap-16 whitespace-nowrap"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        >
+          {[...publications, ...publications].map((name, i) => (
+            <span
+              key={`${name}-${i}`}
+              className="font-[family-name:var(--font-display)] text-xl sm:text-2xl font-bold tracking-[6px] text-white/20 hover:text-white/50 transition-colors duration-500 cursor-default select-none"
+            >
               {name}
             </span>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

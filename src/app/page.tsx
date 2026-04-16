@@ -6,6 +6,8 @@ import { Testimonials } from "@/components/landing/testimonials";
 import { Features } from "@/components/landing/features";
 import { Categories } from "@/components/landing/categories";
 import { PressBar } from "@/components/landing/press-bar";
+import { StatsSection } from "@/components/landing/stats-section";
+import { EventShowcase } from "@/components/landing/event-showcase";
 import { sampleEvents } from "@/lib/sample-events";
 import { HeroSection } from "@/components/landing/hero-section";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/motion/scroll-reveal";
@@ -28,7 +30,7 @@ export default function Home() {
       {/* ============ HERO ============ */}
       <HeroSection />
 
-      {/* ============ TRUST BAR — full bleed dark strip ============ */}
+      {/* ============ TRUST BAR ============ */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-accent-2/5" />
         <ScrollReveal>
@@ -50,6 +52,17 @@ export default function Home() {
         </ScrollReveal>
       </div>
 
+      {/* ============ HORIZONTAL EVENT SHOWCASE ============ */}
+      <EventShowcase
+        events={weekend}
+        title="This Weekend"
+        subtitle="What's On"
+        accentColor="text-accent"
+      />
+
+      {/* ============ STATS — animated counters ============ */}
+      <StatsSection />
+
       {/* ============ CATEGORIES ============ */}
       <Categories />
 
@@ -62,7 +75,7 @@ export default function Home() {
                 src={heroEvent.image_url}
                 alt={heroEvent.title}
                 fill
-                className="object-cover"
+                className="object-cover saturate-[1.2]"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30" />
@@ -96,86 +109,19 @@ export default function Home() {
         </section>
       )}
 
-      {/* ============ THIS WEEKEND — asymmetric grid ============ */}
-      <section className="px-6 py-24 relative">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-accent/4 blur-[150px] pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto relative">
-          <ScrollReveal>
-            <div className="flex items-end justify-between mb-14 flex-wrap gap-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[4px] text-accent mb-4">What&apos;s On</p>
-                <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-                  This Weekend
-                </h2>
-              </div>
-              <div className="flex items-center gap-6">
-                <div className="flex gap-1.5">
-                  {["Friday", "Saturday", "Sunday"].map((day, i) => (
-                    <button
-                      key={day}
-                      className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-                        i === 0
-                          ? "gradient-bg text-black shadow-[0_0_20px_rgba(108,99,255,0.3)]"
-                          : "text-white/40 hover:text-white/80 border border-white/[0.06] hover:border-white/[0.15]"
-                      }`}
-                    >
-                      {day}
-                    </button>
-                  ))}
-                </div>
-                <Link href="/events" className="text-accent text-sm font-bold hover:text-accent/80 transition-colors flex items-center gap-1.5 group">
-                  View All <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </div>
-          </ScrollReveal>
-
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {weekend.map((event) => (
-              <StaggerItem key={event.id}>
-                <EventCard event={event} index={0} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
       {/* ============ FEATURES ============ */}
       <Features />
 
-      {/* ============ TRENDING — different layout ============ */}
-      <section className="px-6 py-24 relative">
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-accent-2/4 blur-[150px] pointer-events-none" />
+      {/* ============ TRENDING — horizontal scroll ============ */}
+      <EventShowcase
+        events={featured}
+        title="Trending Near You"
+        subtitle="Popular"
+        accentColor="text-accent-2"
+      />
 
-        <div className="max-w-7xl mx-auto relative">
-          <ScrollReveal>
-            <div className="flex items-end justify-between mb-14 flex-wrap gap-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[4px] text-accent-2 mb-4">Popular</p>
-                <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-                  Trending <span className="gradient-text">Near You</span>
-                </h2>
-              </div>
-              <Link href="/events" className="text-accent text-sm font-bold hover:text-accent/80 transition-colors flex items-center gap-1.5 group">
-                View All <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-          </ScrollReveal>
-
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featured.map((event) => (
-              <StaggerItem key={event.id}>
-                <EventCard event={event} index={0} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* ============ HOW IT WORKS — horizontal with numbers ============ */}
+      {/* ============ HOW IT WORKS ============ */}
       <section className="py-24 relative overflow-hidden">
-        {/* Full-width accent background */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.03] to-transparent" />
 
         <div className="max-w-7xl mx-auto px-6 relative">
@@ -191,7 +137,6 @@ export default function Home() {
             {steps.map((step, i) => (
               <StaggerItem key={step.title}>
                 <SpotlightCard className="relative group p-8 rounded-2xl border border-white/[0.04] bg-white/[0.015] hover:bg-white/[0.04] hover:border-white/[0.12] transition-all duration-500 hover:-translate-y-2 h-full">
-                  {/* Big number */}
                   <span className={`font-[family-name:var(--font-display)] text-6xl font-bold bg-gradient-to-br ${step.color} bg-clip-text text-transparent opacity-20 group-hover:opacity-40 transition-opacity duration-500 block mb-6`}>
                     {step.num}
                   </span>
@@ -199,7 +144,6 @@ export default function Home() {
                   <h3 className="font-[family-name:var(--font-display)] font-bold text-xl mb-2 tracking-tight">{step.title}</h3>
                   <p className="text-sm text-white/40 leading-relaxed">{step.desc}</p>
 
-                  {/* Connector line */}
                   {i < 3 && (
                     <div className="hidden lg:block absolute top-12 -right-3 w-6 border-t border-dashed border-white/[0.1]" />
                   )}
@@ -229,7 +173,6 @@ export default function Home() {
             <div className="absolute inset-0 bg-black/70" />
             <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent-2/10" />
 
-            {/* Grid overlay */}
             <div
               className="absolute inset-0 opacity-[0.03]"
               style={{

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 const testimonials = [
   {
@@ -61,70 +63,97 @@ export function Testimonials() {
   const t = testimonials[active];
 
   return (
-    <section className="px-6 py-20 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
+    <section className="py-32 relative overflow-hidden">
+      {/* Dramatic background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.04] to-transparent" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-accent/5 blur-[200px] pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto relative">
-        <div className="text-center mb-12">
-          <p className="text-xs font-bold uppercase tracking-[3px] text-accent mb-3">Testimonials</p>
-          <h2 className="text-3xl sm:text-4xl font-black">
-            Trusted by NYC&apos;s <span className="gradient-text">Top Hosts</span>
-          </h2>
-        </div>
-
-        {/* Card */}
-        <div className="relative">
-          <div className="p-8 sm:p-12 rounded-3xl glass-strong text-center transition-all duration-500">
-            {/* Stars */}
-            <div className="flex justify-center gap-1 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={18} className="fill-amber-400 text-amber-400" />
-              ))}
-            </div>
-
-            {/* Quote */}
-            <blockquote className="text-lg sm:text-xl leading-relaxed mb-8 max-w-2xl mx-auto font-medium">
-              &ldquo;{t.quote}&rdquo;
-            </blockquote>
-
-            {/* Author */}
-            <div className="flex items-center justify-center gap-4">
-              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${t.gradient} flex items-center justify-center text-sm font-bold text-black`}>
-                {t.avatar}
-              </div>
-              <div className="text-left">
-                <p className="font-bold">{t.name}</p>
-                <p className="text-sm text-text-dim">{t.role}</p>
-              </div>
-            </div>
+      <div className="max-w-6xl mx-auto px-6 relative">
+        <ScrollReveal>
+          <div className="mb-20">
+            <p className="text-xs font-bold uppercase tracking-[4px] text-accent mb-4">Testimonials</p>
+            <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+              Trusted by NYC&apos;s <span className="gradient-text">Top Hosts</span>
+            </h2>
           </div>
+        </ScrollReveal>
 
-          {/* Nav arrows */}
-          <button
-            onClick={() => go(-1)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 sm:-translate-x-6 w-10 h-10 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.12] transition-all"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            onClick={() => go(1)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 sm:translate-x-6 w-10 h-10 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.12] transition-all"
-          >
-            <ChevronRight size={18} />
-          </button>
+        {/* Big quote */}
+        <div className="relative min-h-[300px]">
+          {/* Giant quote mark */}
+          <Quote size={120} className="absolute -top-6 -left-4 text-accent/10 rotate-180" strokeWidth={1} />
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -30, filter: "blur(8px)" }}
+              transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+            >
+              {/* Stars */}
+              <div className="flex gap-1.5 mb-8">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={20} className="fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+
+              {/* Quote text — BIG */}
+              <blockquote className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl lg:text-4xl font-medium leading-[1.3] mb-10 max-w-4xl tracking-tight">
+                &ldquo;{t.quote}&rdquo;
+              </blockquote>
+
+              {/* Author */}
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${t.gradient} flex items-center justify-center text-sm font-bold text-black`}>
+                  {t.avatar}
+                </div>
+                <div>
+                  <p className="font-bold text-lg">{t.name}</p>
+                  <p className="text-sm text-white/40">{t.role}</p>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Nav */}
+          <div className="absolute right-0 top-0 flex items-center gap-3">
+            <button
+              onClick={() => go(-1)}
+              className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/[0.08] hover:border-white/20 transition-all"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={() => go(1)}
+              className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/[0.08] hover:border-white/20 transition-all"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
 
-        {/* Dots */}
-        <div className="flex justify-center gap-2 mt-8">
+        {/* Progress bar */}
+        <div className="flex gap-2 mt-14">
           {testimonials.map((_, i) => (
             <button
               key={i}
               onClick={() => { setActive(i); setIsAutoPlaying(false); }}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === active ? "w-8 gradient-bg" : "w-1.5 bg-white/20 hover:bg-white/40"
-              }`}
-            />
+              className="relative h-1 flex-1 rounded-full bg-white/10 overflow-hidden"
+            >
+              {i === active && (
+                <motion.div
+                  className="absolute inset-y-0 left-0 gradient-bg rounded-full"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 5, ease: "linear" }}
+                  key={`progress-${active}`}
+                />
+              )}
+              {i < active && (
+                <div className="absolute inset-0 gradient-bg rounded-full" />
+              )}
+            </button>
           ))}
         </div>
       </div>
