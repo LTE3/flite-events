@@ -54,7 +54,7 @@ export default function EventsPage() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 15% 0%, rgba(255,77,77,0.18), transparent 60%), radial-gradient(ellipse 60% 50% at 95% 20%, rgba(255,77,77,0.08), transparent 65%)",
+              "radial-gradient(ellipse 80% 60% at 15% 0%, rgba(224,168,50,0.18), transparent 60%), radial-gradient(ellipse 60% 50% at 95% 20%, rgba(224,168,50,0.08), transparent 65%)",
           }}
         />
         <div
@@ -205,7 +205,7 @@ export default function EventsPage() {
                   className="absolute inset-0 pointer-events-none opacity-50"
                   style={{
                     background:
-                      "radial-gradient(ellipse 40% 50% at 50% 40%, rgba(255,77,77,0.08), transparent 70%)",
+                      "radial-gradient(ellipse 40% 50% at 50% 40%, rgba(224,168,50,0.08), transparent 70%)",
                   }}
                 />
 

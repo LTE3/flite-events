@@ -85,7 +85,7 @@ export function Navbar() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(circle at 50% 50%, rgba(255,77,77,0.18) 0%, rgba(255,77,77,0.05) 30%, transparent 65%)",
+              "radial-gradient(circle at 50% 50%, rgba(224,168,50,0.18) 0%, rgba(224,168,50,0.05) 30%, transparent 65%)",
           }}
         />
 
