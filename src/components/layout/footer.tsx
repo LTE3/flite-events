@@ -1,14 +1,21 @@
 import Link from "next/link";
+
 export function Footer() {
   return (
-    <footer className="relative border-t border-white/[0.06] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+    <footer className="relative border-t border-white/[0.06] bg-bg-card">
+      <div className="max-w-7xl mx-auto px-6 pt-20 pb-8">
+        {/* Big brand wordmark */}
+        <div className="mb-16">
+          <Link href="/" className="inline-block">
+            <span className="font-[family-name:var(--font-display)] text-5xl sm:text-7xl font-extrabold tracking-[-0.03em] text-text/10 hover:text-text/20 transition-colors duration-500">
+              PULSETIX
+            </span>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
           {/* Brand */}
           <div>
-            <Link href="/" className="inline-block mb-4">
-              <span className="font-[family-name:var(--font-display)] text-lg font-extrabold tracking-[-0.02em]">PULSETIX</span>
-            </Link>
             <p className="text-text-dim text-sm leading-relaxed mb-6">
               Tickets for NYC nights that matter. QR-coded. Delivered instant.
             </p>
@@ -53,7 +60,7 @@ export function Footer() {
 
         <div className="border-t border-white/[0.04] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-text-muted">&copy; {new Date().getFullYear()} PulseTix. All rights reserved.</p>
-          <p className="text-xs text-text-muted">Made in NYC. Built for the night.</p>
+          <p className="text-xs text-text-muted">Made in NYC</p>
         </div>
       </div>
     </footer>

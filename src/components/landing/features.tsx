@@ -1,120 +1,68 @@
 "use client";
 
-import { useState } from "react";
-import { Ticket, Users, BarChart3, QrCode, Megaphone, CreditCard } from "lucide-react";
-import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { Ticket, Users, QrCode, BarChart3, Megaphone, CreditCard } from "lucide-react";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/motion/scroll-reveal";
 
 const features = [
   {
     icon: Ticket,
-    title: "Ticketing & Sales",
-    headline: "Sell tickets your way",
-    desc: "Set your prices, control capacity, and sell directly to your audience. No middlemen taking 15% cuts. Instant Stripe payouts to your account.",
-    stats: ["$0 platform fee", "Instant payouts", "Custom pricing"],
+    title: "Sell tickets directly",
+    desc: "Your prices. Your capacity. Instant Stripe payouts. No 15% platform fees.",
   },
   {
     icon: Users,
-    title: "Promoter Network",
-    headline: "Build your street team",
-    desc: "Give every promoter their own referral link. Track who's driving sales in real-time. Automatic commission calculations and multi-tier payouts.",
-    stats: ["Referral tracking", "Auto commissions", "Multi-tier payouts"],
-  },
-  {
-    icon: BarChart3,
-    title: "Analytics & Insights",
-    headline: "Know your numbers",
-    desc: "Real-time dashboard showing ticket sales, revenue, promoter performance, and attendee demographics. Make smarter decisions for your next event.",
-    stats: ["Real-time data", "Revenue tracking", "Promoter analytics"],
+    title: "Run a promoter network",
+    desc: "Every promoter gets a tracked link. Auto commissions. Multi-tier payouts.",
   },
   {
     icon: QrCode,
-    title: "QR Code Entry",
-    headline: "Scan and go",
-    desc: "Every ticket comes with an encrypted QR code. Scan at the door with any phone — instant validation, no printed lists, no arguments.",
-    stats: ["Encrypted codes", "Phone scanning", "Real-time validation"],
+    title: "Scan at the door",
+    desc: "Encrypted QR on every ticket. Scan with any phone. No printed lists.",
+  },
+  {
+    icon: BarChart3,
+    title: "Real-time analytics",
+    desc: "Sales, revenue, promoter performance — all live in one dashboard.",
   },
   {
     icon: Megaphone,
-    title: "Marketing & Discovery",
-    headline: "Get discovered",
-    desc: "Your events appear in our discovery feed reaching thousands of NYC locals actively looking for their next night out. Built-in audience, zero ad spend.",
-    stats: ["25K+ active users", "Category targeting", "Featured placement"],
+    title: "Built-in discovery",
+    desc: "Your events reach thousands of NYC locals looking for their next night.",
   },
   {
     icon: CreditCard,
-    title: "Revenue Streams",
-    headline: "Multiple ways to earn",
-    desc: "Beyond ticket sales — door sales, VIP upgrades, promoter commissions, and more. One platform for all your event revenue.",
-    stats: ["Door sales", "VIP tiers", "Commission splits"],
+    title: "Door sales & VIP tiers",
+    desc: "Sell at the venue, offer upgrades, split commissions — one platform.",
   },
 ];
 
 export function Features() {
-  const [active, setActive] = useState(0);
-  const f = features[active];
-
   return (
-    <section className="px-6 py-32 relative">
+    <section className="py-32 px-6 relative">
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
-          <div className="mb-16">
+          <div className="max-w-xl mb-20">
             <p className="text-xs font-semibold uppercase tracking-[4px] text-accent mb-4">The toolkit</p>
-            <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.02em] mb-4">
+            <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.02em] mb-5">
               Everything to <span className="accent-text">run your night</span>
             </h2>
-            <p className="text-text-dim max-w-lg text-lg">One platform. Zero compromises. Built for hosts who are serious about growing.</p>
+            <p className="text-text-dim text-lg leading-relaxed">One platform. Zero middlemen. Built for hosts who pack rooms.</p>
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          {/* Left - Feature tabs */}
-          <div className="lg:col-span-2 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible no-scrollbar">
-            {features.map((feat, i) => (
-              <button
-                key={feat.title}
-                onClick={() => setActive(i)}
-                className={`flex items-center gap-3 px-5 py-4 rounded-xl text-left whitespace-nowrap lg:whitespace-normal transition-all duration-300 shrink-0 lg:shrink ${
-                  i === active
-                    ? "bg-bg-elevated border border-white/10"
-                    : "hover:bg-white/[0.03] border border-transparent"
-                }`}
-              >
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-all ${
-                  i === active ? "bg-accent text-white" : "bg-white/[0.06] text-text-dim"
-                }`}>
-                  <feat.icon size={18} />
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden border border-white/[0.04]">
+          {features.map((f) => (
+            <StaggerItem key={f.title}>
+              <div className="bg-bg p-8 sm:p-10 h-full group hover:bg-bg-card transition-colors duration-300">
+                <div className="w-12 h-12 rounded-xl bg-white/[0.04] flex items-center justify-center mb-6 group-hover:bg-accent/10 transition-colors duration-300">
+                  <f.icon size={22} className="text-text-dim group-hover:text-accent transition-colors duration-300" />
                 </div>
-                <div>
-                  <p className={`font-semibold text-sm transition-colors ${i === active ? "text-text" : "text-text-dim"}`}>
-                    {feat.title}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {/* Right - Feature detail */}
-          <div className="lg:col-span-3">
-            <div className="p-8 sm:p-10 rounded-2xl card-elevated relative overflow-hidden transition-all duration-500">
-              <div className="relative">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold uppercase tracking-wider mb-5">
-                  <f.icon size={14} /> {f.title}
-                </div>
-
-                <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-bold tracking-[-0.01em] mb-4">{f.headline}</h3>
-                <p className="text-text-dim leading-relaxed mb-8">{f.desc}</p>
-
-                <div className="flex flex-wrap gap-3">
-                  {f.stats.map((stat) => (
-                    <span key={stat} className="px-4 py-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-sm font-medium">
-                      {stat}
-                    </span>
-                  ))}
-                </div>
+                <h3 className="font-[family-name:var(--font-display)] text-lg font-bold tracking-tight mb-3">{f.title}</h3>
+                <p className="text-text-dim text-sm leading-relaxed">{f.desc}</p>
               </div>
-            </div>
-          </div>
-        </div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
       </div>
     </section>
   );

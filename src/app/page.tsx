@@ -3,9 +3,13 @@ export const revalidate = 60;
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { Features } from "@/components/landing/features";
-import { EventShowcase } from "@/components/landing/event-showcase";
 import { HeroSection } from "@/components/landing/hero-section";
+import { EventShowcase } from "@/components/landing/event-showcase";
+import { Categories } from "@/components/landing/categories";
+import { StatsSection } from "@/components/landing/stats-section";
+import { Features } from "@/components/landing/features";
+import { Testimonials } from "@/components/landing/testimonials";
+import { PressBar } from "@/components/landing/press-bar";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { sampleEvents } from "@/lib/sample-events";
 import type { Event } from "@/lib/types";
@@ -50,10 +54,8 @@ export default async function Home() {
 
   return (
     <>
-      {/* ============ HERO ============ */}
       <HeroSection />
 
-      {/* ============ THIS WEEKEND ============ */}
       <EventShowcase
         events={weekend}
         title="This Weekend"
@@ -61,10 +63,14 @@ export default async function Home() {
         accentColor="text-accent"
       />
 
-      {/* ============ FEATURES ============ */}
+      <Categories />
+
+      <StatsSection />
+
       <Features />
 
-      {/* ============ TRENDING ============ */}
+      <Testimonials />
+
       <EventShowcase
         events={featured}
         title="Trending Near You"
@@ -72,19 +78,21 @@ export default async function Home() {
         accentColor="text-accent"
       />
 
-      {/* ============ CTA ============ */}
+      <PressBar />
+
+      {/* CTA — For Hosts */}
       <section className="relative">
         <ScrollReveal>
           <div className="relative h-[70vh] min-h-[550px] overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1920&q=80"
-              alt="Crowd at a warehouse event in Brooklyn"
+              src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1920&q=80"
+              alt="DJ performing at a Brooklyn warehouse"
               fill
               sizes="100vw"
               className="object-cover"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-black/80" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
 
             <div className="absolute inset-0 flex items-center">
               <div className="max-w-7xl mx-auto px-6 w-full">

@@ -30,10 +30,10 @@ const stats = [
 
 export function StatsSection() {
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-accent/[0.03]" />
+    <section className="py-24 relative overflow-hidden border-y border-white/[0.04]">
+      <div className="absolute inset-0 bg-bg-card" />
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 relative">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
           {stats.map((stat, i) => (
             <div
@@ -42,7 +42,7 @@ export function StatsSection() {
                 i < stats.length - 1 ? "lg:border-r lg:border-white/[0.06]" : ""
               }`}
             >
-              <p className="font-[family-name:var(--font-display)] text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 accent-text tabular-nums">
+              <p className="font-[family-name:var(--font-display)] text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 text-text tabular-nums">
                 <AnimatedNumber value={stat.value} suffix={stat.suffix} />
               </p>
               <p className="font-[family-name:var(--font-display)] font-semibold text-white/80 text-lg tracking-tight">{stat.label}</p>
