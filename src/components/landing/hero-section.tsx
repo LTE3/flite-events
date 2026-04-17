@@ -31,7 +31,7 @@ export function HeroSection() {
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source
-            src="https://videos.pexels.com/video-files/2022395/2022395-uhd_2560_1440_30fps.mp4"
+            src="https://videos.pexels.com/video-files/4043975/4043975-hd_1920_1080_25fps.mp4"
             type="video/mp4"
           />
         </video>
