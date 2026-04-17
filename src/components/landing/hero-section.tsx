@@ -37,13 +37,14 @@ export function HeroSection() {
   const contentY = useTransform(scrollYProgress, [0, 0.5], ["0%", "15%"]);
 
   return (
-    <section ref={ref} className="relative h-[100vh] min-h-[700px] flex items-center overflow-hidden">
+    <section ref={ref} className="relative h-[100dvh] min-h-[600px] flex items-center overflow-hidden">
       {/* Background: Ken Burns crossfading images */}
       <motion.div className="absolute inset-0" style={{ y: bgY }}>
         <Image
           src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80"
           alt="NYC Nightlife"
           fill
+          sizes="100vw"
           className="object-cover animate-ken-burns-1"
           priority
         />
@@ -52,7 +53,9 @@ export function HeroSection() {
             src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1920&q=80"
             alt="NYC Party"
             fill
+            sizes="100vw"
             className="object-cover animate-ken-burns-2"
+            loading="lazy"
           />
         </div>
         <div className="absolute inset-0 animate-crossfade" style={{ animationDelay: "8s" }}>
@@ -60,8 +63,10 @@ export function HeroSection() {
             src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1920&q=80"
             alt="NYC Concert"
             fill
+            sizes="100vw"
             className="object-cover animate-ken-burns-1"
             style={{ animationDelay: "3s" }}
+            loading="lazy"
           />
         </div>
       </motion.div>
@@ -84,24 +89,24 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-40" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
             <span className="text-xs font-medium tracking-[2px] uppercase text-white/60">NYC Nightlife</span>
           </motion.div>
 
           {/* Headline — Syne, left-aligned, massive */}
-          <h1 className="font-[family-name:var(--font-display)] text-[clamp(3rem,8vw,7rem)] font-extrabold leading-[0.9] mb-6 tracking-[-0.02em]">
-            <AnimatedWord word="Don't" delay={0.4} />{" "}
-            <AnimatedWord word="Just" delay={0.5} />{" "}
-            <AnimatedWord word="Go" delay={0.6} />{" "}
-            <AnimatedWord word="Out." delay={0.7} />
+          <h1 className="font-[family-name:var(--font-display)] text-[clamp(2.25rem,8vw,7rem)] font-extrabold leading-[0.9] mb-6 tracking-[-0.02em]">
+            <AnimatedWord word="Don't" delay={0.3} />{" "}
+            <AnimatedWord word="Just" delay={0.4} />{" "}
+            <AnimatedWord word="Go" delay={0.45} />{" "}
+            <AnimatedWord word="Out." delay={0.55} />
             <br />
             <motion.span
               className="accent-text"
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0, ease: [0.25, 0.4, 0.25, 1] }}
+              transition={{ duration: 0.7, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
             >
               Stand Out.
             </motion.span>
@@ -110,31 +115,31 @@ export function HeroSection() {
           {/* Subtitle */}
           <motion.p
             className="text-lg text-white/50 mb-10 max-w-xl leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.3 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
           >
-            Exclusive access to the hottest clubs, rooftop parties, and underground events across NYC — with instant QR code tickets.
+            Clubs, rooftops, and underground events across NYC — tickets with QR codes, delivered instant.
           </motion.p>
 
           {/* CTAs — solid colors, no gradient spam */}
           <motion.div
             className="flex flex-wrap items-center gap-4"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.6 }}
+            transition={{ duration: 0.6, delay: 1.1 }}
           >
             <Link
               href="/events"
               className="group px-8 py-4 bg-accent text-white font-semibold text-base rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 flex items-center gap-2"
             >
-              Find Events <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              Browse Events <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               href="/admin/create-event"
               className="px-8 py-4 rounded-full font-semibold text-base border border-white/15 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5"
             >
-              Host an Event
+              Host Event
             </Link>
           </motion.div>
         </div>

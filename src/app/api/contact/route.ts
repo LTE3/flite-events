@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       await supabase.from("contact_messages").insert({ name, email, subject, message });
     } catch {
       // If Supabase isn't configured, just log it
-      console.log("Contact form:", { name, email, subject, message });
+      // Supabase not configured — submission accepted but not persisted
     }
 
     return NextResponse.json({ success: true, message: "Message received. We'll get back to you soon!" });

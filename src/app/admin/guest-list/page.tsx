@@ -100,7 +100,7 @@ export default function GuestListPage() {
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
         <h1 className="text-3xl font-extrabold mb-2">Guest List</h1>
-        <p className="text-text-dim mb-8">Manage guest list entries for your events</p>
+        <p className="text-text-dim mb-8">Comps, VIPs, and plus-ones.</p>
 
         {/* Event selector */}
         <div className="mb-8">
@@ -123,22 +123,22 @@ export default function GuestListPage() {
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
               <div className="bg-bg-card border border-white/[0.06] rounded-xl p-4 text-center">
-                <p className="text-2xl font-extrabold">{entries.length}</p>
+                <p className="text-2xl font-bold">{entries.length}</p>
                 <p className="text-xs text-text-dim">Total Guests</p>
               </div>
               <div className="bg-bg-card border border-white/[0.06] rounded-xl p-4 text-center">
-                <p className="text-2xl font-extrabold text-green-400">{checkedIn}</p>
+                <p className="text-2xl font-bold text-success">{checkedIn}</p>
                 <p className="text-xs text-text-dim">Checked In</p>
               </div>
               <div className="bg-bg-card border border-white/[0.06] rounded-xl p-4 text-center">
-                <p className="text-2xl font-extrabold">{entries.reduce((s, e) => s + e.plus_ones, 0)}</p>
+                <p className="text-2xl font-bold">{entries.reduce((s, e) => s + e.plus_ones, 0)}</p>
                 <p className="text-xs text-text-dim">Plus Ones</p>
               </div>
             </div>
 
             {/* Add guest form */}
             <form onSubmit={addGuest} className="bg-bg-card border border-white/[0.06] rounded-xl p-5 mb-6">
-              <div className="grid grid-cols-1 sm:grid-cols-[1fr_80px_1fr_auto] gap-3 items-end">
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_80px_1fr_auto] gap-3 items-end">
                 <div>
                   <label htmlFor="gl-name" className="block text-xs font-medium mb-1 text-text-dim">Name</label>
                   <input
@@ -168,12 +168,12 @@ export default function GuestListPage() {
                     id="gl-note"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
-                    placeholder="Optional"
+                    placeholder="VIP, comp, etc."
                     className="w-full bg-bg-elevated border border-white/10 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-accent transition-colors"
                   />
                 </div>
                 <Button type="submit" disabled={adding} size="sm" className="gap-1.5">
-                  <UserPlus size={14} /> Add
+                  <UserPlus size={14} /> Add Guest
                 </Button>
               </div>
             </form>
@@ -196,7 +196,7 @@ export default function GuestListPage() {
               </div>
             ) : filtered.length === 0 ? (
               <div className="py-12 text-center bg-bg-card border border-white/[0.06] rounded-xl">
-                <p className="text-text-dim">{search ? "No matching guests" : "No guests added yet"}</p>
+                <p className="text-text-dim">{search ? "No matching guests" : "Empty list. Add your first guest above."}</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -205,7 +205,7 @@ export default function GuestListPage() {
                     key={entry.id}
                     className={`flex items-center gap-4 p-4 rounded-xl border transition-colors ${
                       entry.checked_in
-                        ? "bg-green-400/5 border-green-400/20"
+                        ? "bg-success/5 border-success/20"
                         : "bg-bg-card border-white/[0.06]"
                     }`}
                   >
@@ -214,7 +214,7 @@ export default function GuestListPage() {
                       aria-label={entry.checked_in ? `Undo check-in for ${entry.name}` : `Check in ${entry.name}`}
                       className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                         entry.checked_in
-                          ? "bg-green-400 text-black"
+                          ? "bg-success text-black"
                           : "bg-white/[0.06] text-text-dim hover:bg-white/[0.1]"
                       }`}
                     >
@@ -230,7 +230,7 @@ export default function GuestListPage() {
                       {entry.note && <p className="text-xs text-text-dim truncate">{entry.note}</p>}
                     </div>
                     {entry.checked_in && entry.checked_in_at && (
-                      <span className="text-xs text-green-400 shrink-0">
+                      <span className="text-xs text-success shrink-0">
                         {new Date(entry.checked_in_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                       </span>
                     )}

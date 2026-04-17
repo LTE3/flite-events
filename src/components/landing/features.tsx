@@ -29,7 +29,7 @@ const features = [
   {
     icon: QrCode,
     title: "QR Code Entry",
-    headline: "Seamless door experience",
+    headline: "Scan and go",
     desc: "Every ticket comes with an encrypted QR code. Scan at the door with any phone — instant validation, no printed lists, no arguments.",
     stats: ["Encrypted codes", "Phone scanning", "Real-time validation"],
   },
@@ -58,9 +58,9 @@ export function Features() {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
           <div className="mb-16">
-            <p className="text-xs font-semibold uppercase tracking-[4px] text-accent mb-4">Platform</p>
+            <p className="text-xs font-semibold uppercase tracking-[4px] text-accent mb-4">The toolkit</p>
             <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.02em] mb-4">
-              Everything You Need to <span className="accent-text">Run Events</span>
+              Everything to <span className="accent-text">run your night</span>
             </h2>
             <p className="text-text-dim max-w-lg text-lg">One platform. Zero compromises. Built for hosts who are serious about growing.</p>
           </div>

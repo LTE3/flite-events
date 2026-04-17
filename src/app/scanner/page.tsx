@@ -82,8 +82,8 @@ export default function ScannerPage() {
     } catch (err) {
       setCameraError(
         err instanceof Error && err.message.includes("Permission")
-          ? "Camera access denied. Please allow camera permissions."
-          : "Could not start camera. Try manual entry instead."
+          ? "Camera access denied. Allow camera access in your browser settings."
+          : "Could not start camera. Try typing the code instead."
       );
     }
   }
@@ -128,8 +128,8 @@ export default function ScannerPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-lg mx-auto">
-        <h1 className="text-3xl font-extrabold text-center mb-2">Door Check-In</h1>
-        <p className="text-text-dim text-center mb-6">Scan tickets or check guest list</p>
+        <h1 className="text-3xl font-bold text-center mb-2">Door Check-In</h1>
+        <p className="text-text-dim text-center mb-6">Scan or search.</p>
 
         {/* Tabs */}
         <div className="flex gap-1 p-1 bg-bg-card border border-white/[0.06] rounded-xl mb-8" role="tablist">
@@ -192,19 +192,19 @@ export default function ScannerPage() {
             {/* Manual entry */}
             <form onSubmit={handleScan} className="space-y-4">
               <div>
-                <label htmlFor="scan-code" className="block text-sm font-medium mb-1.5">Or enter code manually</label>
+                <label htmlFor="scan-code" className="block text-sm font-medium mb-1.5">Or type the code</label>
                 <input
                   id="scan-code"
                   type="text"
                   value={code}
                   onChange={(e) => { setCode(e.target.value); setResult(null); }}
-                  placeholder="Enter QR code value..."
+                  placeholder="Paste ticket code"
                   className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors font-mono"
                 />
               </div>
               <Button type="submit" disabled={scanning || !code} className="w-full justify-center" size="lg">
                 <ScanLine size={18} className="mr-2" />
-                {scanning ? "Checking..." : "Validate Ticket"}
+                {scanning ? "Checking..." : "Check ticket"}
               </Button>
             </form>
 
@@ -212,17 +212,17 @@ export default function ScannerPage() {
             {result && (
               <div className={`mt-6 p-5 rounded-2xl border flex items-center gap-4 ${
                 result.valid
-                  ? "bg-green-400/10 border-green-400/30"
+                  ? "bg-success/10 border-success/30"
                   : "bg-danger/10 border-danger/30"
               }`}>
                 {result.valid ? (
-                  <CheckCircle size={32} className="text-green-400 shrink-0" />
+                  <CheckCircle size={32} className="text-success shrink-0" />
                 ) : (
                   <XCircle size={32} className="text-danger shrink-0" />
                 )}
                 <div>
-                  <p className={`font-bold ${result.valid ? "text-green-400" : "text-danger"}`}>
-                    {result.valid ? "Valid Ticket" : "Invalid"}
+                  <p className={`font-bold ${result.valid ? "text-success" : "text-danger"}`}>
+                    {result.valid ? "Valid — let them in" : "Invalid ticket"}
                   </p>
                   <p className="text-sm text-text-dim">{result.message}</p>
                 </div>
@@ -274,7 +274,7 @@ export default function ScannerPage() {
                   </div>
                 ) : filteredGuests.length === 0 ? (
                   <div className="py-12 text-center bg-bg-card border border-white/[0.06] rounded-xl">
-                    <p className="text-text-dim">{guestSearch ? "No match" : "No guests for this event"}</p>
+                    <p className="text-text-dim">{guestSearch ? "No guest by that name" : "No guests for this event"}</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -286,12 +286,12 @@ export default function ScannerPage() {
                         aria-label={guest.checked_in ? `${guest.name} already checked in` : `Check in ${guest.name}`}
                         className={`w-full flex items-center gap-4 p-4 rounded-xl border text-left transition-all ${
                           guest.checked_in
-                            ? "bg-green-400/5 border-green-400/20"
+                            ? "bg-success/5 border-success/20"
                             : "bg-bg-card border-white/[0.06] hover:border-accent/30 active:scale-[0.98]"
                         }`}
                       >
                         <div className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 ${
-                          guest.checked_in ? "bg-green-400 text-black" : "bg-white/[0.06] text-text-dim"
+                          guest.checked_in ? "bg-success text-black" : "bg-white/[0.06] text-text-dim"
                         }`}>
                           <CheckCircle size={18} />
                         </div>
@@ -305,7 +305,7 @@ export default function ScannerPage() {
                           {guest.note && <p className="text-xs text-text-dim truncate">{guest.note}</p>}
                         </div>
                         {guest.checked_in ? (
-                          <span className="text-xs text-green-400">
+                          <span className="text-xs text-success">
                             {guest.checked_in_at && new Date(guest.checked_in_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                           </span>
                         ) : (

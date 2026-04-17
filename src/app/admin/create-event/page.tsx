@@ -116,8 +116,8 @@ export default function CreateEventPage() {
           <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-white font-bold">
             ✓
           </div>
-          <h1 className="text-2xl font-extrabold mb-2">Event Created!</h1>
-          <p className="text-text-dim mb-6">Your event has been saved as a draft.</p>
+          <h1 className="text-2xl font-bold mb-2">Event&apos;s live.</h1>
+          <p className="text-text-dim mb-6">Published and ready to sell.</p>
           <div className="flex gap-3 justify-center">
             <Link href="/admin"><Button variant="outline">Back to Dashboard</Button></Link>
             <Link href="/events"><Button>View Events</Button></Link>
@@ -302,7 +302,7 @@ export default function CreateEventPage() {
             {useTiers && (
               <div className="space-y-3 p-5 bg-bg-card border border-white/[0.06] rounded-xl">
                 {tiers.map((tier, i) => (
-                  <div key={i} className="grid grid-cols-[1fr_80px_80px_40px] gap-2 items-end">
+                  <div key={i} className="grid grid-cols-2 sm:grid-cols-[1fr_80px_80px_40px] gap-2 items-end">
                     <div>
                       {i === 0 && <label className="block text-xs font-medium mb-1 text-text-dim">Tier Name</label>}
                       <input

@@ -50,7 +50,7 @@ export default function AdminDashboard() {
   const stats = [
     { label: "Total Events", value: data ? String(data.totalEvents) : "—", icon: CalendarPlus, color: "text-accent" },
     { label: "Tickets Sold", value: data ? data.totalTicketsSold.toLocaleString() : "—", icon: Ticket, color: "text-accent" },
-    { label: "Revenue", value: data ? formatPrice(data.totalRevenue) : "—", icon: DollarSign, color: "text-green-400" },
+    { label: "Revenue", value: data ? formatPrice(data.totalRevenue) : "—", icon: DollarSign, color: "text-success" },
     { label: "Promoters", value: "—", icon: Users, color: "text-text-dim" },
   ];
 
@@ -60,7 +60,7 @@ export default function AdminDashboard() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-extrabold">Admin Dashboard</h1>
-            <p className="text-text-dim mt-1">Manage your events, tickets, and promoters</p>
+            <p className="text-text-dim mt-1">Your events. Your door. Your money.</p>
           </div>
           <Link href="/admin/create-event">
             <Button><CalendarPlus size={16} className="mr-2" /> New Event</Button>
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between mb-3">
                 <stat.icon size={22} className={stat.color} />
               </div>
-              <p className="text-2xl font-extrabold">{stat.value}</p>
+              <p className="text-2xl font-bold">{stat.value}</p>
               <p className="text-sm text-text-dim">{stat.label}</p>
             </div>
           ))}
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
                 {!data ? (
                   <tr><td colSpan={5} className="p-0"><TableSkeleton rows={4} /></td></tr>
                 ) : data.events.length === 0 ? (
-                  <tr><td colSpan={5} className="p-8 text-center text-text-dim">No events yet. Create your first event!</td></tr>
+                  <tr><td colSpan={5} className="p-8 text-center text-text-dim">Nothing booked yet. Start your first night.</td></tr>
                 ) : (
                   data.events.map((event, i) => {
                     const sold = event.tickets_total - event.tickets_left;
@@ -130,12 +130,12 @@ export default function AdminDashboard() {
                         </td>
                         <td className="p-4 text-text-dim">{formatDate(event.date)}</td>
                         <td className="p-4">{sold} / {event.tickets_total}</td>
-                        <td className="p-4 text-green-400">{formatPrice(revenue)}</td>
+                        <td className="p-4 text-success">{formatPrice(revenue)}</td>
                         <td className="p-4">
                           {pct >= 95 ? (
                             <span className="px-2 py-0.5 bg-danger/20 text-danger rounded-full text-xs font-semibold">Almost Sold Out</span>
                           ) : pct >= 70 ? (
-                            <span className="px-2 py-0.5 bg-orange-500/20 text-orange-400 rounded-full text-xs font-semibold">Selling Fast</span>
+                            <span className="px-2 py-0.5 bg-warning/20 text-warning rounded-full text-xs font-semibold">Selling Fast</span>
                           ) : (
                             <span className="px-2 py-0.5 bg-accent/10 text-accent rounded-full text-xs font-semibold capitalize">{event.status}</span>
                           )}

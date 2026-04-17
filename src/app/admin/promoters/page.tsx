@@ -51,8 +51,8 @@ export default function AdminPromotersPage() {
   const pendingCount = promoters.filter((p) => p.status === "pending").length;
 
   const statusConfig = {
-    pending: { color: "bg-yellow-500/20 text-yellow-400", icon: Clock },
-    active: { color: "bg-green-500/20 text-green-400", icon: CheckCircle },
+    pending: { color: "bg-warning/20 text-warning", icon: Clock },
+    active: { color: "bg-success/20 text-success", icon: CheckCircle },
     suspended: { color: "bg-danger/20 text-danger", icon: XCircle },
   };
 
@@ -76,22 +76,22 @@ export default function AdminPromotersPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <div className="bg-bg-card border border-white/[0.06] rounded-2xl p-5">
             <Users size={20} className="text-accent mb-2" />
-            <p className="text-2xl font-extrabold">{promoters.length}</p>
+            <p className="text-2xl font-bold">{promoters.length}</p>
             <p className="text-xs text-text-dim">Total Promoters</p>
           </div>
           <div className="bg-bg-card border border-white/[0.06] rounded-2xl p-5">
-            <Clock size={20} className="text-yellow-400 mb-2" />
-            <p className="text-2xl font-extrabold">{pendingCount}</p>
+            <Clock size={20} className="text-warning mb-2" />
+            <p className="text-2xl font-bold">{pendingCount}</p>
             <p className="text-xs text-text-dim">Pending</p>
           </div>
           <div className="bg-bg-card border border-white/[0.06] rounded-2xl p-5">
-            <CheckCircle size={20} className="text-green-400 mb-2" />
-            <p className="text-2xl font-extrabold">{promoters.filter((p) => p.status === "active").length}</p>
+            <CheckCircle size={20} className="text-success mb-2" />
+            <p className="text-2xl font-bold">{promoters.filter((p) => p.status === "active").length}</p>
             <p className="text-xs text-text-dim">Active</p>
           </div>
           <div className="bg-bg-card border border-white/[0.06] rounded-2xl p-5">
-            <DollarSign size={20} className="text-green-400 mb-2" />
-            <p className="text-2xl font-extrabold">{formatPrice(promoters.reduce((s, p) => s + p.total_earned, 0))}</p>
+            <DollarSign size={20} className="text-success mb-2" />
+            <p className="text-2xl font-bold">{formatPrice(promoters.reduce((s, p) => s + p.total_earned, 0))}</p>
             <p className="text-xs text-text-dim">Total Commissions</p>
           </div>
         </div>
@@ -110,7 +110,7 @@ export default function AdminPromotersPage() {
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
               {f === "pending" && pendingCount > 0 && (
-                <span className="ml-1.5 px-1.5 py-0.5 bg-yellow-500/30 text-yellow-400 rounded text-[10px] font-bold">{pendingCount}</span>
+                <span className="ml-1.5 px-1.5 py-0.5 bg-warning/30 text-warning rounded text-[10px] font-bold">{pendingCount}</span>
               )}
             </button>
           ))}
@@ -166,7 +166,7 @@ export default function AdminPromotersPage() {
                         </td>
                         <td className="p-4 text-text-dim">{(p.commission_rate * 100).toFixed(0)}%</td>
                         <td className="p-4">{p.total_sales}</td>
-                        <td className="p-4 text-green-400">{formatPrice(p.total_earned)}</td>
+                        <td className="p-4 text-success">{formatPrice(p.total_earned)}</td>
                         <td className="p-4">
                           <div className="flex gap-2">
                             {p.status === "pending" && (

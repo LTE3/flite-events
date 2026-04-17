@@ -12,7 +12,7 @@ export function AIChatbot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi! I'm PulseTix AI. Ask me about events, tickets, or anything else!" },
+    { role: "assistant", content: "What's the move tonight? Ask me about events, tickets, or anything." },
   ]);
   const [loading, setLoading] = useState(false);
   const messagesEnd = useRef<HTMLDivElement>(null);
@@ -37,9 +37,9 @@ export function AIChatbot() {
         body: JSON.stringify({ message: userMsg }),
       });
       const data = await res.json();
-      setMessages((prev) => [...prev, { role: "assistant", content: data.reply || data.error || "No response" }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: data.reply || data.error || "Didn't catch that. Try rephrasing?" }]);
     } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, something went wrong. Try again." }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: "Connection dropped. Try again in a sec." }]);
     } finally {
       setLoading(false);
     }
@@ -50,15 +50,15 @@ export function AIChatbot() {
       {/* Toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-accent rounded-full flex items-center justify-center shadow-lg shadow-accent/30 hover:scale-110 transition-transform"
-        aria-label="Chat"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-accent rounded-full flex items-center justify-center shadow-lg shadow-accent/30 hover:scale-105 transition-transform"
+        aria-label={open ? "Close chat" : "Open chat"}
       >
         {open ? <X size={22} className="text-white" /> : <MessageCircle size={22} className="text-white" />}
       </button>
 
       {/* Chat window */}
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] bg-bg-card border border-white/[0.08] rounded-2xl shadow-2xl flex flex-col overflow-hidden" style={{ height: "480px" }}>
+        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] bg-bg-card border border-white/[0.08] rounded-2xl shadow-2xl flex flex-col overflow-hidden" style={{ height: "min(480px, calc(100dvh - 120px))" }}>
           {/* Header */}
           <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-3 bg-accent">
             <div className="w-8 h-8 rounded-full bg-black/20 flex items-center justify-center">
@@ -66,7 +66,7 @@ export function AIChatbot() {
             </div>
             <div>
               <p className="font-bold text-sm text-white">PulseTix AI</p>
-              <p className="text-xs text-white/60">Ask me anything</p>
+              <p className="text-xs text-white/60">Your night, handled.</p>
             </div>
           </div>
 
@@ -105,7 +105,7 @@ export function AIChatbot() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about events..."
+              placeholder="What's on tonight?"
               className="flex-1 bg-bg-elevated border border-white/10 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-accent transition-colors"
             />
             <button

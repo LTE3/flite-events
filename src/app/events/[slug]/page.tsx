@@ -75,7 +75,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
         {/* Top bar */}
         <div className="absolute top-0 left-0 right-0 p-6 flex items-center justify-between z-10">
           <Link href="/events" className="flex items-center gap-2 px-4 py-2 glass rounded-full text-sm font-medium hover:bg-white/[0.1] transition-all">
-            <ArrowLeft size={16} /> Back
+            <ArrowLeft size={16} /> Events
           </Link>
           <button aria-label="Share event" className="w-11 h-11 glass rounded-full flex items-center justify-center hover:bg-white/[0.1] transition-all">
             <Share2 size={16} />
@@ -105,18 +105,18 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               <InfoPill icon={Calendar} text={formatDate(event.date)} />
               <InfoPill icon={Clock} text={`${formatTime(event.time)}${event.end_time ? ` — ${formatTime(event.end_time)}` : ""}`} />
               <InfoPill icon={MapPin} text={`${event.venue} · ${event.borough || event.city}`} />
-              <InfoPill icon={Users} text={`${ticketsSold} attending`} />
+              <InfoPill icon={Users} text={`${ticketsSold} going`} />
             </div>
 
             {/* About */}
             <div>
-              <h2 className="text-xl font-extrabold mb-4">About This Event</h2>
+              <h2 className="text-xl font-bold mb-4">About</h2>
               <p className="text-text-dim leading-relaxed text-[15px]">{event.description}</p>
             </div>
 
             {/* Venue */}
             <div className="p-6 rounded-2xl card">
-              <h3 className="font-extrabold mb-3 flex items-center gap-2">
+              <h3 className="font-bold mb-3 flex items-center gap-2">
                 <MapPin size={16} className="text-accent" /> Venue
               </h3>
               <p className="font-semibold">{event.venue}</p>
@@ -127,7 +127,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             <div className="flex items-center gap-3 p-4 rounded-xl bg-accent/5 border border-accent/10">
               <Shield size={18} className="text-accent shrink-0" />
               <p className="text-sm text-text-dim">
-                Tickets are secured with unique encrypted QR codes. Each ticket is verified at entry.
+                Every ticket gets a unique QR code. Scanned at the door. No counterfeits.
               </p>
             </div>
           </div>
@@ -139,7 +139,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               <div className="p-6 rounded-2xl card">
                 {event.tiers && event.tiers.length > 0 ? (
                   <>
-                    <p className="text-xs text-text-dim uppercase tracking-wider font-medium mb-4">Ticket Tiers</p>
+                    <p className="text-xs text-text-dim uppercase tracking-wider font-medium mb-4">Tickets</p>
                     <div className="space-y-3 mb-6">
                       {event.tiers.map((tier: TicketTier) => {
                         const tierSoldOut = tier.sold >= tier.quantity;
@@ -148,14 +148,14 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                           <div key={tier.id} className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                             <div className="flex items-center justify-between mb-1">
                               <span className="font-semibold">{tier.name}</span>
-                              <span className="font-extrabold">{formatPrice(tier.price)}</span>
+                              <span className="font-bold">{formatPrice(tier.price)}</span>
                             </div>
                             <div className="flex items-center justify-between text-xs text-text-dim">
-                              <span>{tier.sold} / {tier.quantity} sold</span>
+                              <span>{tier.quantity - tier.sold} left</span>
                               {tierSoldOut ? (
                                 <span className="text-danger font-semibold">Sold Out</span>
                               ) : tierRemaining < 10 ? (
-                                <span className="text-orange-400 font-semibold">{tierRemaining} left</span>
+                                <span className="text-warning font-semibold">{tierRemaining} left</span>
                               ) : null}
                             </div>
                           </div>
@@ -167,7 +167,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                   <div className="flex items-center justify-between mb-6">
                     <div>
                       <p className="text-xs text-text-dim uppercase tracking-wider font-medium">Price</p>
-                      <p className="text-3xl font-extrabold mt-1">{formatPrice(event.price)}</p>
+                      <p className="text-3xl font-bold mt-1">{formatPrice(event.price)}</p>
                     </div>
                     <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
                       <Ticket size={20} className="text-white" />
@@ -179,7 +179,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <div className="mb-6">
                   <div className="flex justify-between text-xs text-text-dim mb-2">
                     <span>{ticketsSold} sold</span>
-                    <span>{event.tickets_left} remaining</span>
+                    <span>{event.tickets_left} left</span>
                   </div>
                   <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
                     <div
@@ -188,8 +188,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                     />
                   </div>
                   {event.tickets_left < 20 && event.tickets_left > 0 && (
-                    <p className="text-xs text-orange-400 font-semibold mt-2 animate-pulse">
-                      Only {event.tickets_left} tickets left!
+                    <p className="text-xs text-warning font-semibold mt-2">
+                      Only {event.tickets_left} left
                     </p>
                   )}
                 </div>
@@ -207,17 +207,17 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 </Link>
 
                 <div className="flex items-center justify-center gap-4 mt-4 text-xs text-text-dim">
-                  <span className="flex items-center gap-1"><Shield size={12} /> Secure checkout</span>
+                  <span className="flex items-center gap-1"><Shield size={12} /> Encrypted</span>
                   <span>·</span>
-                  <span>Instant delivery</span>
+                  <span>Delivered instantly</span>
                 </div>
               </div>
 
               {/* Share card */}
               <div className="p-5 rounded-2xl card text-center">
-                <p className="text-sm font-medium mb-3">Share this event</p>
+                <p className="text-sm font-medium mb-3">Share</p>
                 <div className="flex justify-center gap-2">
-                  {["Copy Link", "Twitter", "Instagram"].map((platform) => (
+                  {["Copy link", "X", "Instagram"].map((platform) => (
                     <button
                       key={platform}
                       className="px-4 py-2 rounded-lg text-xs font-medium bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all"

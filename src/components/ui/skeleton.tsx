@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("bg-white/[0.06] rounded-xl animate-shimmer bg-gradient-to-r from-white/[0.04] via-white/[0.08] to-white/[0.04]", className)}
+      className={cn("rounded-xl animate-shimmer bg-gradient-to-r from-white/[0.04] via-white/[0.08] to-white/[0.04]", className)}
       {...props}
     />
   );
@@ -46,7 +46,7 @@ export function TableSkeleton({ rows = 5 }: { rows?: number }) {
 
 export function StatsSkeleton({ count = 4 }: { count?: number }) {
   return (
-    <div className={`grid grid-cols-2 sm:grid-cols-${count} gap-4`}>
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="bg-bg-card border border-white/[0.06] rounded-2xl p-5 space-y-3">
           <Skeleton className="h-5 w-5 rounded-lg" />

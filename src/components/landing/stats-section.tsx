@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { motion, useInView, useSpring, useTransform, MotionValue } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { motion, useInView, useSpring, useTransform } from "framer-motion";
 
 function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
   const ref = useRef(null);
@@ -31,7 +31,7 @@ const stats = [
 export function StatsSection() {
   return (
     <section className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-accent/[0.03] via-transparent to-accent-2/[0.03]" />
+      <div className="absolute inset-0 bg-accent/[0.03]" />
 
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
@@ -42,7 +42,7 @@ export function StatsSection() {
                 i < stats.length - 1 ? "lg:border-r lg:border-white/[0.06]" : ""
               }`}
             >
-              <p className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 accent-text">
+              <p className="font-[family-name:var(--font-display)] text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 accent-text tabular-nums">
                 <AnimatedNumber value={stat.value} suffix={stat.suffix} />
               </p>
               <p className="font-[family-name:var(--font-display)] font-semibold text-white/80 text-lg tracking-tight">{stat.label}</p>

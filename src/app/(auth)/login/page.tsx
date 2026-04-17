@@ -22,7 +22,7 @@ export default function LoginPage() {
       if (authError) throw authError;
       window.location.href = "/events";
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(err instanceof Error ? err.message : "Wrong email or password. Try again.");
     } finally {
       setLoading(false);
     }
@@ -43,8 +43,8 @@ export default function LoginPage() {
 
         {/* Card */}
         <div className="p-8 rounded-2xl bg-bg-card border border-white/[0.06]">
-          <h1 className="text-2xl font-black text-center mb-1">Welcome Back</h1>
-          <p className="text-text-dim text-sm text-center mb-7">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-center mb-1">You&apos;re back.</h1>
+          <p className="text-text-dim text-sm text-center mb-7">Pick up where you left off</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
@@ -73,22 +73,22 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="w-full bg-bg-elevated border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 transition-all duration-300"
-                placeholder="Enter your password"
+                placeholder="Password"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-accent text-white font-semibold text-sm rounded-xl transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-accent text-white font-semibold text-sm rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
             >
-              {loading ? "Signing in..." : <>Sign In <ArrowRight size={16} /></>}
+              {loading ? "One sec..." : <>Sign in <ArrowRight size={16} /></>}
             </button>
           </form>
         </div>
 
         <p className="text-center text-sm text-text-dim mt-6">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-accent font-semibold hover:underline">Create one</Link>
+          New here?{" "}
+          <Link href="/register" className="text-accent font-semibold hover:underline">Sign up</Link>
         </p>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { CardSkeleton } from "@/components/ui/skeleton";
 import type { Event, Category } from "@/lib/types";
 
 const categories: { label: string; value: Category | "all" }[] = [
-  { label: "All Events", value: "all" },
+  { label: "All", value: "all" },
   { label: "Music", value: "music" },
   { label: "Nightlife", value: "nightlife" },
   { label: "Fitness", value: "fitness" },
@@ -54,9 +54,9 @@ export default function EventsPage() {
             <span className="text-sm text-text-dim">New York City</span>
           </div>
           <h1 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-2">
-            Browse <span className="accent-text">Events</span>
+            What&apos;s <span className="accent-text">On</span>
           </h1>
-          <p className="text-text-dim text-lg mb-8">Find your next experience</p>
+          <p className="text-text-dim text-lg mb-8">Shows, parties, afters. All live.</p>
 
           {/* Search */}
           <div className="flex gap-3 max-w-2xl">
@@ -101,9 +101,9 @@ export default function EventsPage() {
 
           {/* Results count */}
           <p className="text-sm text-text-dim mb-6">
-            {loading ? "Loading..." : (
+            {loading ? "" : (
               <>
-                {events.length} event{events.length !== 1 ? "s" : ""} found
+                {events.length} event{events.length !== 1 ? "s" : ""}
                 {activeCategory !== "all" && <span> in <span className="text-accent font-medium capitalize">{activeCategory.replace("_", " & ")}</span></span>}
                 {query && <span> matching &quot;<span className="text-text font-medium">{query}</span>&quot;</span>}
               </>
@@ -122,8 +122,8 @@ export default function EventsPage() {
               <div className="w-20 h-20 rounded-full bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mx-auto mb-5">
                 <Search size={32} className="text-text-dim/40" />
               </div>
-              <p className="text-xl font-extrabold mb-2">No events found</p>
-              <p className="text-text-dim text-sm">Try adjusting your search or filters</p>
+              <p className="text-xl font-bold mb-2">Nothing matches that.</p>
+              <p className="text-text-dim text-sm">Drop a filter and try again.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">

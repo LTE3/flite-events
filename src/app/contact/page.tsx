@@ -28,11 +28,11 @@ export default function ContactPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Failed to send");
+        throw new Error(data.error || "Couldn't send. Try again in a sec.");
       }
       setSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(err instanceof Error ? err.message : "Couldn't send your message. Try again or email Pulsetixai@gmail.com.");
     } finally {
       setLoading(false);
     }
@@ -45,9 +45,9 @@ export default function ContactPage() {
           <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle size={32} className="text-white" />
           </div>
-          <h1 className="text-2xl font-extrabold mb-2">Message Sent</h1>
-          <p className="text-text-dim mb-6">We&apos;ll get back to you as soon as possible.</p>
-          <a href="/events"><Button>Browse Events</Button></a>
+          <h1 className="text-2xl font-bold mb-2">Got it.</h1>
+          <p className="text-text-dim mb-6">We&apos;ll reply within 24 hours.</p>
+          <a href="/events"><Button>See what&apos;s on</Button></a>
         </div>
       </div>
     );
@@ -60,8 +60,8 @@ export default function ContactPage() {
           <div className="w-14 h-14 bg-accent/10 border border-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Mail size={24} className="text-accent" />
           </div>
-          <h1 className="text-3xl font-extrabold mb-2">Contact Us</h1>
-          <p className="text-text-dim">Have a question or need help? We&apos;d love to hear from you.</p>
+          <h1 className="text-3xl font-extrabold mb-2">Talk to us</h1>
+          <p className="text-text-dim">Questions, problems, ideas — send them over.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -109,17 +109,17 @@ export default function ContactPage() {
               required
               rows={5}
               className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors resize-none"
-              placeholder="Tell us more..."
+              placeholder="What's going on?"
             />
           </div>
           <Button type="submit" disabled={loading} className="w-full justify-center" size="lg">
             <Send size={16} className="mr-2" />
-            {loading ? "Sending..." : "Send Message"}
+            {loading ? "Sending..." : "Send it"}
           </Button>
         </form>
 
         <p className="text-center text-sm text-text-dim mt-8">
-          Or email us directly at{" "}
+          Or email{" "}
           <a href="mailto:Pulsetixai@gmail.com" className="text-accent hover:underline">Pulsetixai@gmail.com</a>
         </p>
       </div>

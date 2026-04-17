@@ -53,10 +53,10 @@ export default function PromoterDashboardPage() {
   }
 
   const stats = [
-    { label: "Total Sales", value: data ? String(data.total_sales) : "—", icon: Ticket, color: "text-accent" },
-    { label: "Total Earned", value: data ? formatPrice(data.total_earned) : "—", icon: DollarSign, color: "text-green-400" },
+    { label: "Tickets Sold", value: data ? String(data.total_sales) : "—", icon: Ticket, color: "text-accent" },
+    { label: "Total Earned", value: data ? formatPrice(data.total_earned) : "—", icon: DollarSign, color: "text-success" },
     { label: "Commission Rate", value: data ? `${(data.commission_rate * 100).toFixed(0)}%` : "—", icon: TrendingUp, color: "text-accent" },
-    { label: "Status", value: data?.status || "—", icon: Link2, color: "text-orange-400" },
+    { label: "Status", value: data?.status || "—", icon: Link2, color: "text-warning" },
   ];
 
   if (loading) {
@@ -71,9 +71,9 @@ export default function PromoterDashboardPage() {
     return (
       <div className="px-6 py-10">
         <div className="max-w-lg mx-auto text-center py-20">
-          <p className="text-lg font-semibold mb-2">Not a Promoter</p>
-          <p className="text-text-dim text-sm mb-6">You need to be an approved promoter to access this dashboard.</p>
-          <a href="/promoter-signup"><Button>Apply Now</Button></a>
+          <p className="text-lg font-semibold mb-2">Not a promoter — yet.</p>
+          <p className="text-text-dim text-sm mb-6">Apply to see your sales, earnings, and referral link.</p>
+          <a href="/promoter-signup"><Button>Join the network</Button></a>
         </div>
       </div>
     );
@@ -82,15 +82,15 @@ export default function PromoterDashboardPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-extrabold mb-2">Promoter Dashboard</h1>
-        <p className="text-text-dim mb-8">Track your sales and earnings</p>
+        <h1 className="text-3xl font-extrabold mb-2">Your Numbers</h1>
+        <p className="text-text-dim mb-8">Every ticket, every dollar, real time.</p>
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {stats.map((stat) => (
             <div key={stat.label} className="bg-bg-card border border-white/[0.06] rounded-2xl p-5">
               <stat.icon size={22} className={`${stat.color} mb-3`} />
-              <p className="text-2xl font-extrabold">{stat.value}</p>
+              <p className="text-2xl font-bold">{stat.value}</p>
               <p className="text-sm text-text-dim">{stat.label}</p>
             </div>
           ))}
@@ -100,7 +100,7 @@ export default function PromoterDashboardPage() {
         {referralLink && (
           <div className="bg-bg-card border border-white/[0.06] rounded-2xl p-6 mb-8">
             <h2 className="font-bold mb-3 flex items-center gap-2">
-              <Link2 size={18} className="text-accent" /> Your Referral Link
+              <Link2 size={18} className="text-accent" /> Your Link
             </h2>
             <div className="flex gap-2">
               <input
@@ -115,7 +115,7 @@ export default function PromoterDashboardPage() {
                 <ExternalLink size={14} /> Share
               </Button>
             </div>
-            <p className="text-xs text-text-dim mt-2">Share this link on social media. You earn commission on every ticket sold through it.</p>
+            <p className="text-xs text-text-dim mt-2">Drop it anywhere. You earn on every ticket it sells.</p>
           </div>
         )}
 
@@ -136,7 +136,7 @@ export default function PromoterDashboardPage() {
               <tbody>
                 {data.recent_sales.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-text-dim">No sales yet. Share your referral link to start earning!</td>
+                    <td colSpan={5} className="p-8 text-center text-text-dim">Nothing yet. Drop your link and go.</td>
                   </tr>
                 ) : (
                   data.recent_sales.map((sale, i) => (
@@ -144,12 +144,12 @@ export default function PromoterDashboardPage() {
                       <td className="p-4 font-medium">{(sale.events as { title: string } | undefined)?.title || "Event"}</td>
                       <td className="p-4 text-text-dim">{new Date(sale.created_at).toLocaleDateString()}</td>
                       <td className="p-4">{(sale.tickets as { quantity: number } | undefined)?.quantity || 1}</td>
-                      <td className="p-4 text-green-400">{formatPrice(sale.commission_amount)}</td>
+                      <td className="p-4 text-success">{formatPrice(sale.commission_amount)}</td>
                       <td className="p-4">
                         <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                          sale.status === "paid" ? "bg-green-500/20 text-green-400" :
+                          sale.status === "paid" ? "bg-success/20 text-success" :
                           sale.status === "approved" ? "bg-accent/10 text-accent" :
-                          "bg-yellow-500/20 text-yellow-400"
+                          "bg-warning/20 text-warning"
                         }`}>
                           {sale.status.charAt(0).toUpperCase() + sale.status.slice(1)}
                         </span>

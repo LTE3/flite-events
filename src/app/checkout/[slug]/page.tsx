@@ -17,6 +17,7 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
@@ -62,8 +63,9 @@ export default function CheckoutPage() {
 
   if (!event) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center flex-col gap-4">
         <p className="text-text-dim">Event not found</p>
+        <a href="/events" className="text-accent text-sm hover:underline">Browse events</a>
       </div>
     );
   }
@@ -78,6 +80,7 @@ export default function CheckoutPage() {
   async function handleCheckout(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
@@ -93,10 +96,10 @@ export default function CheckoutPage() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert(data.error || "Checkout failed");
+        setError(data.error || "Payment couldn't start. Try again.");
       }
     } catch {
-      alert("Something went wrong");
+      setError("Connection lost. Check your signal and retry.");
     } finally {
       setLoading(false);
     }
@@ -108,10 +111,10 @@ export default function CheckoutPage() {
 
       <div className="max-w-2xl mx-auto relative">
         <Link href={`/events/${slug}`} className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-8">
-          <ArrowLeft size={16} /> Back to Event
+          <ArrowLeft size={16} /> Back to event
         </Link>
 
-        <h1 className="text-3xl font-extrabold mb-8">Checkout</h1>
+        <h1 className="text-3xl font-bold mb-8">Checkout</h1>
 
         {/* Event summary */}
         <div className="flex gap-5 p-5 rounded-2xl bg-bg-card border border-white/[0.06] mb-8 animate-fade-up">
@@ -130,10 +133,13 @@ export default function CheckoutPage() {
         </div>
 
         <form onSubmit={handleCheckout} className="space-y-6">
+          {error && (
+            <div className="p-4 bg-danger/10 border border-danger/30 rounded-xl text-sm text-danger animate-fade-up">{error}</div>
+          )}
           {/* Tier selection */}
           {tiers.length > 0 && (
             <div className="p-6 rounded-2xl bg-bg-card border border-white/[0.06] animate-fade-up">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-4">Select Tier</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-4">Pick a ticket</label>
               <div className="space-y-2">
                 {tiers.map((tier) => {
                   const tierSoldOut = tier.sold >= tier.quantity;
@@ -154,10 +160,10 @@ export default function CheckoutPage() {
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-semibold">{tier.name}</span>
-                        <span className="font-extrabold">{formatPrice(tier.price)}</span>
+                        <span className="font-bold">{formatPrice(tier.price)}</span>
                       </div>
                       <div className="text-xs text-text-dim mt-1">
-                        {tierSoldOut ? "Sold out" : `${tier.quantity - tier.sold} remaining`}
+                        {tierSoldOut ? "Sold out" : `${tier.quantity - tier.sold} left`}
                       </div>
                     </button>
                   );
@@ -168,7 +174,7 @@ export default function CheckoutPage() {
 
           {/* Quantity */}
           <div className="p-6 rounded-2xl bg-bg-card border border-white/[0.06] animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            <span className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-4">Quantity</span>
+            <span className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-4">How many?</span>
             <div className="flex items-center gap-5">
               <button
                 type="button"
@@ -178,7 +184,7 @@ export default function CheckoutPage() {
               >
                 <Minus size={18} />
               </button>
-              <span className="text-3xl font-extrabold w-12 text-center" aria-live="polite">{quantity}</span>
+              <span className="text-3xl font-bold w-12 text-center" aria-live="polite">{quantity}</span>
               <button
                 type="button"
                 onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
@@ -187,7 +193,7 @@ export default function CheckoutPage() {
               >
                 <Plus size={18} />
               </button>
-              <span className="text-sm text-text-dim ml-2">Max {maxQty}</span>
+              <span className="text-sm text-text-dim ml-2">Max {maxQty} per order</span>
             </div>
           </div>
 
@@ -204,7 +210,7 @@ export default function CheckoutPage() {
               className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent transition-colors"
             />
             <p className="text-xs text-text-dim mt-2 flex items-center gap-1.5">
-              <Ticket size={12} /> QR code tickets will be sent to this email
+              <Ticket size={12} /> We&apos;ll send your QR tickets here
             </p>
           </div>
 
@@ -218,7 +224,7 @@ export default function CheckoutPage() {
             </div>
             <div className="border-t border-white/[0.06] pt-4 mt-2 flex justify-between items-center">
               <span className="font-bold text-lg">Total</span>
-              <span className="font-extrabold text-2xl text-accent">{formatPrice(total)}</span>
+              <span className="font-bold text-2xl text-accent">{formatPrice(total)}</span>
             </div>
           </div>
 
@@ -226,18 +232,18 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-accent text-white font-semibold text-base rounded-xl transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2 animate-fade-up"
+            className="w-full py-4 bg-accent text-white font-semibold text-base rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2 animate-fade-up"
             style={{ animationDelay: "0.4s" }}
           >
             <Lock size={16} />
-            {loading ? "Processing..." : `Pay ${formatPrice(total)}`}
+            {loading ? "Hold tight..." : `Pay ${formatPrice(total)}`}
           </button>
 
           {/* Trust signals */}
           <div className="flex items-center justify-center gap-6 text-xs text-text-dim animate-fade-up" style={{ animationDelay: "0.5s" }}>
-            <span className="flex items-center gap-1.5"><Shield size={13} /> Secure payment</span>
-            <span className="flex items-center gap-1.5"><Zap size={13} /> Instant delivery</span>
-            <span className="flex items-center gap-1.5"><Ticket size={13} /> QR code ticket</span>
+            <span className="flex items-center gap-1.5"><Shield size={13} /> Encrypted</span>
+            <span className="flex items-center gap-1.5"><Zap size={13} /> Instant</span>
+            <span className="flex items-center gap-1.5"><Ticket size={13} /> QR at the door</span>
           </div>
         </form>
       </div>

@@ -10,7 +10,7 @@ export function Footer() {
               <span className="font-[family-name:var(--font-display)] text-lg font-extrabold tracking-[-0.02em]">PULSETIX</span>
             </Link>
             <p className="text-text-dim text-sm leading-relaxed mb-6">
-              NYC&apos;s premier platform for exclusive nightlife experiences. Secure QR code tickets, instant delivery.
+              Tickets for NYC nights that matter. QR-coded. Delivered instant.
             </p>
             <div className="flex gap-3">
               <SocialLink href="https://instagram.com/pulsetixnyc" label="Instagram">
@@ -29,9 +29,9 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <h4 className="text-xs font-bold tracking-[2px] uppercase text-text mb-1">Platform</h4>
             <FooterLink href="/events">Browse Events</FooterLink>
-            <FooterLink href="/admin/create-event">Host an Event</FooterLink>
-            <FooterLink href="/promoter-signup">For Promoters</FooterLink>
-            <FooterLink href="/my-tickets">My Tickets</FooterLink>
+            <FooterLink href="/admin/create-event">Host Event</FooterLink>
+            <FooterLink href="/promoter-signup">Promoters</FooterLink>
+            <FooterLink href="/my-tickets">Your Tickets</FooterLink>
           </div>
 
           {/* Company */}
@@ -46,14 +46,14 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <h4 className="text-xs font-bold tracking-[2px] uppercase text-text mb-1">Legal</h4>
             <FooterLink href="/privacy">Privacy Policy</FooterLink>
-            <FooterLink href="/terms">Terms of Use</FooterLink>
+            <FooterLink href="/terms">Terms</FooterLink>
             <FooterLink href="/sms-consent">SMS Consent</FooterLink>
           </div>
         </div>
 
         <div className="border-t border-white/[0.04] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-text-muted">&copy; {new Date().getFullYear()} PulseTix. All rights reserved.</p>
-          <p className="text-xs text-text-muted">Secure ticketing powered by QR codes.</p>
+          <p className="text-xs text-text-muted">Made in NYC. Built for the night.</p>
         </div>
       </div>
     </footer>

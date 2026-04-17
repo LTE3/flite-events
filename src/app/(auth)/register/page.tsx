@@ -28,7 +28,7 @@ export default function RegisterPage() {
       if (authError) throw authError;
       setSuccess(true);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Registration failed");
+      setError(err instanceof Error ? err.message : "Couldn't create account. Try again.");
     } finally {
       setLoading(false);
     }
@@ -42,8 +42,8 @@ export default function RegisterPage() {
           <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle size={36} className="text-white" />
           </div>
-          <h1 className="text-2xl font-black mb-3">Check Your Email</h1>
-          <p className="text-text-dim mb-8">We sent a confirmation link to <span className="text-text font-medium">{email}</span></p>
+          <h1 className="text-2xl font-bold mb-3">Check your inbox</h1>
+          <p className="text-text-dim mb-8">Confirmation link sent to <span className="text-text font-medium">{email}</span>. Click it to get in.</p>
           <Link
             href="/login"
             className="inline-flex items-center gap-2 px-8 py-3 border border-white/[0.1] rounded-full text-sm font-medium hover:bg-white/[0.04] transition-all"
@@ -67,8 +67,8 @@ export default function RegisterPage() {
         </div>
 
         <div className="p-8 rounded-2xl bg-bg-card border border-white/[0.06]">
-          <h1 className="text-2xl font-black text-center mb-1">Create Account</h1>
-          <p className="text-text-dim text-sm text-center mb-7">Join PulseTix and discover events</p>
+          <h1 className="text-2xl font-bold text-center mb-1">Get in</h1>
+          <p className="text-text-dim text-sm text-center mb-7">One account. Every night out.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
@@ -110,22 +110,22 @@ export default function RegisterPage() {
                 required
                 minLength={8}
                 className="w-full bg-bg-elevated border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 transition-all duration-300"
-                placeholder="At least 8 characters"
+                placeholder="8+ characters"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-accent text-white font-semibold text-sm rounded-xl transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-accent text-white font-semibold text-sm rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
             >
-              {loading ? "Creating account..." : <>Create Account <ArrowRight size={16} /></>}
+              {loading ? "Setting up..." : <>Sign up <ArrowRight size={16} /></>}
             </button>
           </form>
         </div>
 
         <p className="text-center text-sm text-text-dim mt-6">
-          Already have an account?{" "}
-          <Link href="/login" className="text-accent font-semibold hover:underline">Sign In</Link>
+          Been here before?{" "}
+          <Link href="/login" className="text-accent font-semibold hover:underline">Sign in</Link>
         </p>
       </div>
     </div>

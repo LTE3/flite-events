@@ -46,7 +46,7 @@ export default function MyTicketsPage() {
               status: t.status as string,
               quantity: t.quantity as number,
               purchased_at: t.purchased_at as string,
-              event_title: event?.title || "Unknown Event",
+              event_title: event?.title || "Event unavailable",
               event_date: event?.date || "",
               event_time: event?.time || "",
               event_venue: event?.venue || "",
@@ -107,12 +107,12 @@ export default function MyTicketsPage() {
     return (
       <div className="px-6 py-10">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-extrabold mb-6">My Tickets</h1>
+          <h1 className="text-3xl font-bold mb-6">Your Tickets</h1>
           <div className="text-center py-20 bg-bg-card border border-white/[0.06] rounded-2xl">
             <QrCode size={48} className="mx-auto mb-4 text-text-dim" />
             <p className="text-lg font-semibold mb-2">No tickets yet</p>
-            <p className="text-text-dim text-sm mb-6">When you purchase tickets, they&apos;ll appear here with your QR codes.</p>
-            <a href="/events"><Button>Browse Events</Button></a>
+            <p className="text-text-dim text-sm mb-6">Find something for tonight.</p>
+            <a href="/events"><Button>See what&apos;s on</Button></a>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function MyTicketsPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-extrabold mb-6">My Tickets</h1>
+        <h1 className="text-3xl font-bold mb-6">Your Tickets</h1>
         <div className="space-y-4">
           {tickets.map((ticket) => (
             <div key={ticket.id} className="bg-bg-card border border-white/[0.06] rounded-2xl p-6 flex flex-col sm:flex-row gap-6">
@@ -140,11 +140,11 @@ export default function MyTicketsPage() {
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="font-bold text-lg">{ticket.event_title}</h3>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                    ticket.status === "valid" ? "bg-green-500/20 text-green-400" :
+                    ticket.status === "valid" ? "bg-success/20 text-success" :
                     ticket.status === "used" ? "bg-text-dim/20 text-text-dim" :
                     "bg-danger/20 text-danger"
                   }`}>
-                    {ticket.status}
+                    {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-text-dim mb-1">
@@ -154,9 +154,7 @@ export default function MyTicketsPage() {
                   <MapPin size={14} /> {ticket.event_venue}
                 </div>
                 <div className="flex items-center gap-2 text-xs text-text-dim">
-                  <span>Qty: {ticket.quantity}</span>
-                  <span>&bull;</span>
-                  <span>ID: {ticket.qr_code.slice(0, 8)}...</span>
+                  <span>{ticket.quantity} {ticket.quantity === 1 ? "ticket" : "tickets"}</span>
                 </div>
               </div>
 
@@ -170,7 +168,7 @@ export default function MyTicketsPage() {
                   disabled={!ticket.qr_data_url}
                   aria-label={`Download QR code for ${ticket.event_title}`}
                 >
-                  <Download size={14} /> Save
+                  <Download size={14} /> Download
                 </Button>
               </div>
             </div>

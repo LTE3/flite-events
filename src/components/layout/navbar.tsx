@@ -56,7 +56,7 @@ export function Navbar() {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 text-text hover:text-accent transition-colors"
-            aria-label="Menu"
+            aria-label="Menu" aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -70,7 +70,7 @@ export function Navbar() {
         }`}
         style={{ paddingTop: "72px" }}
       >
-        <div className="flex flex-col p-8 gap-2">
+        <div className="flex flex-col p-8 gap-2 overflow-y-auto">
           <MobileLink href="/events" onClick={() => setMobileOpen(false)}>Events</MobileLink>
           <MobileLink href="/promoter-signup" onClick={() => setMobileOpen(false)}>Promoters</MobileLink>
           <MobileLink href="#about" onClick={() => setMobileOpen(false)}>About</MobileLink>

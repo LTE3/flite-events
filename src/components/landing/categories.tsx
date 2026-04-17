@@ -77,7 +77,7 @@ export function Categories() {
                   src={cat.image}
                   alt={cat.name}
                   fill
-                  className="object-cover transition-all duration-700 group-hover:scale-115 saturate-[1.2]"
+                  className="object-cover transition-all duration-700 group-hover:scale-110 saturate-[1.2]"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />

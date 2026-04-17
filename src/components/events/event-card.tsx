@@ -49,12 +49,12 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
 
         {/* Status badges */}
         {sellingFast && (
-          <span className="absolute top-3.5 left-[calc(3.5rem+var(--badge-w,5rem))] px-3 py-1 bg-gradient-to-r from-orange-500 to-rose-500 rounded-full text-[11px] font-bold tracking-wider uppercase animate-pulse">
+          <span className="absolute top-12 left-3.5 sm:top-3.5 sm:left-28 px-3 py-1 bg-warning rounded-full text-[11px] font-bold tracking-wider uppercase">
             Selling Fast
           </span>
         )}
         {soldOut && (
-          <span className="absolute top-3.5 right-14 px-3 py-1 bg-red-600/90 rounded-full text-[11px] font-bold tracking-wider uppercase">
+          <span className="absolute top-3.5 right-14 px-3 py-1 bg-danger/90 rounded-full text-[11px] font-bold tracking-wider uppercase">
             Sold Out
           </span>
         )}
@@ -62,14 +62,14 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
         {/* Save button */}
         <button
           onClick={(e) => { e.preventDefault(); setSaved(!saved); }}
-          className={`absolute top-3.5 right-3.5 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+          className={`absolute top-3.5 right-3.5 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 ${
             saved
-              ? "bg-pink-500/30 backdrop-blur-sm"
+              ? "bg-accent/30 backdrop-blur-sm"
               : "bg-black/30 backdrop-blur-sm hover:bg-white/20"
           }`}
-          aria-label="Save"
+          aria-label={saved ? "Unsave event" : "Save event"}
         >
-          <Heart size={16} className={saved ? "fill-pink-500 text-pink-500" : "text-white"} />
+          <Heart size={16} className={saved ? "fill-accent text-accent" : "text-white"} />
         </button>
 
         {/* Bottom info overlay */}
@@ -98,7 +98,7 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
 
         <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
           <div>
-            <span className="text-lg font-black">{formatPrice(event.price)}</span>
+            <span className="text-lg font-bold">{formatPrice(event.price)}</span>
             {event.price > 0 && <span className="text-xs text-text-dim ml-1">/ ticket</span>}
           </div>
 

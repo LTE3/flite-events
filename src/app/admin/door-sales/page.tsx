@@ -90,7 +90,7 @@ export default function DoorSalesPage() {
 
       setSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create ticket");
+      setError(err instanceof Error ? err.message : "Sale didn't go through. Try again.");
     } finally {
       setLoading(false);
     }
@@ -102,8 +102,8 @@ export default function DoorSalesPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-extrabold mb-2">Door Sales</h1>
-        <p className="text-text-dim mb-8">Manually create tickets for walk-up attendees</p>
+        <h1 className="text-3xl font-bold mb-2">Door Sales</h1>
+        <p className="text-text-dim mb-8">Sell at the door. Fast.</p>
 
         {error && (
           <div className="mb-6 p-4 bg-danger/10 border border-danger/30 rounded-xl text-sm text-danger">{error}</div>
@@ -114,7 +114,7 @@ export default function DoorSalesPage() {
             <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-white font-bold">
               ✓
             </div>
-            <p className="font-bold text-lg mb-2">Ticket Created!</p>
+            <p className="font-bold text-lg mb-2">They&apos;re in.</p>
             <p className="text-text-dim text-sm mb-6">QR code sent to {email}</p>
             <Button onClick={() => { setSuccess(false); setEmail(""); setQuantity(1); setError(""); }}>
               Create Another
@@ -138,7 +138,7 @@ export default function DoorSalesPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="ds-email" className="block text-sm font-medium mb-1.5">Attendee Email</label>
+              <label htmlFor="ds-email" className="block text-sm font-medium mb-1.5">Guest Email</label>
               <input
                 id="ds-email"
                 type="email"
@@ -146,7 +146,7 @@ export default function DoorSalesPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
-                placeholder="attendee@email.com"
+                placeholder="guest@email.com"
               />
             </div>
             <div>
@@ -163,7 +163,7 @@ export default function DoorSalesPage() {
             </div>
             <Button type="submit" disabled={loading || !selectedEvent} className="w-full justify-center" size="lg">
               <ShoppingBag size={16} className="mr-2" />
-              {loading ? "Creating..." : "Create Door Ticket"}
+              {loading ? "Selling..." : "Sell ticket"}
             </Button>
           </form>
         )}

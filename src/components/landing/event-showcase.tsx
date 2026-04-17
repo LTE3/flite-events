@@ -12,7 +12,7 @@ function LargeEventCard({ event }: { event: Event }) {
   return (
     <Link
       href={`/events/${event.slug}`}
-      className="group relative flex-shrink-0 w-[85vw] sm:w-[60vw] lg:w-[45vw] h-[500px] rounded-2xl overflow-hidden border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500"
+      className="group relative flex-shrink-0 w-[85vw] sm:w-[60vw] lg:w-[45vw] h-[420px] sm:h-[500px] rounded-2xl overflow-hidden border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500"
     >
       <Image
         src={event.image_url}
@@ -25,7 +25,7 @@ function LargeEventCard({ event }: { event: Event }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
       {/* Content at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 p-8">
+      <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8">
         <div className="flex items-center gap-3 mb-3">
           <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-[11px] font-semibold tracking-[1.5px] uppercase border border-white/10">
             {event.category}
