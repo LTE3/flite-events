@@ -13,7 +13,7 @@ Live at: https://flite-events.vercel.app
 - Tailwind CSS v4 (`@theme inline` in globals.css, NO tailwind.config.ts)
 - Framer Motion, Lenis smooth scrolling
 - Fonts: **Bricolage Grotesque** (display) + **Albert Sans** (body) via `next/font/google`
-- Single accent color: `#FF4D4D` (electric coral)
+- Single accent color: `#2DD4BF` (teal)
 
 ## Design Context
 See `.impeccable.md` for full design context. Key points:
@@ -69,7 +69,7 @@ Many files modified/added/deleted. Changes span all phases above.
 ## Rules
 - Don't ask "want me to continue?" — just keep working
 - Use the installed skills (`/audit`, `/impeccable craft`, etc.)
-- Dark theme only. Single accent color (#FF4D4D). No gradients on text.
+- Dark theme only. Single accent color (#2DD4BF). No gradients on text.
 - Fonts: Bricolage Grotesque (display) + Albert Sans (body) — do NOT change these
 - `@theme inline` in globals.css — no tailwind.config.ts file
 - Supabase data with sample data fallback for all pages

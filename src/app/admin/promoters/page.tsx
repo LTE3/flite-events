@@ -104,7 +104,7 @@ export default function AdminPromotersPage() {
               onClick={() => setFilter(f)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filter === f
-                  ? "bg-accent text-white"
+                  ? "bg-accent text-black"
                   : "bg-bg-card border border-white/[0.06] text-text-dim hover:text-text"
               }`}
             >

@@ -53,7 +53,7 @@ export function AIChatbot() {
         className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-accent rounded-full flex items-center justify-center shadow-lg shadow-accent/30 hover:scale-105 transition-transform"
         aria-label={open ? "Close chat" : "Open chat"}
       >
-        {open ? <X size={22} className="text-white" /> : <MessageCircle size={22} className="text-white" />}
+        {open ? <X size={22} className="text-black" /> : <MessageCircle size={22} className="text-black" />}
       </button>
 
       {/* Chat window */}
@@ -62,11 +62,11 @@ export function AIChatbot() {
           {/* Header */}
           <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-3 bg-accent">
             <div className="w-8 h-8 rounded-full bg-black/20 flex items-center justify-center">
-              <MessageCircle size={16} className="text-white" />
+              <MessageCircle size={16} className="text-black" />
             </div>
             <div>
-              <p className="font-bold text-sm text-white">PulseTix AI</p>
-              <p className="text-xs text-white/60">Your night, handled.</p>
+              <p className="font-bold text-sm text-black">PulseTix AI</p>
+              <p className="text-xs text-black/60">Your night, handled.</p>
             </div>
           </div>
 
@@ -77,7 +77,7 @@ export function AIChatbot() {
                 <div
                   className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm ${
                     msg.role === "user"
-                      ? "bg-accent text-white rounded-br-sm"
+                      ? "bg-accent text-black rounded-br-sm"
                       : "bg-bg-elevated text-text rounded-bl-sm"
                   }`}
                 >
@@ -116,7 +116,7 @@ export function AIChatbot() {
               aria-label="Send message"
               className="w-11 h-11 bg-accent rounded-xl flex items-center justify-center disabled:opacity-50 transition-opacity"
             >
-              <Send size={16} className="text-white" />
+              <Send size={16} className="text-black" />
             </button>
           </form>
         </div>

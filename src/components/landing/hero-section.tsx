@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
@@ -40,16 +39,21 @@ export function HeroSection() {
       ref={ref}
       className="relative h-[100dvh] min-h-[600px] flex items-center overflow-hidden"
     >
-      {/* Background: single image with parallax */}
+      {/* Background: looping video with parallax */}
       <motion.div className="absolute inset-0" style={{ y: bgY }}>
-        <Image
-          src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80"
-          alt="NYC Nightlife"
-          fill
-          sizes="100vw"
-          className="object-cover"
-          priority
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4"
+            type="video/mp4"
+          />
+        </video>
       </motion.div>
 
       {/* Gradient overlays */}
@@ -107,7 +111,7 @@ export function HeroSection() {
           >
             <Link
               href="/events"
-              className="group inline-flex items-center gap-2 bg-accent text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2 bg-accent text-black font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5"
             >
               Browse Events
               <ArrowRight

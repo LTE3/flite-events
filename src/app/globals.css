@@ -8,9 +8,9 @@
   --color-text: #EDEBE8;
   --color-text-dim: #9A9692;
   --color-text-muted: #46423E;
-  --color-accent: #E0A832;
+  --color-accent: #2DD4BF;
   --color-success: #6ee7a0;
-  --color-warning: #F97316;
+  --color-warning: #e5a06e;
   --color-danger: #ff4d6a;
   --color-border: rgba(255, 255, 255, 0.08);
   --font-sans: "Albert Sans", system-ui, sans-serif;
@@ -50,7 +50,7 @@ body::after {
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, #E0A832 0%, #D4943A 100%);
+  background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
 }
 
 /* ========== Surface cards ========== */
@@ -76,15 +76,15 @@ body::after {
 
 /* ========== Glow — accent color only ========== */
 .glow-accent {
-  box-shadow: 0 0 30px -5px rgba(224, 168, 50, 0.4);
+  box-shadow: 0 0 30px -5px rgba(45, 212, 191, 0.4);
 }
 
 .glow-accent-sm {
-  box-shadow: 0 0 20px -5px rgba(224, 168, 50, 0.3);
+  box-shadow: 0 0 20px -5px rgba(45, 212, 191, 0.3);
 }
 
 .glow-accent-hover:hover {
-  box-shadow: 0 0 40px -5px rgba(224, 168, 50, 0.5);
+  box-shadow: 0 0 40px -5px rgba(45, 212, 191, 0.5);
 }
 
 /* ========== Scrollbar hide ========== */
@@ -140,7 +140,7 @@ body::after {
 
 /* ========== Custom selection ========== */
 ::selection {
-  background: rgba(224, 168, 50, 0.35);
+  background: rgba(45, 212, 191, 0.35);
   color: white;
 }
 

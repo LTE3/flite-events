@@ -138,7 +138,7 @@ export default function ScannerPage() {
             aria-selected={tab === "qr"}
             onClick={() => { setTab("qr"); }}
             className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
-              tab === "qr" ? "bg-accent text-white" : "text-text-dim hover:text-text"
+              tab === "qr" ? "bg-accent text-black" : "text-text-dim hover:text-text"
             }`}
           >
             <ScanLine size={16} /> QR Scanner
@@ -148,7 +148,7 @@ export default function ScannerPage() {
             aria-selected={tab === "guest"}
             onClick={() => { setTab("guest"); stopCamera(); }}
             className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
-              tab === "guest" ? "bg-accent text-white" : "text-text-dim hover:text-text"
+              tab === "guest" ? "bg-accent text-black" : "text-text-dim hover:text-text"
             }`}
           >
             <ClipboardList size={16} /> Guest List

@@ -40,7 +40,7 @@ export async function sendTicketEmail({
 <body style="margin:0;padding:0;background:#000;font-family:'Inter',Arial,sans-serif;color:#fff;">
   <div style="max-width:500px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
-      <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.5px;color:#E0A832;margin:0;">PULSETIX</h1>
+      <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.5px;color:#2DD4BF;margin:0;">PULSETIX</h1>
     </div>
 
     <div style="background:#111;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;margin-bottom:24px;">

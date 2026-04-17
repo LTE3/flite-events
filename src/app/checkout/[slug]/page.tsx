@@ -230,7 +230,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-accent text-white font-semibold text-base rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2 animate-fade-up"
+            className="w-full py-4 bg-accent text-black font-semibold text-base rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2 animate-fade-up"
             style={{ animationDelay: "0.4s" }}
           >
             <Lock size={16} />

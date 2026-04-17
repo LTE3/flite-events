@@ -263,7 +263,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                     className={`flex items-center justify-center gap-2 w-full py-5 text-center font-bold text-base rounded-full transition-all duration-300 ${
                       soldOut
                         ? "bg-white/[0.06] text-text-dim cursor-not-allowed"
-                        : "bg-accent text-white hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40"
+                        : "bg-accent text-black hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40"
                     }`}
                   >
                     {soldOut ? (

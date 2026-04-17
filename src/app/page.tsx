@@ -109,7 +109,7 @@ export default async function Home() {
                   <div className="flex flex-wrap items-center gap-4">
                     <Link
                       href="/admin/create-event"
-                      className="group px-8 py-4 bg-accent text-white font-semibold rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 flex items-center gap-2"
+                      className="group px-8 py-4 bg-accent text-black font-semibold rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 flex items-center gap-2"
                     >
                       Host Event <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                     </Link>

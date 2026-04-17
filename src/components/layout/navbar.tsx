@@ -56,7 +56,7 @@ export function Navbar() {
             </Link>
             <Link
               href="/admin/create-event"
-              className="px-5 py-2 bg-accent text-white text-sm font-semibold rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5"
+              className="px-5 py-2 bg-accent text-black text-sm font-semibold rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5"
             >
               Host Event
             </Link>
@@ -85,7 +85,7 @@ export function Navbar() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(circle at 50% 50%, rgba(224,168,50,0.18) 0%, rgba(224,168,50,0.05) 30%, transparent 65%)",
+              "radial-gradient(circle at 50% 50%, rgba(45,212,191,0.18) 0%, rgba(45,212,191,0.05) 30%, transparent 65%)",
           }}
         />
 
@@ -105,7 +105,7 @@ export function Navbar() {
           <Link
             href="/admin/create-event"
             onClick={() => setMobileOpen(false)}
-            className="mt-4 px-8 py-3 bg-accent text-white text-base font-semibold rounded-full"
+            className="mt-4 px-8 py-3 bg-accent text-black text-base font-semibold rounded-full"
           >
             Host Event
           </Link>

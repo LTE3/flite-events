@@ -122,7 +122,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-accent text-white font-semibold text-sm rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-accent text-black font-semibold text-sm rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
             >
               {loading ? "Setting up..." : <>Sign up <ArrowRight size={16} /></>}
             </button>
