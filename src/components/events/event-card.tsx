@@ -49,7 +49,7 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
 
         {/* Status badges */}
         {sellingFast && (
-          <span className="absolute top-12 left-3.5 sm:top-3.5 sm:left-28 px-3 py-1 bg-warning rounded-full text-[11px] font-bold tracking-wider uppercase">
+          <span className="absolute top-12 left-3.5 sm:top-3.5 sm:left-28 px-3 py-1 bg-accent rounded-full text-[11px] font-bold tracking-wider uppercase">
             Selling Fast
           </span>
         )}

@@ -11,42 +11,36 @@ const categories = [
     desc: "After-hours & underground",
     image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80",
     href: "/events?category=nightlife",
-    accent: "from-purple-500 to-indigo-600",
   },
   {
     name: "MUSIC",
     desc: "Live shows & DJ sets",
     image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80",
     href: "/events?category=music",
-    accent: "from-pink-500 to-rose-600",
   },
   {
     name: "FITNESS",
     desc: "Yoga, runs & wellness",
     image: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&q=80",
     href: "/events?category=fitness",
-    accent: "from-emerald-500 to-teal-600",
   },
   {
     name: "FOOD & DRINK",
     desc: "Markets, tastings & dinners",
     image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80",
     href: "/events?category=food_drink",
-    accent: "from-amber-500 to-orange-600",
   },
   {
     name: "CONNECTIONS",
     desc: "Socials & meetups",
     image: "https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=600&q=80",
     href: "/events?category=connections",
-    accent: "from-cyan-500 to-blue-600",
   },
   {
     name: "COMEDY",
     desc: "Stand-up & improv",
     image: "https://images.unsplash.com/photo-1585699324551-f6c309eedeca?w=600&q=80",
     href: "/events?category=comedy",
-    accent: "from-yellow-500 to-amber-600",
   },
 ];
 
@@ -81,10 +75,10 @@ export function Categories() {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                <div className={`absolute inset-0 bg-gradient-to-t ${cat.accent} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+                <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Glow line on hover */}
-                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${cat.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h3 className="font-[family-name:var(--font-display)] font-bold text-sm tracking-[3px] mb-1">{cat.name}</h3>
