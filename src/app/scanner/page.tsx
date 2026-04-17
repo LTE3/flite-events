@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ScanLine, CheckCircle, XCircle, Camera, ClipboardList, Search } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { ScanLine, CheckCircle, XCircle, Camera, ClipboardList, Search, CameraOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Event, GuestListEntry } from "@/lib/types";
 
@@ -14,6 +14,10 @@ export default function ScannerPage() {
   const [code, setCode] = useState("");
   const [result, setResult] = useState<{ valid: boolean; message: string } | null>(null);
   const [scanning, setScanning] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [cameraError, setCameraError] = useState("");
+  const scannerRef = useRef<HTMLDivElement>(null);
+  const html5ScannerRef = useRef<unknown>(null);
 
   // Guest list state
   const [events, setEvents] = useState<Event[]>([]);
@@ -35,16 +39,14 @@ export default function ScannerPage() {
       .finally(() => setGuestLoading(false));
   }, [selectedEvent]);
 
-  async function handleScan(e: React.FormEvent) {
-    e.preventDefault();
+  const validateCode = useCallback(async (qrCode: string) => {
     setScanning(true);
     setResult(null);
-
     try {
       const res = await fetch("/api/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ qr_code: code }),
+        body: JSON.stringify({ qr_code: qrCode }),
       });
       const data = await res.json();
       setResult({ valid: data.valid, message: data.message });
@@ -53,6 +55,56 @@ export default function ScannerPage() {
     } finally {
       setScanning(false);
     }
+  }, []);
+
+  async function startCamera() {
+    setCameraError("");
+    try {
+      const { Html5Qrcode } = await import("html5-qrcode");
+      if (!scannerRef.current) return;
+
+      const scanner = new Html5Qrcode("qr-reader");
+      html5ScannerRef.current = scanner;
+
+      await scanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => {
+          scanner.stop().catch(() => {});
+          html5ScannerRef.current = null;
+          setCameraActive(false);
+          setCode(decodedText);
+          validateCode(decodedText);
+        },
+        () => {},
+      );
+      setCameraActive(true);
+    } catch (err) {
+      setCameraError(
+        err instanceof Error && err.message.includes("Permission")
+          ? "Camera access denied. Please allow camera permissions."
+          : "Could not start camera. Try manual entry instead."
+      );
+    }
+  }
+
+  async function stopCamera() {
+    try {
+      const scanner = html5ScannerRef.current as { stop: () => Promise<void> } | null;
+      if (scanner) await scanner.stop();
+    } catch { /* already stopped */ }
+    html5ScannerRef.current = null;
+    setCameraActive(false);
+  }
+
+  useEffect(() => {
+    return () => { stopCamera(); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function handleScan(e: React.FormEvent) {
+    e.preventDefault();
+    await validateCode(code);
   }
 
   async function checkInGuest(entry: GuestListEntry) {
@@ -76,13 +128,15 @@ export default function ScannerPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-lg mx-auto">
-        <h1 className="text-3xl font-800 text-center mb-2">Door Check-In</h1>
+        <h1 className="text-3xl font-extrabold text-center mb-2">Door Check-In</h1>
         <p className="text-text-dim text-center mb-6">Scan tickets or check guest list</p>
 
         {/* Tabs */}
-        <div className="flex gap-1 p-1 bg-bg-card border border-white/[0.06] rounded-xl mb-8">
+        <div className="flex gap-1 p-1 bg-bg-card border border-white/[0.06] rounded-xl mb-8" role="tablist">
           <button
-            onClick={() => setTab("qr")}
+            role="tab"
+            aria-selected={tab === "qr"}
+            onClick={() => { setTab("qr"); }}
             className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
               tab === "qr" ? "bg-accent text-white" : "text-text-dim hover:text-text"
             }`}
@@ -90,7 +144,9 @@ export default function ScannerPage() {
             <ScanLine size={16} /> QR Scanner
           </button>
           <button
-            onClick={() => setTab("guest")}
+            role="tab"
+            aria-selected={tab === "guest"}
+            onClick={() => { setTab("guest"); stopCamera(); }}
             className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
               tab === "guest" ? "bg-accent text-white" : "text-text-dim hover:text-text"
             }`}
@@ -101,18 +157,44 @@ export default function ScannerPage() {
 
         {tab === "qr" ? (
           <>
-            {/* Camera placeholder */}
-            <div className="aspect-square bg-bg-card border border-white/[0.06] rounded-2xl flex flex-col items-center justify-center mb-6">
-              <Camera size={64} className="text-text-dim mb-4" />
-              <p className="text-text-dim text-sm mb-1">Camera scanner</p>
-              <p className="text-text-dim/60 text-xs">Will use device camera when connected to Supabase</p>
+            {/* Camera scanner */}
+            <div className="aspect-square bg-bg-card border border-white/[0.06] rounded-2xl flex flex-col items-center justify-center mb-6 overflow-hidden relative">
+              <div id="qr-reader" ref={scannerRef} className={cameraActive ? "w-full h-full" : "hidden"} />
+              {!cameraActive && (
+                <div className="flex flex-col items-center justify-center p-8">
+                  {cameraError ? (
+                    <>
+                      <CameraOff size={48} className="text-text-dim mb-4" />
+                      <p className="text-text-dim text-sm text-center mb-4">{cameraError}</p>
+                      <Button size="sm" variant="outline" onClick={startCamera}>Try Again</Button>
+                    </>
+                  ) : (
+                    <>
+                      <Camera size={48} className="text-text-dim mb-4" />
+                      <p className="text-text-dim text-sm mb-4">Tap to activate camera</p>
+                      <Button size="sm" onClick={startCamera}>
+                        <Camera size={14} className="mr-2" /> Start Camera
+                      </Button>
+                    </>
+                  )}
+                </div>
+              )}
+              {cameraActive && (
+                <button
+                  onClick={stopCamera}
+                  className="absolute top-3 right-3 px-3 py-1.5 bg-black/60 rounded-lg text-xs font-medium hover:bg-black/80 transition-colors"
+                >
+                  Stop
+                </button>
+              )}
             </div>
 
             {/* Manual entry */}
             <form onSubmit={handleScan} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5">Or enter code manually</label>
+                <label htmlFor="scan-code" className="block text-sm font-medium mb-1.5">Or enter code manually</label>
                 <input
+                  id="scan-code"
                   type="text"
                   value={code}
                   onChange={(e) => { setCode(e.target.value); setResult(null); }}
@@ -150,7 +232,9 @@ export default function ScannerPage() {
         ) : (
           <>
             {/* Event selector */}
+            <label htmlFor="scan-event" className="sr-only">Select event</label>
             <select
+              id="scan-event"
               value={selectedEvent}
               onChange={(e) => setSelectedEvent(e.target.value)}
               className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors mb-4"
@@ -166,7 +250,9 @@ export default function ScannerPage() {
                 {/* Search */}
                 <div className="relative mb-4">
                   <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-dim" />
+                  <label htmlFor="scan-guest-search" className="sr-only">Search guest name</label>
                   <input
+                    id="scan-guest-search"
                     value={guestSearch}
                     onChange={(e) => setGuestSearch(e.target.value)}
                     placeholder="Search guest name..."
@@ -197,13 +283,14 @@ export default function ScannerPage() {
                         key={guest.id}
                         onClick={() => !guest.checked_in && checkInGuest(guest)}
                         disabled={guest.checked_in}
+                        aria-label={guest.checked_in ? `${guest.name} already checked in` : `Check in ${guest.name}`}
                         className={`w-full flex items-center gap-4 p-4 rounded-xl border text-left transition-all ${
                           guest.checked_in
                             ? "bg-green-400/5 border-green-400/20"
                             : "bg-bg-card border-white/[0.06] hover:border-accent/30 active:scale-[0.98]"
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                        <div className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 ${
                           guest.checked_in ? "bg-green-400 text-black" : "bg-white/[0.06] text-text-dim"
                         }`}>
                           <CheckCircle size={18} />

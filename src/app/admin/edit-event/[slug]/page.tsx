@@ -100,7 +100,7 @@ export default function EditEventPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-800 mb-2">Edit Event</h1>
+        <h1 className="text-3xl font-extrabold mb-2">Edit Event</h1>
         <p className="text-text-dim text-sm mb-8">
           {event.tickets_total - event.tickets_left} tickets sold &middot; {formatPrice(event.price * (event.tickets_total - event.tickets_left))} revenue
         </p>
@@ -111,8 +111,9 @@ export default function EditEventPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-1.5">Event Title</label>
+            <label htmlFor="ee-title" className="block text-sm font-medium mb-1.5">Event Title</label>
             <input
+              id="ee-title"
               name="title"
               defaultValue={event.title}
               required
@@ -120,8 +121,9 @@ export default function EditEventPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5">Description</label>
+            <label htmlFor="ee-desc" className="block text-sm font-medium mb-1.5">Description</label>
             <textarea
+              id="ee-desc"
               name="description"
               defaultValue={event.description}
               rows={4}
@@ -130,8 +132,9 @@ export default function EditEventPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1.5">Date</label>
+              <label htmlFor="ee-date" className="block text-sm font-medium mb-1.5">Date</label>
               <input
+                id="ee-date"
                 name="date"
                 type="date"
                 defaultValue={event.date}
@@ -140,8 +143,9 @@ export default function EditEventPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Start Time</label>
+              <label htmlFor="ee-time" className="block text-sm font-medium mb-1.5">Start Time</label>
               <input
+                id="ee-time"
                 name="time"
                 type="time"
                 defaultValue={event.time}
@@ -150,8 +154,9 @@ export default function EditEventPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">End Time</label>
+              <label htmlFor="ee-endtime" className="block text-sm font-medium mb-1.5">End Time</label>
               <input
+                id="ee-endtime"
                 name="end_time"
                 type="time"
                 defaultValue={event.end_time}
@@ -161,8 +166,9 @@ export default function EditEventPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1.5">Venue</label>
+              <label htmlFor="ee-venue" className="block text-sm font-medium mb-1.5">Venue</label>
               <input
+                id="ee-venue"
                 name="venue"
                 defaultValue={event.venue}
                 required
@@ -170,8 +176,9 @@ export default function EditEventPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Price ($)</label>
+              <label htmlFor="ee-price" className="block text-sm font-medium mb-1.5">Price ($)</label>
               <input
+                id="ee-price"
                 name="price"
                 type="number"
                 step="0.01"
@@ -181,8 +188,9 @@ export default function EditEventPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Total Tickets</label>
+              <label htmlFor="ee-tickets" className="block text-sm font-medium mb-1.5">Total Tickets</label>
               <input
+                id="ee-tickets"
                 name="tickets_total"
                 type="number"
                 defaultValue={event.tickets_total}

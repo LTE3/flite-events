@@ -86,7 +86,7 @@ export default async function Home() {
               <div className="max-w-7xl mx-auto px-6 w-full">
                 <div className="max-w-2xl">
                   <p className="text-xs font-semibold uppercase tracking-[4px] text-accent mb-6">For Event Creators</p>
-                  <h2 className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl lg:text-7xl font-800 leading-[0.9] mb-6 tracking-[-0.02em]">
+                  <h2 className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[0.9] mb-6 tracking-[-0.02em]">
                     Build community.
                     <br />
                     <span className="accent-text">Not a guest list.</span>

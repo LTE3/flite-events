@@ -91,7 +91,7 @@ export function HeroSection() {
           </motion.div>
 
           {/* Headline — Syne, left-aligned, massive */}
-          <h1 className="font-[family-name:var(--font-display)] text-[clamp(3rem,8vw,7rem)] font-800 leading-[0.9] mb-6 tracking-[-0.02em]">
+          <h1 className="font-[family-name:var(--font-display)] text-[clamp(3rem,8vw,7rem)] font-extrabold leading-[0.9] mb-6 tracking-[-0.02em]">
             <AnimatedWord word="Don't" delay={0.4} />{" "}
             <AnimatedWord word="Just" delay={0.5} />{" "}
             <AnimatedWord word="Go" delay={0.6} />{" "}

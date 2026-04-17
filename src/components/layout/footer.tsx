@@ -7,7 +7,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="inline-block mb-4">
-              <span className="font-[family-name:var(--font-display)] text-lg font-800 tracking-[-0.02em]">PULSETIX</span>
+              <span className="font-[family-name:var(--font-display)] text-lg font-extrabold tracking-[-0.02em]">PULSETIX</span>
             </Link>
             <p className="text-text-dim text-sm leading-relaxed mb-6">
               NYC&apos;s premier platform for exclusive nightlife experiences. Secure QR code tickets, instant delivery.
@@ -38,7 +38,7 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <h4 className="text-xs font-bold tracking-[2px] uppercase text-text mb-1">Company</h4>
             <FooterLink href="#about">About</FooterLink>
-            <FooterLink href="#contact">Contact</FooterLink>
+            <FooterLink href="/contact">Contact</FooterLink>
             <FooterLink href="mailto:Pulsetixai@gmail.com">Support</FooterLink>
           </div>
 
@@ -52,8 +52,8 @@ export function Footer() {
         </div>
 
         <div className="border-t border-white/[0.04] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#444]">&copy; {new Date().getFullYear()} PulseTix. All rights reserved.</p>
-          <p className="text-xs text-[#444]">Secure ticketing powered by QR codes.</p>
+          <p className="text-xs text-text-muted">&copy; {new Date().getFullYear()} PulseTix. All rights reserved.</p>
+          <p className="text-xs text-text-muted">Secure ticketing powered by QR codes.</p>
         </div>
       </div>
     </footer>
@@ -75,7 +75,7 @@ function SocialLink({ href, label, children }: { href: string; label: string; ch
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-text-dim hover:text-text hover:bg-white/[0.08] hover:border-white/[0.12] transition-all duration-200"
+      className="w-11 h-11 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-text-dim hover:text-text hover:bg-white/[0.08] hover:border-white/[0.12] transition-all duration-200"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">{children}</svg>
     </a>

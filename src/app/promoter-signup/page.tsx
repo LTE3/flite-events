@@ -68,7 +68,7 @@ export default function PromoterSignupPage() {
           <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-white font-bold">
             ✓
           </div>
-          <h1 className="text-2xl font-800 mb-2">Application Submitted!</h1>
+          <h1 className="text-2xl font-extrabold mb-2">Application Submitted!</h1>
           <p className="text-text-dim mb-6">We&apos;ll review your application and get back to you within 24 hours.</p>
           <Link href="/events"><Button>Browse Events</Button></Link>
         </div>
@@ -81,7 +81,7 @@ export default function PromoterSignupPage() {
       <div className="max-w-4xl mx-auto">
         {/* Hero */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-800 mb-3">
+          <h1 className="text-4xl font-extrabold mb-3">
             Become a <span className="accent-text">Promoter</span>
           </h1>
           <p className="text-text-dim text-lg max-w-lg mx-auto">
@@ -110,8 +110,9 @@ export default function PromoterSignupPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5">First Name</label>
+                <label htmlFor="ps-fname" className="block text-sm font-medium mb-1.5">First Name</label>
                 <input
+                  id="ps-fname"
                   name="first_name"
                   required
                   className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
@@ -119,8 +120,9 @@ export default function PromoterSignupPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5">Last Name</label>
+                <label htmlFor="ps-lname" className="block text-sm font-medium mb-1.5">Last Name</label>
                 <input
+                  id="ps-lname"
                   name="last_name"
                   required
                   className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
@@ -129,8 +131,9 @@ export default function PromoterSignupPage() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Email</label>
+              <label htmlFor="ps-email" className="block text-sm font-medium mb-1.5">Email</label>
               <input
+                id="ps-email"
                 name="email"
                 type="email"
                 required
@@ -139,8 +142,9 @@ export default function PromoterSignupPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Phone</label>
+              <label htmlFor="ps-phone" className="block text-sm font-medium mb-1.5">Phone</label>
               <input
+                id="ps-phone"
                 name="phone"
                 type="tel"
                 required
@@ -149,16 +153,18 @@ export default function PromoterSignupPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Instagram Handle</label>
+              <label htmlFor="ps-ig" className="block text-sm font-medium mb-1.5">Instagram Handle</label>
               <input
+                id="ps-ig"
                 name="instagram"
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
                 placeholder="@yourhandle"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Why do you want to be a promoter?</label>
+              <label htmlFor="ps-reason" className="block text-sm font-medium mb-1.5">Why do you want to be a promoter?</label>
               <textarea
+                id="ps-reason"
                 name="reason"
                 rows={3}
                 className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors resize-none"

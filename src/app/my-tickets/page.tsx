@@ -14,6 +14,7 @@ interface TicketDisplay {
   event_date: string;
   event_time: string;
   event_venue: string;
+  qr_data_url: string | null;
 }
 
 export default function MyTicketsPage() {
@@ -37,7 +38,7 @@ export default function MyTicketsPage() {
           .order("purchased_at", { ascending: false });
 
         if (data) {
-          setTickets(data.map((t: Record<string, unknown>) => {
+          const mapped = data.map((t: Record<string, unknown>) => {
             const event = t.event as Record<string, string> | null;
             return {
               id: t.id as string,
@@ -49,8 +50,33 @@ export default function MyTicketsPage() {
               event_date: event?.date || "",
               event_time: event?.time || "",
               event_venue: event?.venue || "",
+              qr_data_url: null as string | null,
             };
-          }));
+          });
+          setTickets(mapped);
+
+          // Generate QR codes client-side
+          try {
+            const QRCode = (await import("qrcode")).default;
+            const withQR = await Promise.all(
+              mapped.map(async (ticket) => {
+                try {
+                  const url = await QRCode.toDataURL(ticket.qr_code, {
+                    width: 300,
+                    margin: 2,
+                    color: { dark: "#000000", light: "#ffffff" },
+                    errorCorrectionLevel: "M",
+                  });
+                  return { ...ticket, qr_data_url: url };
+                } catch {
+                  return ticket;
+                }
+              })
+            );
+            setTickets(withQR);
+          } catch {
+            // QR lib not available client-side, keep placeholder
+          }
         }
       } catch {
         // Not logged in or Supabase not configured
@@ -60,6 +86,14 @@ export default function MyTicketsPage() {
     }
     fetchTickets();
   }, []);
+
+  function downloadQR(ticket: TicketDisplay) {
+    if (!ticket.qr_data_url) return;
+    const link = document.createElement("a");
+    link.download = `pulsetix-ticket-${ticket.qr_code.slice(0, 8)}.png`;
+    link.href = ticket.qr_data_url;
+    link.click();
+  }
 
   if (loading) {
     return (
@@ -73,7 +107,7 @@ export default function MyTicketsPage() {
     return (
       <div className="px-6 py-10">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-800 mb-6">My Tickets</h1>
+          <h1 className="text-3xl font-extrabold mb-6">My Tickets</h1>
           <div className="text-center py-20 bg-bg-card border border-white/[0.06] rounded-2xl">
             <QrCode size={48} className="mx-auto mb-4 text-text-dim" />
             <p className="text-lg font-semibold mb-2">No tickets yet</p>
@@ -88,13 +122,17 @@ export default function MyTicketsPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-800 mb-6">My Tickets</h1>
+        <h1 className="text-3xl font-extrabold mb-6">My Tickets</h1>
         <div className="space-y-4">
           {tickets.map((ticket) => (
             <div key={ticket.id} className="bg-bg-card border border-white/[0.06] rounded-2xl p-6 flex flex-col sm:flex-row gap-6">
               {/* QR Code */}
-              <div className="w-32 h-32 bg-white rounded-xl flex items-center justify-center shrink-0 mx-auto sm:mx-0">
-                <QrCode size={80} className="text-black" />
+              <div className="w-32 h-32 bg-white rounded-xl flex items-center justify-center shrink-0 mx-auto sm:mx-0 overflow-hidden">
+                {ticket.qr_data_url ? (
+                  <img src={ticket.qr_data_url} alt={`QR code for ${ticket.event_title}`} className="w-full h-full" />
+                ) : (
+                  <QrCode size={80} className="text-black" />
+                )}
               </div>
 
               {/* Info */}
@@ -124,7 +162,14 @@ export default function MyTicketsPage() {
 
               {/* Actions */}
               <div className="flex sm:flex-col gap-2 shrink-0">
-                <Button size="sm" variant="outline" className="gap-1.5">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1.5"
+                  onClick={() => downloadQR(ticket)}
+                  disabled={!ticket.qr_data_url}
+                  aria-label={`Download QR code for ${ticket.event_title}`}
+                >
                   <Download size={14} /> Save
                 </Button>
               </div>

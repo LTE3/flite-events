@@ -89,9 +89,9 @@ export function AIChatbot() {
               <div className="flex justify-start">
                 <div className="bg-bg-elevated rounded-2xl rounded-bl-sm px-4 py-3">
                   <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-text-dim rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-2 h-2 bg-text-dim rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-2 h-2 bg-text-dim rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="w-2 h-2 bg-text-dim rounded-full animate-pulse" style={{ animationDelay: "0ms" }} />
+                    <span className="w-2 h-2 bg-text-dim rounded-full animate-pulse" style={{ animationDelay: "150ms" }} />
+                    <span className="w-2 h-2 bg-text-dim rounded-full animate-pulse" style={{ animationDelay: "300ms" }} />
                   </div>
                 </div>
               </div>
@@ -111,7 +111,8 @@ export function AIChatbot() {
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center disabled:opacity-50 transition-opacity"
+              aria-label="Send message"
+              className="w-11 h-11 bg-accent rounded-xl flex items-center justify-center disabled:opacity-50 transition-opacity"
             >
               <Send size={16} className="text-white" />
             </button>

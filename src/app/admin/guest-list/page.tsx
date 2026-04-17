@@ -99,13 +99,14 @@ export default function GuestListPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-800 mb-2">Guest List</h1>
+        <h1 className="text-3xl font-extrabold mb-2">Guest List</h1>
         <p className="text-text-dim mb-8">Manage guest list entries for your events</p>
 
         {/* Event selector */}
         <div className="mb-8">
-          <label className="block text-sm font-medium mb-1.5">Event</label>
+          <label htmlFor="gl-event" className="block text-sm font-medium mb-1.5">Event</label>
           <select
+            id="gl-event"
             value={selectedEvent}
             onChange={(e) => setSelectedEvent(e.target.value)}
             className="w-full bg-bg-elevated border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent transition-colors"
@@ -120,27 +121,28 @@ export default function GuestListPage() {
         {selectedEvent && (
           <>
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
               <div className="bg-bg-card border border-white/[0.06] rounded-xl p-4 text-center">
-                <p className="text-2xl font-800">{entries.length}</p>
+                <p className="text-2xl font-extrabold">{entries.length}</p>
                 <p className="text-xs text-text-dim">Total Guests</p>
               </div>
               <div className="bg-bg-card border border-white/[0.06] rounded-xl p-4 text-center">
-                <p className="text-2xl font-800 text-green-400">{checkedIn}</p>
+                <p className="text-2xl font-extrabold text-green-400">{checkedIn}</p>
                 <p className="text-xs text-text-dim">Checked In</p>
               </div>
               <div className="bg-bg-card border border-white/[0.06] rounded-xl p-4 text-center">
-                <p className="text-2xl font-800">{entries.reduce((s, e) => s + e.plus_ones, 0)}</p>
+                <p className="text-2xl font-extrabold">{entries.reduce((s, e) => s + e.plus_ones, 0)}</p>
                 <p className="text-xs text-text-dim">Plus Ones</p>
               </div>
             </div>
 
             {/* Add guest form */}
             <form onSubmit={addGuest} className="bg-bg-card border border-white/[0.06] rounded-xl p-5 mb-6">
-              <div className="grid grid-cols-[1fr_80px_1fr_auto] gap-3 items-end">
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_80px_1fr_auto] gap-3 items-end">
                 <div>
-                  <label className="block text-xs font-medium mb-1 text-text-dim">Name</label>
+                  <label htmlFor="gl-name" className="block text-xs font-medium mb-1 text-text-dim">Name</label>
                   <input
+                    id="gl-name"
                     value={guestName}
                     onChange={(e) => setGuestName(e.target.value)}
                     required
@@ -149,8 +151,9 @@ export default function GuestListPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1 text-text-dim">+Ones</label>
+                  <label htmlFor="gl-plusones" className="block text-xs font-medium mb-1 text-text-dim">+Ones</label>
                   <input
+                    id="gl-plusones"
                     type="number"
                     value={plusOnes}
                     onChange={(e) => setPlusOnes(Number(e.target.value))}
@@ -160,8 +163,9 @@ export default function GuestListPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1 text-text-dim">Note</label>
+                  <label htmlFor="gl-note" className="block text-xs font-medium mb-1 text-text-dim">Note</label>
                   <input
+                    id="gl-note"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     placeholder="Optional"
@@ -207,13 +211,14 @@ export default function GuestListPage() {
                   >
                     <button
                       onClick={() => toggleCheckIn(entry)}
-                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+                      aria-label={entry.checked_in ? `Undo check-in for ${entry.name}` : `Check in ${entry.name}`}
+                      className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                         entry.checked_in
                           ? "bg-green-400 text-black"
                           : "bg-white/[0.06] text-text-dim hover:bg-white/[0.1]"
                       }`}
                     >
-                      <CheckCircle size={16} />
+                      <CheckCircle size={18} />
                     </button>
                     <div className="flex-1 min-w-0">
                       <p className={`font-medium ${entry.checked_in ? "line-through text-text-dim" : ""}`}>
@@ -231,9 +236,10 @@ export default function GuestListPage() {
                     )}
                     <button
                       onClick={() => removeGuest(entry.id)}
-                      className="text-text-dim hover:text-danger transition-colors shrink-0"
+                      aria-label={`Remove ${entry.name}`}
+                      className="w-11 h-11 flex items-center justify-center text-text-dim hover:text-danger transition-colors shrink-0"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 ))}

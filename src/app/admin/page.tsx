@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { CalendarPlus, Ticket, Users, DollarSign, ScanLine, ShoppingBag, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { StatsSkeleton, TableSkeleton } from "@/components/ui/skeleton";
 import { useState, useEffect } from "react";
 import { formatPrice, formatDate } from "@/lib/utils";
 import type { Event } from "@/lib/types";
@@ -19,6 +20,7 @@ const quickActions = [
   { label: "QR Scanner", href: "/scanner", icon: ScanLine },
   { label: "Door Sales", href: "/admin/door-sales", icon: ShoppingBag },
   { label: "Guest List", href: "/admin/guest-list", icon: ClipboardList },
+  { label: "Promoters", href: "/admin/promoters", icon: Users },
 ];
 
 export default function AdminDashboard() {
@@ -57,7 +59,7 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-800">Admin Dashboard</h1>
+            <h1 className="text-3xl font-extrabold">Admin Dashboard</h1>
             <p className="text-text-dim mt-1">Manage your events, tickets, and promoters</p>
           </div>
           <Link href="/admin/create-event">
@@ -72,7 +74,7 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between mb-3">
                 <stat.icon size={22} className={stat.color} />
               </div>
-              <p className="text-2xl font-800">{stat.value}</p>
+              <p className="text-2xl font-extrabold">{stat.value}</p>
               <p className="text-sm text-text-dim">{stat.label}</p>
             </div>
           ))}
@@ -111,7 +113,7 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {!data ? (
-                  <tr><td colSpan={5} className="p-8 text-center text-text-dim">Loading...</td></tr>
+                  <tr><td colSpan={5} className="p-0"><TableSkeleton rows={4} /></td></tr>
                 ) : data.events.length === 0 ? (
                   <tr><td colSpan={5} className="p-8 text-center text-text-dim">No events yet. Create your first event!</td></tr>
                 ) : (

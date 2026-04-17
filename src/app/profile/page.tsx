@@ -59,7 +59,7 @@ export default function ProfilePage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-lg mx-auto">
-        <h1 className="text-3xl font-800 mb-8">Profile</h1>
+        <h1 className="text-3xl font-extrabold mb-8">Profile</h1>
 
         <div className="flex justify-center mb-8">
           <div className="w-24 h-24 rounded-full bg-bg-elevated border border-white/10 flex items-center justify-center">
@@ -69,8 +69,9 @@ export default function ProfilePage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5">Name</label>
+            <label htmlFor="prof-name" className="block text-sm font-medium mb-1.5">Name</label>
             <input
+              id="prof-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -79,8 +80,9 @@ export default function ProfilePage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5">Phone</label>
+            <label htmlFor="prof-phone" className="block text-sm font-medium mb-1.5">Phone</label>
             <input
+              id="prof-phone"
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}

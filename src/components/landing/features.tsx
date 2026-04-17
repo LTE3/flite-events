@@ -59,7 +59,7 @@ export function Features() {
         <ScrollReveal>
           <div className="mb-16">
             <p className="text-xs font-semibold uppercase tracking-[4px] text-accent mb-4">Platform</p>
-            <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-800 tracking-[-0.02em] mb-4">
+            <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.02em] mb-4">
               Everything You Need to <span className="accent-text">Run Events</span>
             </h2>
             <p className="text-text-dim max-w-lg text-lg">One platform. Zero compromises. Built for hosts who are serious about growing.</p>
@@ -101,7 +101,7 @@ export function Features() {
                   <f.icon size={14} /> {f.title}
                 </div>
 
-                <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-700 tracking-[-0.01em] mb-4">{f.headline}</h3>
+                <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-bold tracking-[-0.01em] mb-4">{f.headline}</h3>
                 <p className="text-text-dim leading-relaxed mb-8">{f.desc}</p>
 
                 <div className="flex flex-wrap gap-3">

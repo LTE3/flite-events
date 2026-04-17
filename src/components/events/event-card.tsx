@@ -43,7 +43,7 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
         <div className="absolute inset-0 bg-gradient-to-b from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         {/* Category badge */}
-        <span className="absolute top-3.5 left-3.5 px-3 py-1 glass-strong rounded-full text-[11px] font-bold tracking-wider uppercase">
+        <span className="absolute top-3.5 left-3.5 px-3 py-1 bg-black/60 border border-white/10 rounded-full text-[11px] font-bold tracking-wider uppercase">
           {categoryLabels[event.category] || event.category}
         </span>
 

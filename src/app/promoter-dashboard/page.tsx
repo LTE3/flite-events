@@ -82,7 +82,7 @@ export default function PromoterDashboardPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-800 mb-2">Promoter Dashboard</h1>
+        <h1 className="text-3xl font-extrabold mb-2">Promoter Dashboard</h1>
         <p className="text-text-dim mb-8">Track your sales and earnings</p>
 
         {/* Stats */}
@@ -90,7 +90,7 @@ export default function PromoterDashboardPage() {
           {stats.map((stat) => (
             <div key={stat.label} className="bg-bg-card border border-white/[0.06] rounded-2xl p-5">
               <stat.icon size={22} className={`${stat.color} mb-3`} />
-              <p className="text-2xl font-800">{stat.value}</p>
+              <p className="text-2xl font-extrabold">{stat.value}</p>
               <p className="text-sm text-text-dim">{stat.label}</p>
             </div>
           ))}

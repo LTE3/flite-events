@@ -111,7 +111,7 @@ export default function CheckoutPage() {
           <ArrowLeft size={16} /> Back to Event
         </Link>
 
-        <h1 className="text-3xl font-800 mb-8">Checkout</h1>
+        <h1 className="text-3xl font-extrabold mb-8">Checkout</h1>
 
         {/* Event summary */}
         <div className="flex gap-5 p-5 rounded-2xl bg-bg-card border border-white/[0.06] mb-8 animate-fade-up">
@@ -154,7 +154,7 @@ export default function CheckoutPage() {
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-semibold">{tier.name}</span>
-                        <span className="font-800">{formatPrice(tier.price)}</span>
+                        <span className="font-extrabold">{formatPrice(tier.price)}</span>
                       </div>
                       <div className="text-xs text-text-dim mt-1">
                         {tierSoldOut ? "Sold out" : `${tier.quantity - tier.sold} remaining`}
@@ -168,19 +168,21 @@ export default function CheckoutPage() {
 
           {/* Quantity */}
           <div className="p-6 rounded-2xl bg-bg-card border border-white/[0.06] animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-4">Quantity</label>
+            <span className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-4">Quantity</span>
             <div className="flex items-center gap-5">
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                aria-label="Decrease quantity"
                 className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.08] hover:border-white/[0.15] transition-all"
               >
                 <Minus size={18} />
               </button>
-              <span className="text-3xl font-800 w-12 text-center">{quantity}</span>
+              <span className="text-3xl font-extrabold w-12 text-center" aria-live="polite">{quantity}</span>
               <button
                 type="button"
                 onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
+                aria-label="Increase quantity"
                 className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.08] hover:border-white/[0.15] transition-all"
               >
                 <Plus size={18} />
@@ -191,8 +193,9 @@ export default function CheckoutPage() {
 
           {/* Email */}
           <div className="p-6 rounded-2xl bg-bg-card border border-white/[0.06] animate-fade-up" style={{ animationDelay: "0.2s" }}>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-3">Email for tickets</label>
+            <label htmlFor="checkout-email" className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-3">Email for tickets</label>
             <input
+              id="checkout-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -215,7 +218,7 @@ export default function CheckoutPage() {
             </div>
             <div className="border-t border-white/[0.06] pt-4 mt-2 flex justify-between items-center">
               <span className="font-bold text-lg">Total</span>
-              <span className="font-800 text-2xl text-accent">{formatPrice(total)}</span>
+              <span className="font-extrabold text-2xl text-accent">{formatPrice(total)}</span>
             </div>
           </div>
 

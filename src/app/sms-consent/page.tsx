@@ -2,7 +2,7 @@ export default function SmsConsentPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-800 mb-6">SMS Consent</h1>
+        <h1 className="text-3xl font-extrabold mb-6">SMS Consent</h1>
         <div className="text-text-dim space-y-4 text-sm leading-relaxed">
           <p>Last updated: April 2026</p>
           <h2 className="text-lg font-bold text-text mt-8">SMS Communications</h2>

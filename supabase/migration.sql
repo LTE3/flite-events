@@ -94,7 +94,35 @@ CREATE TRIGGER set_event_updated_at
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- ============================================================
--- 3. TICKETS
+-- 3. TICKET TIERS (must come before tickets for FK reference)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS ticket_tiers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  price INTEGER NOT NULL DEFAULT 0,  -- in cents
+  quantity INTEGER NOT NULL DEFAULT 100,
+  sold INTEGER NOT NULL DEFAULT 0,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Atomically increment sold count on a tier
+CREATE OR REPLACE FUNCTION increment_tier_sold(tier_id UUID, qty INTEGER)
+RETURNS VOID AS $$
+BEGIN
+  UPDATE ticket_tiers
+  SET sold = sold + qty
+  WHERE id = tier_id AND sold + qty <= quantity;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'Not enough tier tickets available';
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ============================================================
+-- 4. TICKETS
 -- ============================================================
 CREATE TABLE IF NOT EXISTS tickets (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -103,6 +131,8 @@ CREATE TABLE IF NOT EXISTS tickets (
   email TEXT NOT NULL,
   quantity INTEGER NOT NULL DEFAULT 1,
   qr_code TEXT NOT NULL UNIQUE DEFAULT gen_random_uuid()::text,
+  tier_id UUID REFERENCES ticket_tiers(id),
+  tier_name TEXT,
   status TEXT NOT NULL DEFAULT 'valid' CHECK (status IN ('valid', 'used', 'cancelled', 'refunded')),
   stripe_session_id TEXT,
   purchased_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -121,7 +151,6 @@ BEGIN
     RAISE EXCEPTION 'Not enough tickets available';
   END IF;
 
-  -- Auto mark as sold_out
   UPDATE events SET status = 'sold_out'
   WHERE id = NEW.event_id AND tickets_left = 0 AND status = 'published';
 
@@ -135,7 +164,21 @@ CREATE TRIGGER on_ticket_created
   FOR EACH ROW EXECUTE FUNCTION decrement_tickets_left();
 
 -- ============================================================
--- 4. PROMOTERS
+-- 5. GUEST LIST ENTRIES
+-- ============================================================
+CREATE TABLE IF NOT EXISTS guest_list_entries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  plus_ones INTEGER NOT NULL DEFAULT 0,
+  note TEXT,
+  checked_in BOOLEAN NOT NULL DEFAULT FALSE,
+  checked_in_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
+-- 6. PROMOTERS
 -- ============================================================
 CREATE TABLE IF NOT EXISTS promoters (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -152,7 +195,7 @@ CREATE TABLE IF NOT EXISTS promoters (
 );
 
 -- ============================================================
--- 5. PROMOTER_SALES
+-- 7. PROMOTER_SALES
 -- ============================================================
 CREATE TABLE IF NOT EXISTS promoter_sales (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -166,7 +209,7 @@ CREATE TABLE IF NOT EXISTS promoter_sales (
 );
 
 -- ============================================================
--- 6. CONTACT_MESSAGES
+-- 8. CONTACT_MESSAGES
 -- ============================================================
 CREATE TABLE IF NOT EXISTS contact_messages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -185,6 +228,8 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tickets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ticket_tiers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE guest_list_entries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE promoters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE promoter_sales ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
@@ -216,6 +261,20 @@ CREATE POLICY "Admins can read all tickets" ON tickets
   );
 CREATE POLICY "Service role can insert tickets" ON tickets
   FOR INSERT WITH CHECK (true);  -- webhook uses service role key
+
+-- TICKET TIERS (public read, admin write)
+CREATE POLICY "Anyone can read tiers" ON ticket_tiers
+  FOR SELECT USING (true);
+CREATE POLICY "Admins can manage tiers" ON ticket_tiers
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+  );
+
+-- GUEST LIST ENTRIES (admin only)
+CREATE POLICY "Admins can manage guest list" ON guest_list_entries
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+  );
 
 -- PROMOTERS
 CREATE POLICY "Promoters can read own record" ON promoters
@@ -259,6 +318,8 @@ CREATE INDEX IF NOT EXISTS idx_tickets_qr_code ON tickets(qr_code);
 CREATE INDEX IF NOT EXISTS idx_promoters_code ON promoters(code);
 CREATE INDEX IF NOT EXISTS idx_promoters_user_id ON promoters(user_id);
 CREATE INDEX IF NOT EXISTS idx_promoter_sales_promoter_id ON promoter_sales(promoter_id);
+CREATE INDEX IF NOT EXISTS idx_ticket_tiers_event_id ON ticket_tiers(event_id);
+CREATE INDEX IF NOT EXISTS idx_guest_list_event_id ON guest_list_entries(event_id);
 
 -- ============================================================
 -- 9. SEED DATA (sample events)

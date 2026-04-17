@@ -38,6 +38,7 @@ export default function DoorSalesPage() {
       const supabase = createClient();
 
       const qrCode = crypto.randomUUID();
+      const ev = events.find((e) => e.id === selectedEvent);
 
       const { error: insertError } = await supabase.from("tickets").insert({
         event_id: selectedEvent,
@@ -50,13 +51,41 @@ export default function DoorSalesPage() {
 
       if (insertError) throw insertError;
 
-      // Decrement tickets_left
-      const ev = events.find((e) => e.id === selectedEvent);
+      // Decrement tickets_left atomically via RPC or direct update
       if (ev) {
-        await supabase
-          .from("events")
-          .update({ tickets_left: ev.tickets_left - quantity })
-          .eq("id", ev.id);
+        await supabase.rpc("decrement_tickets_left", {
+          p_event_id: ev.id,
+          p_amount: quantity,
+        }).then(({ error: rpcError }) => {
+          if (rpcError) {
+            // Fallback to direct update if RPC doesn't exist
+            return supabase
+              .from("events")
+              .update({ tickets_left: Math.max(0, ev.tickets_left - quantity) })
+              .eq("id", ev.id);
+          }
+        });
+      }
+
+      // Send ticket email with QR code
+      if (ev) {
+        try {
+          await fetch("/api/door-sales-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email,
+              qrCode,
+              eventTitle: ev.title,
+              eventDate: ev.date,
+              eventTime: ev.time,
+              venue: ev.venue,
+              quantity,
+            }),
+          });
+        } catch {
+          // Email send is best-effort for door sales
+        }
       }
 
       setSuccess(true);
@@ -73,7 +102,7 @@ export default function DoorSalesPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-800 mb-2">Door Sales</h1>
+        <h1 className="text-3xl font-extrabold mb-2">Door Sales</h1>
         <p className="text-text-dim mb-8">Manually create tickets for walk-up attendees</p>
 
         {error && (
@@ -94,8 +123,9 @@ export default function DoorSalesPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium mb-1.5">Event</label>
+              <label htmlFor="ds-event" className="block text-sm font-medium mb-1.5">Event</label>
               <select
+                id="ds-event"
                 value={selectedEvent}
                 onChange={(e) => setSelectedEvent(e.target.value)}
                 required
@@ -108,8 +138,9 @@ export default function DoorSalesPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Attendee Email</label>
+              <label htmlFor="ds-email" className="block text-sm font-medium mb-1.5">Attendee Email</label>
               <input
+                id="ds-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -119,8 +150,9 @@ export default function DoorSalesPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Quantity</label>
+              <label htmlFor="ds-qty" className="block text-sm font-medium mb-1.5">Quantity</label>
               <input
+                id="ds-qty"
                 type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}

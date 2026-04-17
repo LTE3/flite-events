@@ -4,20 +4,18 @@ import { createAdminClient } from "@/lib/supabase-admin";
 
 export async function POST(request: NextRequest) {
   try {
-    const { eventId, quantity, email } = await request.json();
+    const { eventId, tierId, quantity, email } = await request.json();
 
     if (!eventId || !quantity || !email) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Check if Stripe is configured
     if (!process.env.STRIPE_SECRET_KEY) {
       return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
     }
 
     const supabase = createAdminClient();
 
-    // Fetch event
     const { data: event, error: eventError } = await supabase
       .from("events")
       .select("*")
@@ -32,14 +30,35 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Event is not available" }, { status: 400 });
     }
 
-    if (event.tickets_left < quantity) {
-      return NextResponse.json({ error: "Not enough tickets available" }, { status: 400 });
+    let unitPrice = event.price;
+    let productName = event.title;
+    let tierName: string | null = null;
+
+    if (tierId) {
+      const { data: tier, error: tierError } = await supabase
+        .from("ticket_tiers")
+        .select("*")
+        .eq("id", tierId)
+        .single();
+
+      if (tierError || !tier) {
+        return NextResponse.json({ error: "Tier not found" }, { status: 404 });
+      }
+
+      if (tier.sold + quantity > tier.quantity) {
+        return NextResponse.json({ error: "Not enough tickets in this tier" }, { status: 400 });
+      }
+
+      unitPrice = tier.price;
+      tierName = tier.name;
+      productName = `${event.title} — ${tier.name}`;
+    } else {
+      if (event.tickets_left < quantity) {
+        return NextResponse.json({ error: "Not enough tickets available" }, { status: 400 });
+      }
     }
 
-    // Get promoter referral from cookie
     const refCode = request.cookies.get("pulsetix_ref")?.value;
-
-    // Create Stripe Checkout Session
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
     const session = await stripe.checkout.sessions.create({
@@ -50,17 +69,19 @@ export async function POST(request: NextRequest) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: event.title,
+              name: productName,
               description: `${event.venue} • ${event.date}`,
               images: event.image_url ? [event.image_url] : [],
             },
-            unit_amount: event.price,
+            unit_amount: unitPrice,
           },
           quantity,
         },
       ],
       metadata: {
         eventId: event.id,
+        tierId: tierId || "",
+        tierName: tierName || "",
         quantity: String(quantity),
         email,
         refCode: refCode || "",

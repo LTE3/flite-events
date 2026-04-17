@@ -26,7 +26,7 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
           {/* Logo — text only, bold, no icon */}
           <Link href="/" className="group">
-            <span className="font-[family-name:var(--font-display)] text-xl font-800 tracking-[-0.02em] text-text transition-colors group-hover:text-accent">PULSETIX</span>
+            <span className="font-[family-name:var(--font-display)] text-xl font-extrabold tracking-[-0.02em] text-text transition-colors group-hover:text-accent">PULSETIX</span>
           </Link>
 
           {/* Nav links */}

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { AIChatbot } from "@/components/chat/ai-chatbot";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import "./globals.css";
 
 const albertSans = Albert_Sans({
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-bg text-text font-sans">
         <SmoothScrollProvider>
           <Navbar />
-          <main className="flex-1 pt-16">{children}</main>
+          <ErrorBoundary>
+            <main className="flex-1 pt-16">{children}</main>
+          </ErrorBoundary>
           <Footer />
           <AIChatbot />
         </SmoothScrollProvider>

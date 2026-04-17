@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    const { eventId, quantity, email, refCode } = session.metadata || {};
+    const { eventId, tierId, tierName, quantity, email, refCode } = session.metadata || {};
 
     if (!eventId || !quantity || !email) {
       console.error("Missing metadata in checkout session");
@@ -37,22 +37,37 @@ export async function POST(request: NextRequest) {
 
     const supabase = createAdminClient();
 
-    // Generate unique QR code
-    const qrCode = crypto.randomUUID();
+    // Look up user by email to associate ticket with account
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("email", email)
+      .single();
 
-    // Create ticket
+    const qrCode = crypto.randomUUID();
+    const qty = parseInt(quantity);
+
+    // Create ticket with user_id and tier info
     const { data: ticket, error: ticketError } = await supabase
       .from("tickets")
       .insert({
         event_id: eventId,
+        user_id: profile?.id || null,
         email,
-        quantity: parseInt(quantity),
+        quantity: qty,
         qr_code: qrCode,
+        tier_id: tierId || null,
+        tier_name: tierName || null,
         stripe_session_id: session.id,
         status: "valid",
       })
       .select()
       .single();
+
+    // Increment tier sold count if tier-based purchase
+    if (tierId && !ticketError) {
+      await supabase.rpc("increment_tier_sold", { tier_id: tierId, qty });
+    }
 
     if (ticketError) {
       console.error("Failed to create ticket:", ticketError);

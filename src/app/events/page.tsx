@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Search, SlidersHorizontal, MapPin } from "lucide-react";
 import { EventCard } from "@/components/events/event-card";
+import { CardSkeleton } from "@/components/ui/skeleton";
 import type { Event, Category } from "@/lib/types";
 
 const categories: { label: string; value: Category | "all" }[] = [
@@ -52,7 +53,7 @@ export default function EventsPage() {
             <MapPin size={16} className="text-accent" />
             <span className="text-sm text-text-dim">New York City</span>
           </div>
-          <h1 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl font-800 tracking-[-0.02em] mb-2">
+          <h1 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-2">
             Browse <span className="accent-text">Events</span>
           </h1>
           <p className="text-text-dim text-lg mb-8">Find your next experience</p>
@@ -61,7 +62,9 @@ export default function EventsPage() {
           <div className="flex gap-3 max-w-2xl">
             <div className="flex-1 flex items-center bg-bg-elevated border border-white/[0.08] rounded-xl px-4 focus-within:border-accent/40 transition-all duration-300">
               <Search size={18} className="text-text-dim shrink-0" />
+              <label htmlFor="events-search" className="sr-only">Search events</label>
               <input
+                id="events-search"
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -69,7 +72,7 @@ export default function EventsPage() {
                 className="flex-1 bg-transparent border-none outline-none text-sm px-3 py-3.5 placeholder:text-text-muted"
               />
             </div>
-            <button className="px-4 bg-bg-elevated border border-white/[0.08] rounded-xl text-text-dim hover:text-text hover:bg-bg-overlay transition-all duration-200">
+            <button aria-label="Filters" className="px-4 bg-bg-elevated border border-white/[0.08] rounded-xl text-text-dim hover:text-text hover:bg-bg-overlay transition-all duration-200">
               <SlidersHorizontal size={18} />
             </button>
           </div>
@@ -108,12 +111,18 @@ export default function EventsPage() {
           </p>
 
           {/* Results */}
-          {!loading && events.length === 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <CardSkeleton key={i} />
+              ))}
+            </div>
+          ) : events.length === 0 ? (
             <div className="text-center py-24">
               <div className="w-20 h-20 rounded-full bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mx-auto mb-5">
                 <Search size={32} className="text-text-dim/40" />
               </div>
-              <p className="text-xl font-800 mb-2">No events found</p>
+              <p className="text-xl font-extrabold mb-2">No events found</p>
               <p className="text-text-dim text-sm">Try adjusting your search or filters</p>
             </div>
           ) : (

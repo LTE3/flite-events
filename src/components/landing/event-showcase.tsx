@@ -34,7 +34,7 @@ function LargeEventCard({ event }: { event: Event }) {
             <Clock size={13} /> {formatDate(event.date)}
           </span>
         </div>
-        <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-700 tracking-[-0.01em] mb-2 leading-tight">
+        <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl font-bold tracking-[-0.01em] mb-2 leading-tight">
           {event.title}
         </h3>
         <div className="flex items-center gap-4 text-white/50">
@@ -68,7 +68,7 @@ export function EventShowcase({ events, title, subtitle, accentColor = "text-acc
           <div className="flex items-end justify-between flex-wrap gap-4">
             <div>
               <p className={`text-xs font-semibold uppercase tracking-[4px] ${accentColor} mb-4`}>{subtitle}</p>
-              <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-800 tracking-[-0.02em]">
+              <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.02em]">
                 {title}
               </h2>
             </div>

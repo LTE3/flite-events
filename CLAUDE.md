@@ -38,25 +38,21 @@ See `.impeccable.md` for full design context. Key points:
 ### Completed
 - **Phase 1 (Foundation)**: Root layout, navbar, footer, landing page (hero, features, events, CTA), auth (login/register), middleware
 - **Phase 2 (Events + Admin)**: Events browse, event detail, admin dashboard, create event, edit event, door sales, promoter dashboard, promoter signup, my-tickets, profile, scanner — ALL wired to Supabase with sample data fallback
-- **Phase 3 (Ticket Tiers)**: `TicketTier` type, `/api/tiers` CRUD, tier display on event detail, tier selector in checkout, tier builder in admin create-event
+- **Phase 3 (Tickets + Payments)**: `TicketTier` type, `/api/tiers` CRUD, tier display on event detail, tier selector in checkout, tier builder in admin create-event. Stripe checkout creates session with tier pricing. Stripe webhook creates ticket + QR code + sends email via Resend. Referral code captured in middleware, commission calculated in webhook.
 - **Phase 4 (Guest List)**: `GuestListEntry` type, `/api/guest-list` CRUD, admin guest list management page, scanner has QR + Guest List tabs
-- **Design overhaul**: Killed AI slop (purple/green gradients, glassmorphism, particle effects), replaced with monochrome + coral accent, warm-tinted neutrals, distinctive fonts per impeccable skill guidelines
+- **Phase 5 (Door Operations)**: Camera-based QR scanner using html5-qrcode (real device camera). Door sales sends email with QR code via `/api/door-sales-email`.
+- **Phase 6 (Extras)**: AI chatbot wired to Claude API (`claude-sonnet-4-5`). Contact form page at `/contact`. My Tickets shows real QR codes (generated client-side via qrcode lib) with download button.
+- **Design overhaul**: Killed AI slop (gradients, glassmorphism, particles), warm-tinted neutrals, distinctive fonts
+- **Audit fixes**: WCAG AA contrast (text-dim #9A9692), htmlFor/id on all forms, aria-labels on all icon buttons, focus-visible indicators, glass-strong removed, film grain z-index fixed, tap targets 44px, animate-bounce killed
 
 ### Uncommitted Changes
-~45 files modified/added/deleted. NEED TO COMMIT before doing more work. Changes include:
-- Font swap (Syne/Outfit → Bricolage Grotesque/Albert Sans)
-- gradient-text class removed (absolute ban)
-- 7 dead component files deleted
-- All Phase 2 pages wired to Supabase
-- Ticket tiers feature (types, API, UI)
-- Guest list feature (types, API, admin page, scanner integration)
-- Warm-tinted neutrals in color system
+Many files modified/added/deleted. Changes span all phases above.
 
-### Not Started
-- **Phase 3 remaining**: Stripe webhook → create ticket + QR, QR code generation (`qrcode` package), email delivery via Resend
-- **Phase 4 remaining**: Referral tracking via middleware cookies, commission calculation on purchase, admin promoter management
-- **Phase 5**: Camera-based QR scanning (currently placeholder), door sales QR email
-- **Phase 6**: AI chatbot wiring (Claude API), contact form, final polish
+### Remaining Polish
+- Image upload requires `event-images` Supabase Storage bucket to be created
+- Loading skeletons could be added to more pages (promoter dashboard, my-tickets)
+- `decrement_tickets_left` RPC function needs to be added to migrations for atomic door sales
+- Promoter payout/Stripe Connect onboarding flow (currently just status management) (currently placeholder)
 
 ## Key Files
 | File | Purpose |

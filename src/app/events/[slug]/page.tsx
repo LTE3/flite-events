@@ -4,6 +4,7 @@ import { Calendar, Clock, MapPin, Users, ArrowLeft, Share2, Ticket, Shield } fro
 import { sampleEvents } from "@/lib/sample-events";
 import { formatDate, formatTime, formatPrice } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import type { Event, TicketTier } from "@/lib/types";
 
 async function getEvent(slug: string): Promise<Event | null> {
@@ -31,6 +32,21 @@ async function getEvent(slug: string): Promise<Event | null> {
   } catch {
     return sampleEvents.find((e) => e.slug === slug) || null;
   }
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const event = await getEvent(slug);
+  if (!event) {
+    return {
+      title: "Event Not Found | PulseTix",
+      description: "The event you're looking for could not be found.",
+    };
+  }
+  return {
+    title: `${event.title} | PulseTix`,
+    description: event.description?.slice(0, 160) || `Get tickets for ${event.title} on PulseTix.`,
+  };
 }
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -61,7 +77,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           <Link href="/events" className="flex items-center gap-2 px-4 py-2 glass rounded-full text-sm font-medium hover:bg-white/[0.1] transition-all">
             <ArrowLeft size={16} /> Back
           </Link>
-          <button className="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/[0.1] transition-all">
+          <button aria-label="Share event" className="w-11 h-11 glass rounded-full flex items-center justify-center hover:bg-white/[0.1] transition-all">
             <Share2 size={16} />
           </button>
         </div>
@@ -72,7 +88,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             <span className="inline-block px-3 py-1 bg-accent/10 text-accent rounded-full text-xs font-semibold mb-4 uppercase tracking-wider">
               {event.category.replace("_", " & ")}
             </span>
-            <h1 className="font-[family-name:var(--font-display)] text-3xl sm:text-5xl font-800 leading-[1.05] drop-shadow-2xl max-w-3xl tracking-[-0.02em]">
+            <h1 className="font-[family-name:var(--font-display)] text-3xl sm:text-5xl font-extrabold leading-[1.05] drop-shadow-2xl max-w-3xl tracking-[-0.02em]">
               {event.title}
             </h1>
           </div>
@@ -94,13 +110,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
             {/* About */}
             <div>
-              <h2 className="text-xl font-800 mb-4">About This Event</h2>
+              <h2 className="text-xl font-extrabold mb-4">About This Event</h2>
               <p className="text-text-dim leading-relaxed text-[15px]">{event.description}</p>
             </div>
 
             {/* Venue */}
             <div className="p-6 rounded-2xl card">
-              <h3 className="font-800 mb-3 flex items-center gap-2">
+              <h3 className="font-extrabold mb-3 flex items-center gap-2">
                 <MapPin size={16} className="text-accent" /> Venue
               </h3>
               <p className="font-semibold">{event.venue}</p>
@@ -132,7 +148,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                           <div key={tier.id} className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                             <div className="flex items-center justify-between mb-1">
                               <span className="font-semibold">{tier.name}</span>
-                              <span className="font-800">{formatPrice(tier.price)}</span>
+                              <span className="font-extrabold">{formatPrice(tier.price)}</span>
                             </div>
                             <div className="flex items-center justify-between text-xs text-text-dim">
                               <span>{tier.sold} / {tier.quantity} sold</span>
@@ -151,7 +167,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                   <div className="flex items-center justify-between mb-6">
                     <div>
                       <p className="text-xs text-text-dim uppercase tracking-wider font-medium">Price</p>
-                      <p className="text-3xl font-800 mt-1">{formatPrice(event.price)}</p>
+                      <p className="text-3xl font-extrabold mt-1">{formatPrice(event.price)}</p>
                     </div>
                     <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
                       <Ticket size={20} className="text-white" />

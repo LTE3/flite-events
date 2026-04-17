@@ -62,11 +62,11 @@ export default function RegisterPage() {
       <div className="w-full max-w-md relative animate-fade-up">
         <div className="flex justify-center mb-8">
           <Link href="/" className="inline-block">
-            <span className="font-[family-name:var(--font-display)] text-2xl font-800 tracking-[-0.02em]">PULSETIX</span>
+            <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-[-0.02em]">PULSETIX</span>
           </Link>
         </div>
 
-        <div className="p-8 rounded-2xl glass-strong">
+        <div className="p-8 rounded-2xl bg-bg-card border border-white/[0.06]">
           <h1 className="text-2xl font-black text-center mb-1">Create Account</h1>
           <p className="text-text-dim text-sm text-center mb-7">Join PulseTix and discover events</p>
 
@@ -77,36 +77,39 @@ export default function RegisterPage() {
               </div>
             )}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-2">Name</label>
+              <label htmlFor="reg-name" className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-2">Name</label>
               <input
+                id="reg-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(255,77,77,0.1)] transition-all duration-300"
+                className="w-full bg-bg-elevated border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 transition-all duration-300"
                 placeholder="Your name"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-2">Email</label>
+              <label htmlFor="reg-email" className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-2">Email</label>
               <input
+                id="reg-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(255,77,77,0.1)] transition-all duration-300"
+                className="w-full bg-bg-elevated border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 transition-all duration-300"
                 placeholder="you@email.com"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-2">Password</label>
+              <label htmlFor="reg-password" className="block text-xs font-semibold uppercase tracking-wider text-text-dim mb-2">Password</label>
               <input
+                id="reg-password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 focus:shadow-[0_0_20px_rgba(255,77,77,0.1)] transition-all duration-300"
+                className="w-full bg-bg-elevated border border-white/[0.08] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-accent/50 transition-all duration-300"
                 placeholder="At least 8 characters"
               />
             </div>
