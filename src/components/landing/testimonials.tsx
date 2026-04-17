@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
@@ -58,98 +58,82 @@ export function Testimonials() {
   const t = testimonials[active];
 
   return (
-    <section className="py-32 relative overflow-hidden">
-      {/* Dramatic background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.04] to-transparent" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-accent/5 blur-[200px] pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto px-6 relative">
+    <section className="py-28 sm:py-36 bg-bg-card/50 relative">
+      <div className="max-w-4xl mx-auto px-6">
         <ScrollReveal>
-          <div className="mb-20">
-            <p className="text-xs font-bold uppercase tracking-[4px] text-accent mb-4">Testimonials</p>
-            <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-              Trusted by NYC&apos;s <span className="accent-text">Top Hosts</span>
+          <div className="text-center mb-16 sm:mb-20">
+            <p className="text-xs font-semibold uppercase tracking-[4px] text-accent mb-4">Testimonials</p>
+            <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.02em]">
+              What hosts are saying
             </h2>
           </div>
         </ScrollReveal>
 
-        {/* Big quote */}
-        <div className="relative min-h-[300px]">
-          {/* Giant quote mark */}
-          <Quote size={120} className="absolute -top-6 -left-4 text-accent/10 rotate-180" strokeWidth={1} />
-
+        <div className="max-w-3xl mx-auto text-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
-              initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -30, filter: "blur(8px)" }}
+              exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
               transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
             >
               {/* Stars */}
-              <div className="flex gap-1.5 mb-8">
+              <div className="flex gap-1 justify-center mb-8">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={20} className="fill-accent text-accent" />
+                  <Star key={i} size={16} className="fill-accent text-accent" />
                 ))}
               </div>
 
-              {/* Quote text — BIG */}
-              <blockquote className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl lg:text-4xl font-medium leading-[1.3] mb-10 max-w-4xl tracking-tight">
+              {/* Quote */}
+              <blockquote className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl lg:text-4xl font-medium leading-[1.35] tracking-tight mb-10">
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
 
               {/* Author */}
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-white">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-white/[0.08] flex items-center justify-center text-sm font-bold text-white">
                   {t.avatar}
                 </div>
                 <div>
-                  <p className="font-bold text-lg">{t.name}</p>
-                  <p className="text-sm text-white/40">{t.role}</p>
+                  <p className="font-bold text-base">{t.name}</p>
+                  <p className="text-sm text-text-dim">{t.role}</p>
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Nav */}
-          <div className="absolute right-0 top-0 flex items-center gap-3">
+          {/* Nav buttons */}
+          <div className="flex items-center justify-center gap-3 mt-10">
             <button
               onClick={() => go(-1)}
-              className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/[0.08] hover:border-white/20 transition-all"
+              aria-label="Previous testimonial"
+              className="w-10 h-10 rounded-full border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.04] hover:border-white/[0.16] transition-all duration-300"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={16} />
             </button>
             <button
               onClick={() => go(1)}
-              className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/[0.08] hover:border-white/20 transition-all"
+              aria-label="Next testimonial"
+              className="w-10 h-10 rounded-full border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.04] hover:border-white/[0.16] transition-all duration-300"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={16} />
             </button>
           </div>
-        </div>
 
-        {/* Progress bar */}
-        <div className="flex gap-2 mt-14">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => { setActive(i); setIsAutoPlaying(false); }}
-              className="relative h-1 flex-1 rounded-full bg-white/10 overflow-hidden"
-            >
-              {i === active && (
-                <motion.div
-                  className="absolute inset-y-0 left-0 bg-accent rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 5, ease: "linear" }}
-                  key={`progress-${active}`}
-                />
-              )}
-              {i < active && (
-                <div className="absolute inset-0 bg-accent rounded-full" />
-              )}
-            </button>
-          ))}
+          {/* Progress dots */}
+          <div className="flex justify-center gap-2 mt-8">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setActive(i); setIsAutoPlaying(false); }}
+                aria-label={`Go to testimonial ${i + 1}`}
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  i === active ? "bg-accent" : "bg-white/10 hover:bg-white/20"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -30,20 +30,19 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-6 relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
-
       <div className="w-full max-w-md relative animate-fade-up">
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Link href="/" className="inline-block">
-            <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-[-0.02em]">PULSETIX</span>
+            <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-[-0.02em]">
+              <span className="text-white">PULSE</span><span className="text-accent">TIX</span>
+            </span>
           </Link>
         </div>
 
         {/* Card */}
         <div className="p-8 rounded-2xl bg-bg-card border border-white/[0.06]">
-          <h1 className="text-2xl font-bold text-center mb-1">You&apos;re back.</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold text-center mb-1">You&apos;re back.</h1>
           <p className="text-text-dim text-sm text-center mb-7">Pick up where you left off</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">

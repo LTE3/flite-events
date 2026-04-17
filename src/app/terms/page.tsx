@@ -2,7 +2,7 @@ export default function TermsPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Terms of Use</h1>
+        <h1 className="text-3xl font-bold mb-6 font-[family-name:var(--font-display)]">Terms of Use</h1>
         <div className="text-text-dim space-y-4 text-sm leading-relaxed">
           <p>Last updated: April 2026</p>
           <h2 className="text-lg font-bold text-text mt-8">1. Acceptance of Terms</h2>

@@ -65,7 +65,7 @@ export default function AdminPromotersPage() {
 
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-extrabold">Promoters</h1>
+            <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold">Promoters</h1>
             <p className="text-text-dim mt-1">
               {promoters.length} total{pendingCount > 0 && ` · ${pendingCount} pending approval`}
             </p>

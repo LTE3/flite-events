@@ -59,7 +59,7 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-extrabold">Admin Dashboard</h1>
+            <h1 className="text-3xl font-extrabold font-[family-name:var(--font-display)]">Admin Dashboard</h1>
             <p className="text-text-dim mt-1">Your events. Your door. Your money.</p>
           </div>
           <Link href="/admin/create-event">
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-bold mb-4 font-[family-name:var(--font-display)]">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {quickActions.map((action) => (
             <Link
@@ -98,7 +98,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Events */}
-        <h2 className="text-xl font-bold mb-4">Recent Events</h2>
+        <h2 className="text-xl font-bold mb-4 font-[family-name:var(--font-display)]">Recent Events</h2>
         <div className="bg-bg-card border border-white/[0.06] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

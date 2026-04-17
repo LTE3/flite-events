@@ -59,7 +59,7 @@ export default function ProfilePage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-lg mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Profile</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight mb-8">Profile</h1>
 
         <div className="flex justify-center mb-8">
           <div className="w-24 h-24 rounded-full bg-bg-elevated border border-white/10 flex items-center justify-center">

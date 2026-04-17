@@ -116,7 +116,7 @@ export default function CreateEventPage() {
           <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-white font-bold">
             ✓
           </div>
-          <h1 className="text-2xl font-bold mb-2">Event&apos;s live.</h1>
+          <h1 className="text-2xl font-bold mb-2 font-[family-name:var(--font-display)]">Event&apos;s live.</h1>
           <p className="text-text-dim mb-6">Published and ready to sell.</p>
           <div className="flex gap-3 justify-center">
             <Link href="/admin"><Button variant="outline">Back to Dashboard</Button></Link>
@@ -133,7 +133,7 @@ export default function CreateEventPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-extrabold mb-8">Create Event</h1>
+        <h1 className="text-3xl font-extrabold mb-8 font-[family-name:var(--font-display)]">Create Event</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (

@@ -100,7 +100,7 @@ export default function EditEventPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-bold mb-2">Edit Event</h1>
+        <h1 className="text-3xl font-bold mb-2 font-[family-name:var(--font-display)]">Edit Event</h1>
         <p className="text-text-dim text-sm mb-8">
           {event.tickets_total - event.tickets_left} tickets sold &middot; {formatPrice(event.price * (event.tickets_total - event.tickets_left))} revenue
         </p>

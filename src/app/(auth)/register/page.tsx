@@ -37,12 +37,18 @@ export default function RegisterPage() {
   if (success) {
     return (
       <div className="min-h-[85vh] flex items-center justify-center px-6 relative overflow-hidden">
-        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
         <div className="w-full max-w-md text-center animate-fade-up">
+          <div className="flex justify-center mb-8">
+            <Link href="/" className="inline-block">
+              <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-[-0.02em]">
+                <span className="text-white">PULSE</span><span className="text-accent">TIX</span>
+              </span>
+            </Link>
+          </div>
           <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle size={36} className="text-white" />
           </div>
-          <h1 className="text-2xl font-bold mb-3">Check your inbox</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold mb-3">Check your inbox</h1>
           <p className="text-text-dim mb-8">Confirmation link sent to <span className="text-text font-medium">{email}</span>. Click it to get in.</p>
           <Link
             href="/login"
@@ -57,17 +63,17 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-6 relative overflow-hidden">
-      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
-
       <div className="w-full max-w-md relative animate-fade-up">
         <div className="flex justify-center mb-8">
           <Link href="/" className="inline-block">
-            <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-[-0.02em]">PULSETIX</span>
+            <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-[-0.02em]">
+              <span className="text-white">PULSE</span><span className="text-accent">TIX</span>
+            </span>
           </Link>
         </div>
 
         <div className="p-8 rounded-2xl bg-bg-card border border-white/[0.06]">
-          <h1 className="text-2xl font-bold text-center mb-1">Get in</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold text-center mb-1">Get in</h1>
           <p className="text-text-dim text-sm text-center mb-7">One account. Every night out.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">

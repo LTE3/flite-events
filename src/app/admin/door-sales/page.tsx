@@ -102,7 +102,7 @@ export default function DoorSalesPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-bold mb-2">Door Sales</h1>
+        <h1 className="text-3xl font-bold mb-2 font-[family-name:var(--font-display)]">Door Sales</h1>
         <p className="text-text-dim mb-8">Sell at the door. Fast.</p>
 
         {error && (

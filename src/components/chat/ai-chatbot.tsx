@@ -101,7 +101,9 @@ export function AIChatbot() {
 
           {/* Input */}
           <form onSubmit={sendMessage} className="p-3 border-t border-white/[0.06] flex gap-2">
+            <label htmlFor="chat-input" className="sr-only">Type a message</label>
             <input
+              id="chat-input"
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}

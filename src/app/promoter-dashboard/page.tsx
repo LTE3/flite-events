@@ -71,7 +71,7 @@ export default function PromoterDashboardPage() {
     return (
       <div className="px-6 py-10">
         <div className="max-w-lg mx-auto text-center py-20">
-          <p className="text-lg font-semibold mb-2">Not a promoter — yet.</p>
+          <p className="font-[family-name:var(--font-display)] text-lg font-semibold mb-2">Not a promoter — yet.</p>
           <p className="text-text-dim text-sm mb-6">Apply to see your sales, earnings, and referral link.</p>
           <a href="/promoter-signup"><Button>Join the network</Button></a>
         </div>
@@ -82,7 +82,7 @@ export default function PromoterDashboardPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-extrabold mb-2">Your Numbers</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight mb-2">Your Numbers</h1>
         <p className="text-text-dim mb-8">Every ticket, every dollar, real time.</p>
 
         {/* Stats */}
@@ -120,7 +120,7 @@ export default function PromoterDashboardPage() {
         )}
 
         {/* Recent Sales */}
-        <h2 className="text-xl font-bold mb-4">Recent Sales</h2>
+        <h2 className="font-[family-name:var(--font-display)] text-xl font-bold mb-4">Recent Sales</h2>
         <div className="bg-bg-card border border-white/[0.06] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

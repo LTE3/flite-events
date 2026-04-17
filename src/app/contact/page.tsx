@@ -45,7 +45,7 @@ export default function ContactPage() {
           <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle size={32} className="text-white" />
           </div>
-          <h1 className="text-2xl font-bold mb-2">Got it.</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold mb-2">Got it.</h1>
           <p className="text-text-dim mb-6">We&apos;ll reply within 24 hours.</p>
           <a href="/events"><Button>See what&apos;s on</Button></a>
         </div>
@@ -60,7 +60,7 @@ export default function ContactPage() {
           <div className="w-14 h-14 bg-accent/10 border border-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Mail size={24} className="text-accent" />
           </div>
-          <h1 className="text-3xl font-extrabold mb-2">Talk to us</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold mb-2">Talk to us</h1>
           <p className="text-text-dim">Questions, problems, ideas — send them over.</p>
         </div>
 

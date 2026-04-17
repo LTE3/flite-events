@@ -128,7 +128,7 @@ export default function ScannerPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-lg mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-2">Door Check-In</h1>
+        <h1 className="text-3xl font-bold text-center mb-2 font-[family-name:var(--font-display)]">Door Check-In</h1>
         <p className="text-text-dim text-center mb-6">Scan or search.</p>
 
         {/* Tabs */}

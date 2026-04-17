@@ -99,7 +99,7 @@ export default function GuestListPage() {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-6">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-extrabold mb-2">Guest List</h1>
+        <h1 className="text-3xl font-extrabold mb-2 font-[family-name:var(--font-display)]">Guest List</h1>
         <p className="text-text-dim mb-8">Comps, VIPs, and plus-ones.</p>
 
         {/* Event selector */}

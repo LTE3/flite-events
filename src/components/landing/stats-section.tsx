@@ -21,35 +21,29 @@ function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string
   );
 }
 
-const stats = [
-  { value: 500, suffix: "+", label: "Events Hosted", sublabel: "across NYC" },
-  { value: 25000, suffix: "+", label: "Tickets Sold", sublabel: "and counting" },
-  { value: 150, suffix: "+", label: "Venues", sublabel: "Manhattan to BK" },
-  { value: 98, suffix: "%", label: "Satisfaction", sublabel: "from event hosts" },
-];
-
 export function StatsSection() {
   return (
-    <section className="py-24 relative overflow-hidden border-y border-white/[0.04]">
-      <div className="absolute inset-0 bg-bg-card" />
-
+    <section className="py-24 sm:py-32 relative overflow-hidden border-y border-white/[0.04] bg-bg-card">
       <div className="max-w-7xl mx-auto px-6 relative">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
-          {stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={`text-center py-8 ${
-                i < stats.length - 1 ? "lg:border-r lg:border-white/[0.06]" : ""
-              }`}
-            >
-              <p className="font-[family-name:var(--font-display)] text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 text-text tabular-nums">
-                <AnimatedNumber value={stat.value} suffix={stat.suffix} />
-              </p>
-              <p className="font-[family-name:var(--font-display)] font-semibold text-white/80 text-lg tracking-tight">{stat.label}</p>
-              <p className="text-sm text-white/30 mt-1">{stat.sublabel}</p>
-            </div>
-          ))}
-        </div>
+        <p className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl lg:text-5xl font-medium leading-[1.4] tracking-tight text-center max-w-4xl mx-auto text-text-dim">
+          Over{" "}
+          <span className="font-bold text-text tabular-nums">
+            <AnimatedNumber value={500} suffix="+" />
+          </span>{" "}
+          events hosted across{" "}
+          <span className="font-bold text-text tabular-nums">
+            <AnimatedNumber value={150} suffix="+" />
+          </span>{" "}
+          venues, with{" "}
+          <span className="font-bold text-text tabular-nums">
+            <AnimatedNumber value={25000} suffix="+" />
+          </span>{" "}
+          tickets sold and a{" "}
+          <span className="font-bold text-text tabular-nums">
+            <AnimatedNumber value={98} suffix="%" />
+          </span>{" "}
+          host satisfaction rate.
+        </p>
       </div>
     </section>
   );

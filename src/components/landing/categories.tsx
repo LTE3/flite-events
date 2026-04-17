@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/motion/scroll-reveal";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 const categories = [
   {
@@ -46,49 +45,52 @@ const categories = [
 
 export function Categories() {
   return (
-    <section className="px-6 py-24 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto relative">
+    <section className="py-20 sm:py-28 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-12 sm:mb-16">
         <ScrollReveal>
-          <div className="mb-16">
-            <p className="text-xs font-bold uppercase tracking-[4px] text-accent mb-4">Explore</p>
-            <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-              Find Your <span className="accent-text">Scene</span>
-            </h2>
-          </div>
+          <p className="text-xs font-bold uppercase tracking-[4px] text-accent mb-4">Explore</p>
+          <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl font-extrabold tracking-tight">
+            Find Your Scene
+          </h2>
         </ScrollReveal>
-
-        <StaggerContainer className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.map((cat) => (
-            <StaggerItem key={cat.name}>
-              <Link
-                href={cat.href}
-                className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/[0.04] hover:border-white/[0.15] transition-all duration-500 hover:-translate-y-2 block"
-              >
-                <Image
-                  src={cat.image}
-                  alt={cat.name}
-                  fill
-                  className="object-cover transition-all duration-700 group-hover:scale-110 saturate-[1.2]"
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                {/* Glow line on hover */}
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="font-[family-name:var(--font-display)] font-bold text-sm tracking-[3px] mb-1">{cat.name}</h3>
-                  <p className="text-[11px] text-text-dim group-hover:text-white/70 transition-colors">{cat.desc}</p>
-                </div>
-              </Link>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
       </div>
+
+      <ScrollReveal>
+        <div className="no-scrollbar flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 pr-6 scroll-smooth">
+          {/* Left padding spacer to align with max-w-7xl container */}
+          <div className="flex-shrink-0 pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]" aria-hidden />
+
+          {categories.map((cat) => (
+            <Link
+              key={cat.name}
+              href={cat.href}
+              className="group relative flex-shrink-0 w-[280px] sm:w-[320px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/[0.04] hover:border-white/[0.15] transition-all duration-500 snap-start block"
+            >
+              <Image
+                src={cat.image}
+                alt={cat.name}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.05] saturate-[1.1]"
+                sizes="320px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+
+              {/* Thin accent line that fades in on hover */}
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h3 className="font-[family-name:var(--font-display)] text-xl font-bold tracking-[2px] mb-2">
+                  {cat.name}
+                </h3>
+                <p className="text-xs text-white/50">{cat.desc}</p>
+              </div>
+            </Link>
+          ))}
+
+          {/* Right padding spacer */}
+          <div className="flex-shrink-0 pr-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]" aria-hidden />
+        </div>
+      </ScrollReveal>
     </section>
   );
 }

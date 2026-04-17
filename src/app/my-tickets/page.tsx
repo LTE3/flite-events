@@ -107,10 +107,10 @@ export default function MyTicketsPage() {
     return (
       <div className="px-6 py-10">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Your Tickets</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight mb-6 font-[family-name:var(--font-display)]">Your Tickets</h1>
           <div className="text-center py-20 bg-bg-card border border-white/[0.06] rounded-2xl">
             <QrCode size={48} className="mx-auto mb-4 text-text-dim" />
-            <p className="text-lg font-semibold mb-2">No tickets yet</p>
+            <p className="text-2xl font-bold mb-2 font-[family-name:var(--font-display)]">No tickets yet</p>
             <p className="text-text-dim text-sm mb-6">Find something for tonight.</p>
             <a href="/events"><Button>See what&apos;s on</Button></a>
           </div>
@@ -122,7 +122,7 @@ export default function MyTicketsPage() {
   return (
     <div className="px-6 py-10">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Your Tickets</h1>
+        <h1 className="text-4xl font-extrabold tracking-tight mb-6 font-[family-name:var(--font-display)]">Your Tickets</h1>
         <div className="space-y-4">
           {tickets.map((ticket) => (
             <div key={ticket.id} className="bg-bg-card border border-white/[0.06] rounded-2xl p-6 flex flex-col sm:flex-row gap-6">
@@ -138,7 +138,7 @@ export default function MyTicketsPage() {
               {/* Info */}
               <div className="flex-1">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-bold text-lg">{ticket.event_title}</h3>
+                  <h3 className="font-[family-name:var(--font-display)] font-bold text-xl">{ticket.event_title}</h3>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
                     ticket.status === "valid" ? "bg-success/20 text-success" :
                     ticket.status === "used" ? "bg-text-dim/20 text-text-dim" :

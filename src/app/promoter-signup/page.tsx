@@ -68,7 +68,7 @@ export default function PromoterSignupPage() {
           <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-white font-bold">
             ✓
           </div>
-          <h1 className="text-2xl font-bold mb-2">You&apos;re in the queue.</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold mb-2">You&apos;re in the queue.</h1>
           <p className="text-text-dim mb-6">We&apos;ll hit you back within 24 hours.</p>
           <Link href="/events"><Button>See what&apos;s on</Button></Link>
         </div>
@@ -81,7 +81,7 @@ export default function PromoterSignupPage() {
       <div className="max-w-4xl mx-auto">
         {/* Hero */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold mb-3">
+          <h1 className="font-[family-name:var(--font-display)] text-4xl font-extrabold mb-3">
             Promote with <span className="accent-text">PulseTix</span>
           </h1>
           <p className="text-text-dim text-lg max-w-lg mx-auto">
@@ -106,7 +106,7 @@ export default function PromoterSignupPage() {
 
         {/* Form */}
         <div className="max-w-lg mx-auto">
-          <h2 className="text-xl font-bold mb-6 text-center">Apply Now</h2>
+          <h2 className="font-[family-name:var(--font-display)] text-xl font-bold mb-6 text-center">Apply Now</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>

@@ -107,14 +107,12 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen px-6 py-8 relative overflow-hidden">
-      <div className="absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full bg-accent/6 blur-[120px] pointer-events-none" />
-
       <div className="max-w-2xl mx-auto relative">
         <Link href={`/events/${slug}`} className="inline-flex items-center gap-2 text-sm text-text-dim hover:text-text transition-colors mb-8">
           <ArrowLeft size={16} /> Back to event
         </Link>
 
-        <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+        <h1 className="text-3xl font-bold mb-8 font-[family-name:var(--font-display)]">Checkout</h1>
 
         {/* Event summary */}
         <div className="flex gap-5 p-5 rounded-2xl bg-bg-card border border-white/[0.06] mb-8 animate-fade-up">
