@@ -1,28 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowDown } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-
-function AnimatedLine({ children, delay }: { children: React.ReactNode; delay: number }) {
-  return (
-    <span className="block overflow-hidden">
-      <motion.span
-        className="block"
-        initial={{ y: "110%" }}
-        animate={{ y: "0%" }}
-        transition={{
-          duration: 0.9,
-          delay,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-      >
-        {children}
-      </motion.span>
-    </span>
-  );
-}
 
 export function HeroSection() {
   const ref = useRef(null);
@@ -31,16 +12,16 @@ export function HeroSection() {
     offset: ["start start", "end start"],
   });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
 
   return (
     <section
       ref={ref}
-      className="relative h-[100dvh] min-h-[600px] flex items-center overflow-hidden"
+      className="relative min-h-[100dvh] flex flex-col overflow-hidden"
     >
-      {/* Background: looping video with parallax */}
-      <motion.div className="absolute inset-0" style={{ y: bgY }}>
+      {/* Full-screen video background */}
+      <motion.div className="absolute inset-0" style={{ scale: videoScale }}>
         <video
           autoPlay
           muted
@@ -54,107 +35,115 @@ export function HeroSection() {
             type="video/mp4"
           />
         </video>
+        {/* Heavy dark overlay — text readability first */}
+        <div className="absolute inset-0 bg-black/65" />
       </motion.div>
 
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/60 to-black/30" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+      {/* Accent line at very top */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-accent z-20" />
 
-      {/* Content */}
+      {/* Main content — vertically centered */}
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-6 w-full"
+        className="relative z-10 flex-1 flex flex-col justify-center px-6 sm:px-10 lg:px-16"
         style={{ opacity: contentOpacity }}
       >
-        <div className="max-w-3xl">
-          {/* Eyebrow pill */}
+        <div className="max-w-[1400px] mx-auto w-full">
+          {/* Top line — live indicator */}
           <motion.div
-            className="inline-flex items-center gap-2.5 border border-white/[0.08] rounded-full px-4 py-2 bg-white/[0.03] mb-8"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3 mb-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <span className="relative flex h-2 w-2">
+            <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent" />
             </span>
-            <span className="text-xs uppercase tracking-[3px] text-white/50 font-medium">
-              NYC &middot; Live Events
+            <span className="text-sm tracking-wide text-white/60 font-medium">
+              New York City
             </span>
+            <span className="h-px flex-1 bg-white/10 max-w-[120px]" />
           </motion.div>
 
-          {/* Headline */}
-          <h1 className="font-[family-name:var(--font-display)] text-[clamp(2.5rem,7.5vw,6.5rem)] font-extrabold leading-[0.92] tracking-[-0.03em] mb-8 text-white">
-            <AnimatedLine delay={0.5}>
-              <span>Don&apos;t Just Go Out.</span>
-            </AnimatedLine>
-            <AnimatedLine delay={0.7}>
-              <span className="text-accent">Stand Out.</span>
-            </AnimatedLine>
+          {/* Giant headline — takes up most of the screen */}
+          <h1 className="font-[family-name:var(--font-display)] text-[clamp(3.5rem,12vw,11rem)] font-black leading-[0.85] tracking-[-0.04em] text-white mb-8">
+            <motion.span
+              className="block"
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            >
+              EVERY
+            </motion.span>
+            <motion.span
+              className="block text-accent"
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            >
+              NIGHT
+            </motion.span>
+            <motion.span
+              className="block"
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            >
+              OUT.
+            </motion.span>
           </h1>
 
-          {/* Subtitle */}
-          <motion.p
-            className="text-lg text-white/40 max-w-lg leading-relaxed mb-10"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          >
-            NYC&apos;s best clubs, rooftops, and underground events. QR-coded tickets, delivered instant.
-          </motion.p>
-
-          {/* CTAs */}
+          {/* Subtitle + CTA row */}
           <motion.div
-            className="flex flex-wrap items-center gap-4"
-            initial={{ opacity: 0, y: 16 }}
+            className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 sm:gap-12"
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, delay: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Link
-              href="/events"
-              className="group inline-flex items-center gap-2 bg-accent text-black font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5"
-            >
-              Browse Events
-              <ArrowRight
-                size={18}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
-            <Link
-              href="/admin/create-event"
-              className="border border-white/[0.12] bg-white/[0.04] font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-white/[0.08] hover:-translate-y-0.5"
-            >
-              Host an Event
-            </Link>
+            <p className="text-white/40 text-lg sm:text-xl max-w-md leading-relaxed">
+              Clubs, rooftops, warehouse parties. Every door in the city — one&nbsp;ticket.
+            </p>
+
+            <div className="flex items-center gap-4 shrink-0">
+              <Link
+                href="/events"
+                className="group inline-flex items-center gap-3 bg-accent text-black font-bold px-8 py-4 rounded-full text-base transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20"
+              >
+                Browse Events
+                <ArrowRight
+                  size={18}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Link>
+              <Link
+                href="/admin/create-event"
+                className="inline-flex items-center gap-2 border border-white/15 bg-white/5 font-semibold px-7 py-4 rounded-full text-base transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5"
+              >
+                Host
+              </Link>
+            </div>
           </motion.div>
         </div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — bottom center */}
       <motion.div
-        className="absolute bottom-8 left-6 md:left-10 z-10 flex flex-col items-center gap-3"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.4 }}
+        transition={{ duration: 0.8, delay: 1.5 }}
         style={{ opacity: contentOpacity }}
       >
-        <span className="text-[10px] uppercase tracking-[3px] text-white/30">Scroll</span>
-        <div className="relative w-px h-12 bg-white/20 overflow-hidden">
-          <motion.span
-            className="absolute left-1/2 top-0 -translate-x-1/2 w-1 h-1 rounded-full bg-accent"
-            initial={{ y: -4 }}
-            animate={{ y: 48 }}
-            transition={{
-              duration: 1.8,
-              repeat: Infinity,
-              ease: [0.22, 1, 0.36, 1],
-              repeatDelay: 0.2,
-            }}
-          />
-        </div>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ArrowDown size={20} className="text-white/30" />
+        </motion.div>
       </motion.div>
 
-      {/* Bottom fade to page bg */}
-      <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-bg to-transparent pointer-events-none" />
+      {/* Bottom gradient fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg to-transparent pointer-events-none z-[5]" />
     </section>
   );
 }

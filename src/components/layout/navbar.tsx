@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -19,129 +19,93 @@ export function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-bg/80 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
+            ? "bg-bg/90 backdrop-blur-xl border-b border-white/[0.06]"
             : "bg-transparent"
         }`}
       >
-        <div
-          className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-500 ${
-            scrolled ? "h-[64px]" : "h-[72px]"
-          }`}
-        >
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 flex items-center justify-between h-[72px]">
           {/* Logo */}
-          <Link href="/" className="group flex items-center gap-2">
-            <span className="font-[family-name:var(--font-display)] text-lg font-extrabold tracking-[-0.03em] leading-none">
+          <Link href="/" className="group flex items-center gap-1.5">
+            <span className="font-[family-name:var(--font-display)] text-xl font-black tracking-[-0.04em] leading-none">
               <span className="text-white">PULSE</span>
               <span className="text-accent">TIX</span>
             </span>
-            <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
           </Link>
 
-          {/* Desktop nav — centered pill */}
-          <div className="hidden md:flex items-center absolute left-1/2 -translate-x-1/2">
-            <div className="flex items-center rounded-full bg-white/[0.04] border border-white/[0.06] px-1 py-1">
-              <NavLink href="/events">Events</NavLink>
-              <NavLink href="/promoter-signup">Promoters</NavLink>
-              <NavLink href="#about">About</NavLink>
-            </div>
+          {/* Desktop nav — flat links */}
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="/events" className="text-sm text-text-dim hover:text-white transition-colors font-medium">
+              Events
+            </Link>
+            <Link href="/promoter-signup" className="text-sm text-text-dim hover:text-white transition-colors font-medium">
+              Promoters
+            </Link>
+            <Link href="/contact" className="text-sm text-text-dim hover:text-white transition-colors font-medium">
+              Contact
+            </Link>
           </div>
 
           {/* Actions */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-3">
             <Link
               href="/login"
-              className="px-4 py-2 text-sm font-medium text-text-dim hover:text-text transition-colors"
+              className="text-sm font-medium text-text-dim hover:text-white transition-colors"
             >
               Sign In
             </Link>
             <Link
               href="/admin/create-event"
-              className="px-5 py-2 bg-accent text-black text-sm font-semibold rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5"
+              className="group flex items-center gap-2 px-5 py-2.5 bg-accent text-black text-sm font-bold rounded-full transition-all duration-300 hover:bg-accent/90"
             >
               Host Event
+              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 
           {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 text-text hover:text-accent transition-colors"
+            className="md:hidden w-11 h-11 flex items-center justify-center text-text hover:text-accent transition-colors"
             aria-label="Menu"
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu — full screen takeover */}
+      {/* Mobile menu — clean full screen */}
       <div
         className={`fixed inset-0 z-40 bg-bg transition-all duration-300 md:hidden ${
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        {/* Radial accent glow */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle at 50% 50%, rgba(45,212,191,0.18) 0%, rgba(45,212,191,0.05) 30%, transparent 65%)",
-          }}
-        />
-
-        <div className="relative h-full flex flex-col items-center justify-center gap-8 px-8">
-          <MobileLink href="/events" onClick={() => setMobileOpen(false)}>
-            Events
-          </MobileLink>
-          <MobileLink href="/promoter-signup" onClick={() => setMobileOpen(false)}>
-            Promoters
-          </MobileLink>
-          <MobileLink href="#about" onClick={() => setMobileOpen(false)}>
-            About
-          </MobileLink>
-          <MobileLink href="/login" onClick={() => setMobileOpen(false)}>
-            Sign In
-          </MobileLink>
+        <div className="h-full flex flex-col justify-center px-10 gap-2">
+          {[
+            { href: "/events", label: "Events" },
+            { href: "/promoter-signup", label: "Promoters" },
+            { href: "/contact", label: "Contact" },
+            { href: "/login", label: "Sign In" },
+          ].map((item, i) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className="font-[family-name:var(--font-display)] text-5xl font-black tracking-[-0.03em] text-white/80 hover:text-accent transition-colors py-2"
+              style={{ animationDelay: `${i * 0.05}s` }}
+            >
+              {item.label}
+            </Link>
+          ))}
           <Link
             href="/admin/create-event"
             onClick={() => setMobileOpen(false)}
-            className="mt-4 px-8 py-3 bg-accent text-black text-base font-semibold rounded-full"
+            className="inline-flex items-center gap-2 mt-8 px-8 py-4 bg-accent text-black font-bold rounded-full text-lg w-fit"
           >
-            Host Event
+            Host Event <ArrowRight size={18} />
           </Link>
         </div>
       </div>
     </>
-  );
-}
-
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="rounded-full px-4 py-1.5 text-sm font-medium text-text-dim hover:text-text hover:bg-white/[0.06] transition-colors"
-    >
-      {children}
-    </Link>
-  );
-}
-
-function MobileLink({
-  href,
-  children,
-  onClick,
-}: {
-  href: string;
-  children: React.ReactNode;
-  onClick: () => void;
-}) {
-  return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className="font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-[-0.03em] text-text hover:text-accent transition-colors"
-    >
-      {children}
-    </Link>
   );
 }
