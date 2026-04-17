@@ -27,11 +27,11 @@ export function HeroSection() {
           muted
           loop
           playsInline
-          poster="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80"
+          poster="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1920&q=80"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source
-            src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4"
+            src="https://videos.pexels.com/video-files/2022395/2022395-uhd_2560_1440_30fps.mp4"
             type="video/mp4"
           />
         </video>
