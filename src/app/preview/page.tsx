@@ -1,12 +1,21 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, AlertCircle, ArrowRight, ArrowDown } from "lucide-react";
 import Link from "next/link";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
-// All verified working (200 OK) as of build time
+import { EventShowcase } from "@/components/landing/event-showcase";
+import { Categories } from "@/components/landing/categories";
+import { StatsSection } from "@/components/landing/stats-section";
+import { Features } from "@/components/landing/features";
+import { Testimonials } from "@/components/landing/testimonials";
+import { PressBar } from "@/components/landing/press-bar";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { sampleEvents } from "@/lib/sample-events";
+import type { Event } from "@/lib/types";
+
 const videos = [
   { name: "1 · Celebration Crowd (OG fire)", src: "https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" },
   { name: "2 · DJ in Dark Club", src: "https://videos.pexels.com/video-files/16476271/16476271-hd_1920_1080_60fps.mp4" },
@@ -28,7 +37,6 @@ const POSTER = "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1
 
 function VideoPlayer({ src, onError }: { src: string; onError: () => void }) {
   const ref = useRef<HTMLVideoElement>(null);
-
   useEffect(() => {
     const vid = ref.current;
     if (!vid) return;
@@ -53,7 +61,18 @@ function VideoPlayer({ src, onError }: { src: string; onError: () => void }) {
 export default function PreviewPage() {
   const [current, setCurrent] = useState(0);
   const [videoError, setVideoError] = useState(false);
+  const [events, setEvents] = useState<Event[]>(sampleEvents);
   const v = videos[current];
+
+  useEffect(() => {
+    fetch("/api/events")
+      .then((r) => r.json())
+      .then((d) => { if (d.events?.length) setEvents(d.events); })
+      .catch(() => {});
+  }, []);
+
+  const weekend = events.slice(0, 6);
+  const featured = events.filter((e) => e.featured);
 
   function go(dir: number) {
     setVideoError(false);
@@ -62,6 +81,7 @@ export default function PreviewPage() {
 
   return (
     <div className="relative">
+      {/* ═══ HERO with swappable video ═══ */}
       <section className="relative min-h-[100dvh] flex flex-col overflow-hidden">
         <div className="absolute inset-0">
           <VideoPlayer key={v.src} src={v.src} onError={() => setVideoError(true)} />
@@ -73,7 +93,7 @@ export default function PreviewPage() {
         {videoError && (
           <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-danger/20 border border-danger/30 rounded-full px-4 py-2 text-sm text-danger">
             <AlertCircle size={14} />
-            Video didn&apos;t load — showing poster
+            Video didn&apos;t load
           </div>
         )}
 
@@ -104,10 +124,10 @@ export default function PreviewPage() {
                 Clubs, rooftops, warehouse parties. Every door in the city — one&nbsp;ticket.
               </p>
               <div className="flex items-center gap-4 shrink-0">
-                <Link href="/events" className="group inline-flex items-center gap-3 bg-accent text-black font-bold px-8 py-4 rounded-full text-base">
-                  Browse Events <ArrowRight size={18} />
+                <Link href="/events" className="group inline-flex items-center gap-3 bg-accent text-black font-bold px-8 py-4 rounded-full text-base transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20">
+                  Browse Events <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
-                <Link href="/admin/create-event" className="inline-flex items-center gap-2 border border-white/15 bg-white/5 font-semibold px-7 py-4 rounded-full text-base">
+                <Link href="/admin/create-event" className="inline-flex items-center gap-2 border border-white/15 bg-white/5 font-semibold px-7 py-4 rounded-full text-base transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5">
                   Host
                 </Link>
               </div>
@@ -124,7 +144,60 @@ export default function PreviewPage() {
         <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-bg to-transparent pointer-events-none z-[5]" />
       </section>
 
-      {/* VIDEO SWITCHER */}
+      {/* ═══ REST OF THE SITE ═══ */}
+      <PressBar />
+
+      <EventShowcase events={weekend} title="This Weekend" subtitle="What's On" />
+
+      <StatsSection />
+
+      <Categories />
+
+      <Features />
+
+      <Testimonials />
+
+      {featured.length > 0 && (
+        <EventShowcase events={featured} title="Trending Now" subtitle="Hot" />
+      )}
+
+      {/* CTA */}
+      <section className="relative">
+        <ScrollReveal>
+          <div className="relative min-h-[60vh] overflow-hidden flex items-center">
+            <Image
+              src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1920&q=80"
+              alt="DJ performing at a Brooklyn warehouse"
+              fill
+              sizes="100vw"
+              className="object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black/70" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-accent/30" />
+
+            <div className="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 w-full py-20">
+              <p className="text-xs font-semibold uppercase tracking-[4px] text-accent mb-6">For Promoters & Hosts</p>
+              <h2 className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.9] mb-6 tracking-[-0.03em] max-w-3xl">
+                Build community.<br /><span className="text-accent">Not a guest list.</span>
+              </h2>
+              <p className="text-white/40 text-lg max-w-lg mb-10 leading-relaxed">
+                Sell tickets. Run promoters. Pack the room. Keep the margin.
+              </p>
+              <div className="flex flex-wrap items-center gap-4">
+                <Link href="/admin/create-event" className="group px-8 py-4 bg-accent text-black font-bold rounded-full transition-all duration-300 hover:bg-accent/90 hover:-translate-y-0.5 flex items-center gap-2">
+                  Host Event <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link href="/promoter-signup" className="px-8 py-4 rounded-full font-semibold border border-white/15 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5">
+                  Become a Promoter
+                </Link>
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
+      </section>
+
+      {/* ═══ VIDEO SWITCHER — always floating ═══ */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-2 bg-black/90 backdrop-blur-xl border border-white/15 rounded-2xl px-4 py-3 shadow-2xl max-w-[95vw]">
         <button onClick={() => go(-1)} className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center hover:bg-accent hover:text-black transition-all shrink-0" aria-label="Previous video">
           <ChevronLeft size={20} />
