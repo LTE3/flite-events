@@ -25,36 +25,30 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
   return (
     <Link
       href={`/events/${event.slug}`}
-      className="group block rounded-2xl overflow-hidden bg-bg-card border border-white/[0.06] transition-all duration-500 hover:-translate-y-1 hover:border-white/[0.12] animate-fade-up"
+      className="group relative block rounded-2xl overflow-hidden bg-bg-card border border-white/[0.06] transition-all duration-500 ease-out hover:-translate-y-2 hover:border-white/[0.12] hover:shadow-2xl hover:shadow-black/50 animate-fade-up"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
-      {/* Image container */}
-      <div className="relative h-56 overflow-hidden">
+      {/* Image — dominant, poster-like */}
+      <div className="relative aspect-[4/5] overflow-hidden">
         <Image
           src={event.image_url}
           alt={event.title}
           fill
-          className="object-cover transition-all duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
           sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw"
         />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-        {/* Top glow on hover */}
-        <div className="absolute inset-0 bg-gradient-to-b from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-        {/* Category badge */}
-        <span className="absolute top-3.5 left-3.5 px-3 py-1 bg-black/60 border border-white/10 rounded-full text-[11px] font-bold tracking-wider uppercase">
+        {/* Gradient overlay for title legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+
+        {/* Category badge — subtler, smaller */}
+        <span className="absolute top-3 left-3 px-2 py-0.5 bg-black/40 backdrop-blur-sm border border-white/[0.08] rounded-full text-[10px] font-medium tracking-[0.14em] uppercase text-text-dim">
           {categoryLabels[event.category] || event.category}
         </span>
 
-        {/* Status badges */}
-        {sellingFast && (
-          <span className="absolute top-12 left-3.5 sm:top-3.5 sm:left-28 px-3 py-1 bg-accent rounded-full text-[11px] font-bold tracking-wider uppercase">
-            Selling Fast
-          </span>
-        )}
+        {/* Sold Out badge — keep colored, it matters */}
         {soldOut && (
-          <span className="absolute top-3.5 right-14 px-3 py-1 bg-danger/90 rounded-full text-[11px] font-bold tracking-wider uppercase">
+          <span className="absolute top-3 right-14 px-2.5 py-1 bg-danger rounded-full text-[10px] font-bold tracking-[0.14em] uppercase text-white">
             Sold Out
           </span>
         )}
@@ -62,55 +56,55 @@ export function EventCard({ event, index = 0 }: { event: Event; index?: number }
         {/* Save button */}
         <button
           onClick={(e) => { e.preventDefault(); setSaved(!saved); }}
-          className={`absolute top-3.5 right-3.5 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+          className={`absolute top-3 right-3 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 ${
             saved
-              ? "bg-accent/30 backdrop-blur-sm"
-              : "bg-black/30 backdrop-blur-sm hover:bg-white/20"
+              ? "bg-accent/25 backdrop-blur-md"
+              : "bg-black/40 backdrop-blur-md hover:bg-black/60"
           }`}
           aria-label={saved ? "Unsave event" : "Save event"}
         >
           <Heart size={16} className={saved ? "fill-accent text-accent" : "text-white"} />
         </button>
 
-        {/* Bottom info overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="font-bold text-lg leading-tight line-clamp-2 drop-shadow-lg">
+        {/* Title — big, bold, Bricolage, over the photo */}
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          {sellingFast && !soldOut && (
+            <div className="mb-2 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span className="text-[10px] font-semibold tracking-[0.18em] uppercase text-accent">
+                Selling Fast
+              </span>
+            </div>
+          )}
+          <h3 className="font-display font-bold text-2xl md:text-[26px] leading-[1.05] tracking-tight line-clamp-2 text-text drop-shadow-[0_2px_16px_rgba(0,0,0,0.6)]">
             {event.title}
           </h3>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="p-4 pt-3">
-        <div className="flex items-center gap-4 mb-3">
-          <div className="flex items-center gap-1.5 text-accent">
-            <Clock size={13} />
-            <span className="text-xs font-semibold tracking-wide">
+      {/* Body — clean metadata row */}
+      <div className="px-4 py-4 flex items-end justify-between gap-3">
+        <div className="min-w-0 flex-1 space-y-1.5">
+          <div className="flex items-center gap-1.5 text-text-dim">
+            <Clock size={12} className="shrink-0" />
+            <span className="text-xs font-medium tracking-wide truncate">
               {formatDate(event.date)} &bull; {formatTime(event.time)}
             </span>
           </div>
-        </div>
-
-        <div className="flex items-center gap-1.5 text-text-dim mb-4">
-          <MapPin size={13} className="shrink-0" />
-          <span className="text-sm truncate">{event.venue} &bull; {event.borough || event.city}</span>
-        </div>
-
-        <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
-          <div>
-            <span className="text-lg font-bold">{formatPrice(event.price)}</span>
-            {event.price > 0 && <span className="text-xs text-text-dim ml-1">/ ticket</span>}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-1.5">
-              <span className="w-5 h-5 rounded-full bg-white/20 border-2 border-bg-card" />
-              <span className="w-5 h-5 rounded-full bg-white/15 border-2 border-bg-card" />
-              <span className="w-5 h-5 rounded-full bg-white/10 border-2 border-bg-card" />
-            </div>
-            <span className="text-xs text-text-dim font-medium">
-              {event.tickets_total - event.tickets_left}+
+          <div className="flex items-center gap-1.5 text-text-muted">
+            <MapPin size={12} className="shrink-0" />
+            <span className="text-xs truncate">
+              {event.venue} &bull; {event.borough || event.city}
             </span>
+          </div>
+        </div>
+
+        <div className="text-right shrink-0">
+          <div className="text-[10px] uppercase tracking-[0.14em] text-text-muted font-medium leading-none mb-1">
+            {event.price > 0 ? "From" : ""}
+          </div>
+          <div className="font-display font-bold text-xl leading-none text-text">
+            {formatPrice(event.price)}
           </div>
         </div>
       </div>
