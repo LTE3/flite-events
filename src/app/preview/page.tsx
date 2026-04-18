@@ -197,18 +197,18 @@ export default function PreviewPage() {
         </ScrollReveal>
       </section>
 
-      {/* ═══ VIDEO SWITCHER — always floating ═══ */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-2 bg-black/90 backdrop-blur-xl border border-white/15 rounded-2xl px-4 py-3 shadow-2xl max-w-[95vw]">
-        <button onClick={() => go(-1)} className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center hover:bg-accent hover:text-black transition-all shrink-0" aria-label="Previous video">
+      {/* ═══ VIDEO SWITCHER — rendered in DOM flow + sticky ═══ */}
+      <div style={{ position: "fixed", bottom: "16px", left: "50%", transform: "translateX(-50%)", zIndex: 2147483647, display: "flex", alignItems: "center", gap: "8px", background: "rgba(0,0,0,0.95)", border: "2px solid rgba(45,212,191,0.5)", borderRadius: "16px", padding: "12px 16px", maxWidth: "95vw", boxShadow: "0 8px 32px rgba(0,0,0,0.8)" }}>
+        <button onClick={() => go(-1)} style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", border: "none", color: "white", cursor: "pointer", flexShrink: 0 }} aria-label="Previous video">
           <ChevronLeft size={20} />
         </button>
-        <div className="text-center min-w-[160px] sm:min-w-[220px] px-3">
-          <p className="text-[10px] text-accent uppercase tracking-wider font-bold mb-0.5">
+        <div style={{ textAlign: "center", minWidth: "160px", padding: "0 12px" }}>
+          <p style={{ fontSize: "10px", color: "#2DD4BF", textTransform: "uppercase", letterSpacing: "2px", fontWeight: 700, marginBottom: "2px" }}>
             {current + 1} of {videos.length}
           </p>
-          <p className="text-sm font-bold truncate">{v.name}</p>
+          <p style={{ fontSize: "14px", fontWeight: 700, color: "white", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{v.name}</p>
         </div>
-        <button onClick={() => go(1)} className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center hover:bg-accent hover:text-black transition-all shrink-0" aria-label="Next video">
+        <button onClick={() => go(1)} style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", border: "none", color: "white", cursor: "pointer", flexShrink: 0 }} aria-label="Next video">
           <ChevronRight size={20} />
         </button>
       </div>
